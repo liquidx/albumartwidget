@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'AlbumArtPlugin' target in the 'AlbumArtPlugin' project.
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif

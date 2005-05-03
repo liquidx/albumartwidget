@@ -1,0 +1,71 @@
+body {
+    margin: 0;
+}
+
+#background-layer {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 0;   
+}
+
+#playerstate-layer {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    width: 128px;
+    height: 128px;
+    z-index: 3;
+    visibility: hidden;
+}
+
+#playerstate {
+    opacity: 0.5;
+}
+
+#albumart-layer {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    width: 128px;
+    height: 128px;
+    z-index: 1;
+}
+
+#albumart-layer img {
+    width: 128px;
+    height: 128px;
+    visibility: hidden;
+}
+
+#text-layer {
+    position:absolute;
+    top: 155px;
+    left: 20px;
+    width: 136px;
+    height: 44px;
+    z-index: 2;
+    
+    text-align: center;
+
+    font: 11px "Lucida Grande";
+    font-weight: bold;    
+    color: #666;
+    text-shadow: white 0px 1px 0px; 
+}
+
+#track-name {
+    height: 14px;
+    margin-bottom: 2px;
+    overflow: hidden;
+}
+
+#track-artist {
+    height: 14px;
+    margin-bottom: 4px;
+    overflow: hidden;
+}
+
+#track-rating {
+    height: 16px;
+}
