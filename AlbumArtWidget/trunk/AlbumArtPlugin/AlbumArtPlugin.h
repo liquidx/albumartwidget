@@ -40,7 +40,12 @@ typedef enum {
 	iTunesState		playerState;
 }
 
-- (NSString *)artFilename;
+- (NSString *)trackArt;
+- (NSString *)trackName;
+- (NSString *)trackArtist;
+- (NSString *)trackLocation;
+- (int) trackRating;
+
 - (BOOL) iTunesIsRunning;
 - (void)reload;
 - (void)remove;

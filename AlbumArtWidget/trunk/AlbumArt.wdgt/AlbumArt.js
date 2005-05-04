@@ -53,7 +53,7 @@ function reloadImage(status) {
 }
 
 function redisplay_rating() {
-    var trackRating = AlbumArt.trackRating;
+    var trackRating = AlbumArt.trackRating();
     for (i = 1; i < 6; i++) {
         document.getElementById("rateimg" + i).src = "StarOff.png";
     }
@@ -78,10 +78,10 @@ function redisplay_values() {
         return;
     }
 
-    var trackName = AlbumArt.trackName;
-    var trackArtist = AlbumArt.trackArtist;
-    var trackRating = AlbumArt.trackRating;
-    var trackArt = AlbumArt.artFilename();
+    var trackName = AlbumArt.trackName();
+    var trackArtist = AlbumArt.trackArtist();
+    var trackRating = AlbumArt.trackRating();
+    var trackArt = AlbumArt.trackArt();
     
     if (!trackName) {
         trackName  = "Untitled";

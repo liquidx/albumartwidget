@@ -66,11 +66,6 @@
 
 + (BOOL)isKeyExcludedFromWebScript:(const char *)name
 {
-	if ((!strncmp(name, "trackName", strlen("trackName")))||
-		(!strncmp(name, "trackArtist", strlen("trackArtist")))||
-		(!strncmp(name, "trackRating", strlen("trackRating")))) {
-		return NO;
-	}
 	return YES;
 }
 
@@ -84,7 +79,7 @@
 #pragma mark -
 #pragma mark External Functions
 
-- (NSString *)artFilename
+- (NSString *)trackArt
 {
 	if (albumArt) {
 		return [albumArt filename];
@@ -92,6 +87,26 @@
 	else {
 		return nil;
 	}
+}
+
+- (NSString *)trackName
+{
+	return trackName;
+}
+
+- (NSString *)trackArtist
+{
+	return trackArtist;
+}
+
+- (NSString *)trackLocation
+{
+	return trackLocation;
+}
+
+- (int) trackRating
+{
+	return trackRating;
 }
 
 - (BOOL) iTunesIsRunning

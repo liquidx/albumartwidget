@@ -61,7 +61,9 @@
 	
 - (void) dealloc
 {	
+#if AAP_DEBUG
 	NSLog(@"holder.dealloc");
+#endif
 	if (temporaryFilename != nil) {
 		[[NSFileManager defaultManager] removeFileAtPath:temporaryFilename handler:nil];
 		[temporaryFilename release];
@@ -160,7 +162,9 @@
 	
 	aEventDesc = [fetchScript executeAndReturnError:&error];
 	if ([[aEventDesc stringValue] isEqualToString:@"Script Failed"]) {
+#if AAP_DEBUG
 		NSLog(@"holder.fetchAlbumArt: script failed.");
+#endif
 		return NO;
 	}
 	
