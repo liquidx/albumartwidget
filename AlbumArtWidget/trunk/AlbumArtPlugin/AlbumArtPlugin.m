@@ -163,7 +163,6 @@
 	NSString *path = [bundle pathForResource:@"GetTrackInfo" ofType:@"scpt"];
 	if (!path) {
 		NSLog(@"plugin.gettrackinfo: Unable to find AppleScript in bundle path");
-		NSLog(@"%@", path);
 		return NO;
 	}
 	
