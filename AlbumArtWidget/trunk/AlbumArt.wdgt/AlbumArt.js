@@ -129,6 +129,7 @@ function redisplay_values() {
         trackArt = "Dummy.png";
     }
     else {
+        
         trackArt = "file://" + trackArt;
     }
     document.getElementById("track-name").innerHTML = trackName;

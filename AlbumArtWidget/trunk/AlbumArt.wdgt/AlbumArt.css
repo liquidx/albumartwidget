@@ -104,4 +104,10 @@ body {
 
 #track-rating {
     height: 16px;
+    text-align: center;
+}
+
+#unrateimg {
+    height: 16px;
+    width: 8px;
 }
