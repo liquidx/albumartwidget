@@ -1,3 +1,4 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <!--
 /*
 
@@ -36,8 +37,6 @@
 */
 -->
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
 <style type="text/css" title="AppleStyle">
@@ -47,27 +46,83 @@
 </head>
 
 <body>
-    <div id="background-layer"> 
-        <img src="Default.png" id="background">
-    </div>
-    <div id="albumart-layer">
-        <img src="Dummy.png" id="albumart">
-    </div>
-    <div id="playerstate-layer">
-        <img src="Playing.png" id="playerstate">
-    </div>
-    <div id="text-layer">
-        <div id="track-name">Untitled</div>
-        <div id="track-artist">Unknown</div>
-        <div id="track-rating">
-        <span id="unrate" onclick="set_rating('0');"><img id="unrateimg" src="trans.gif"></span>
-        <span id="rate1" onclick="set_rating('20');"><img id="rateimg1" src="StarOff.png"></span>
-        <span id="rate2" onclick="set_rating('40');"><img id="rateimg2" src="StarOff.png"></span>
-        <span id="rate3" onclick="set_rating('60');"><img id="rateimg3" src="StarOff.png"></span>
-        <span id="rate4" onclick="set_rating('80');"><img id="rateimg4" src="StarOff.png"></span>
-        <span id="rate5" onclick="set_rating('100');"><img id="rateimg5" src="StarOff.png"></span>
-        <span id="spacer"><img id="unrateimg" src="trans.gif"></span>
+    <div id="front" onmousemove="mousemove(event);" onmouseout="mouseexit(event);"> 
+        <img src="Default.png" class="backgroundImage" id="background" />
+        <div id="albumart-layer"><img src="Blank.png" id="albumart"></div>
+        <div id="shade-layer"></div>
+        <div id="overlay-layer"><img src="Overlay.png" id="overlay"></div>
+        
+        <!--
+        <div id="playerstate-layer">
+            <img src="Playing.png" id="playerstate">
         </div>
-    <div>
+        -->
+        <div id="text-layer">
+            <div id="track-name" onclick="rotatefield();">Unnamed</div>
+            <div id="track-artist" onclick="rotatefield(this);">Unknown Artist</div>
+        </div>
+        <div id="track-rating">
+            <span id="unrate" onclick="set_rating('0');"><img id="unrateimg" src="trans.gif"></span>
+            <span id="rate1" onclick="set_rating('20');"><img id="rateimg1" src="StarOff.png"></span>
+            <span id="rate2" onclick="set_rating('40');"><img id="rateimg2" src="StarOff.png"></span>
+            <span id="rate3" onclick="set_rating('60');"><img id="rateimg3" src="StarOff.png"></span>
+            <span id="rate4" onclick="set_rating('80');"><img id="rateimg4" src="StarOff.png"></span>
+            <span id="rate5" onclick="set_rating('100');"><img id="rateimg5" src="StarOff.png"></span>
+            <span id="spacer"><img id="unrateimg" src="trans.gif"></span>
+        </div>
+        
+        <div class="flipalbum" id="flipalbumrollie"></div>
+        <div class="flipalbum" id="flipalbum" onclick="showAlbumBack(event);" onmouseover="enterAlbumFlip(event);" onmouseout="exitAlbumFlip(event);"></div>
+        
+        <div class="flipprefs" id="flipprefsrollie"></div>
+        <div class="flipprefs"' id="flipprefs" onclick="showPrefs(event);" onmouseover="enterPrefsFlip(event);" onmouseout="exitPrefsFlip(event);"></div>
+    </div>
+
+    <div id="prefs">
+        <img src="DefaultPrefs.png" class="backgroundImage" id="background" />
+        <div id="config-layer">
+            <div class="pref-group" id="pref-color-scheme">
+                <div class="label">Color Scheme:</div>
+                <div class="field">
+                <select id="colorScheme" onchange="changeColorScheme(this);">
+                <option value="blue">Blue</option>
+                <option value="black">Black</option>
+                <option vlaue="white">White</option>
+                </select>
+                </div>
+            </div>
+
+            <div class="pref-group" id="pref-fetch">
+                <div class="label">Fetch Art Online:</div>
+                <div class="field">
+                <select id="fetchOnline" onchange="changeFetchOnline(this);">
+                <option value="0">disabled</option>
+                <option value="amazon.com">amazon.com</option>
+                <option value="images.google.com">images.google.com</option>
+                <option value="boxup.com">boxup.com</option>
+                <option value="yesasia.com">yesasia.com</option>
+                </select>
+                </div>
+            </div>
+            
+            <div class="done-button" onclick="hidePrefs();">
+            <input type="button" value="Done" name="Done" />
+            </div>
+        </div>
+    </div>
+    
+    <div id="back" onmousemove="mousemove(event);" onmouseout="mouseexit(event);">
+        <img src="DefaultPrefs.png" class="backgroundImage" id="background" />
+        <div id="album-playlist">
+        <ol>
+            <li>Hello</li>
+            <li>Song Two</li>
+            <li>Final Song</li>
+        </ol>
+        </div>
+        <div class="flipalbumback" id="flipalbumrollieback"></div>
+        <div class="flipalbumback" id="flipalbumback" onclick="hideAlbumBack(event);" onmouseover="enterAlbumFlip(event);" onmouseout="exitAlbumFlip(event);"></div>
+    </div>
+    
 </body>
 </html>

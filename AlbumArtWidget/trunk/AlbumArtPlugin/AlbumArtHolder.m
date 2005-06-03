@@ -202,12 +202,29 @@
 	NSImage *resizedImage = nil;
 	NSBitmapImageRep *outputBitmap = nil;
 	NSData *bitmapData = nil;
+	double aspectRatio = 0.0;
+	NSRect targetRect;
 	
 	resizedImage = [[[NSImage alloc] initWithSize:NSMakeSize(newSize.width, newSize.height)] autorelease]; 
 	[resizedImage lockFocus];
 	[NSGraphicsContext saveGraphicsState];
 	[[NSGraphicsContext currentContext] setImageInterpolation:NSImageInterpolationHigh];
-	[anImage drawInRect:NSMakeRect(0, 0, newSize.width, newSize.height)
+	[[NSColor whiteColor] drawSwatchInRect:NSMakeRect(0, 0, newSize.width, newSize.height)];
+	// keep aspect ratio (by cutting extra bits)
+	aspectRatio = [anImage size].width / [anImage size].height;
+	if (newSize.width/newSize.height > aspectRatio) {
+		double height = newSize.width / aspectRatio;
+		targetRect = NSMakeRect(0, (newSize.height - height)/2, newSize.width, height);
+	}
+	else if (newSize.width/newSize.height < aspectRatio) {
+		double width = newSize.height * aspectRatio;
+		targetRect = NSMakeRect((newSize.width - width)/2, 0, width, newSize.height);
+	}
+	else {
+		targetRect = NSMakeRect(0, 0, newSize.width, newSize.height);
+	}
+	
+	[anImage drawInRect:targetRect
 			   fromRect:NSMakeRect(0, 0, [anImage size].width, [anImage size].height)
 			  operation:NSCompositeCopy
 			   fraction:1.0];

@@ -38,12 +38,179 @@ body {
     margin: 0;
 }
 
-#background-layer {
+#background {
     position: absolute;
     top: 0px;
     left: 0px;
-    z-index: 0;   
 }
+
+#albumart-layer {
+    position: absolute;
+    top: 33px;
+    left: 33px;
+    width: 160px;
+    height: 160px;
+    z-index: 1;
+}
+
+#albumart-layer img {
+    width: 160px;
+    height: 160px;
+}
+
+#overlay-layer {
+    position: absolute;
+    top: 31px;
+    left: 31px;
+    width: 164px;
+    height: 164px;
+    z-index: 3;
+}
+
+#text-layer, #shade-layer {
+    position:absolute;
+    top: 155px;
+    left: 34px;
+    width: 158px;
+    height: 40px;
+    z-index: 2;
+
+    text-align: center;
+    font: 11px "Lucida Grande";
+    font-weight: normal;    
+    color: #fff;
+    text-shadow: #666 1px 1px 3px; 
+}
+
+#shade-layer {
+    background-color: #003;
+    opacity: 0.25;
+    top: 150px;
+    height: 45px;
+}    
+
+#track-name, #track-artist, #track-album {
+    height: 14px;
+    margin-bottom: 2px;
+    overflow: hidden;
+}
+
+#track-rating {
+    position: absolute;
+    top: 204px;
+    left: 54px;
+    height: 16px;
+    width: 120px;
+    text-align: center;
+}
+
+#unrateimg {
+    height: 16px;
+    width: 8px;
+}
+
+.flipalbum, .flipalbumback {
+    position: absolute;
+    top: 210px;
+    left: 35px;
+    width: 13px;
+    height: 13px;
+    z-index: 2;
+   
+}
+
+#flipalbum, #flipalbumback {
+    opacity: 1;
+    margin: 2px 2px 2px 2px;
+    background: url(flip.png) no-repeat top left;
+    z-index: 10;
+}
+
+#flipalbumrollie, #flipalbumrollieback {
+    display: none;
+    opacity: 0.25;
+    background: url(/System/Library/WidgetResources/ibutton/white_rollie.png) no-repeat top left;        
+}
+
+.flipprefs {
+    position:absolute;
+    top: 210px;
+    left: 180px;
+    width: 13px;
+    height: 13px;
+    z-index: 2;
+}
+
+#flipprefs {
+    opacity: 0;
+    background: url(/System/Library/WidgetResources/ibutton/white_i.png) no-repeat top left;    
+}
+
+#flipprefsrollie {
+    display: none;
+    opacity: 0.25;
+    background: url(/System/Library/WidgetResources/ibutton/white_rollie.png) no-repeat top left;        
+}
+
+#prefs, #back {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    display: none;
+}    
+
+
+#config-layer {
+    position: absolute;
+    top: 40px;
+    left: 34px;
+    width: 128px;
+    height: 128px;
+
+    font: 11px "Lucida Grande";
+    font-weight: normal;    
+    color: #fff;
+    text-shadow: #666 -1px -1px 0px; 
+}
+
+#album-playlist {
+    position: absolute;
+    top: 40px;
+    left: 34px;
+    width: 160px;
+    height: 175px;
+    overflow: hidden;
+
+    font: 10px "Lucida Grande";
+    font-weight: normal;    
+    color: #fff;
+    text-shadow: #666 -1px -1px 0px; 
+}
+
+ol {
+    margin-top: 0;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+li {
+    margin-top: 1px;
+    margin-left: 24px;
+    padding-left: 0;
+}
+
+.done-button {
+    position: absolute;
+    top: 160px;
+    left: 110px;
+}
+
+.pref-group {
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+/*
 
 #playerstate-layer {
     position: absolute;
@@ -58,56 +225,4 @@ body {
 #playerstate {
     opacity: 0.5;
 }
-
-#albumart-layer {
-    position: absolute;
-    top: 24px;
-    left: 24px;
-    width: 128px;
-    height: 128px;
-    z-index: 1;
-}
-
-#albumart-layer img {
-    width: 128px;
-    height: 128px;
-    visibility: hidden;
-}
-
-#text-layer {
-    position:absolute;
-    top: 155px;
-    left: 20px;
-    width: 136px;
-    height: 44px;
-    z-index: 2;
-    
-    text-align: center;
-
-    font: 11px "Lucida Grande";
-    font-weight: bold;    
-    color: #666;
-    text-shadow: white 0px 1px 0px; 
-}
-
-#track-name {
-    height: 14px;
-    margin-bottom: 2px;
-    overflow: hidden;
-}
-
-#track-artist {
-    height: 14px;
-    margin-bottom: 4px;
-    overflow: hidden;
-}
-
-#track-rating {
-    height: 16px;
-    text-align: center;
-}
-
-#unrateimg {
-    height: 16px;
-    width: 8px;
-}
+*/

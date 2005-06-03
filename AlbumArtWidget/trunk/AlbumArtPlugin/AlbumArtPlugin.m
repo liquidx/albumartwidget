@@ -104,6 +104,26 @@
 	return trackLocation;
 }
 
+- (NSString *)trackAlbum
+{
+	return trackAlbum;
+}
+
+- (int) trackNumber
+{
+	return trackNumber;
+}
+
+- (int) trackYear
+{
+	return trackYear;
+}
+
+- (int) trackID
+{
+	return trackID;
+}
+
 - (int) trackRating
 {
 	return trackRating;
@@ -141,7 +161,7 @@
 	trackRating = [newRating intValue];
 }
 
-#pragma mark - 
+#pragma mark -
 #pragma mark Once Off Applescript Goodies
 
 - (void) setTrackRating:(int)newRating
@@ -157,7 +177,7 @@
 	
 	NSAppleEventDescriptor *desc = [script executeAndReturnError:&error];
 	if (!desc) {
-		NSLog(@"plugin.setTrackRating: error executing script: %@", error);
+		//NSLog(@"plugin.setTrackRating: error executing script: %@", error);
 		return;
 	}
 	
@@ -167,31 +187,11 @@
 - (BOOL) getTrackInfo
 {
 	// Load AppleScript that fetches Album Artwork
-	NSDictionary	*error;
-	NSAppleScript   *script;
-	NSBundle *bundle = [NSBundle bundleWithIdentifier:AAF_BUNDLE_ID];
-	if (!bundle) {
-		NSLog(@"plugin.gettrackinfo: Unable to find plugin's bundle");
-		return NO;
-	}
-	
-	NSString *path = [bundle pathForResource:@"GetTrackInfo" ofType:@"scpt"];
-	if (!path) {
-		NSLog(@"plugin.gettrackinfo: Unable to find AppleScript in bundle path");
-		return NO;
-	}
-	
-	NSURL	 *url = [NSURL fileURLWithPath:path];
-	if (!url) {
-		NSLog(@"plugin.gettrackinfo: Unable to construct URL to path: %@", path);
-		return NO;
-	}
-	
-	script = [[NSAppleScript alloc] initWithContentsOfURL:url
-													error:&error];
+	NSString *scriptContents = AAP_GET_TRACK_INFO_SCRIPT;
+	NSAppleScript   *script = [[[NSAppleScript alloc] initWithSource:scriptContents] autorelease];
 	
 	if (!script) {
-		NSLog(@"plugin.gettrackinfo: Unable to parse/load GetTrackInfo script: %@", &error);
+		NSLog(@"plugin.getTrackInfo: error initialising applescript");
 		return NO;
 	}
 	
@@ -201,21 +201,26 @@
 		NSDictionary *error;
 		
 		aEventDesc = [script executeAndReturnError:&error];
-		if ([[aEventDesc stringValue] isEqualToString:@"Script Failed"]) {
-			NSLog(@"plugin.gettrackinfo: script failed: %@", error);
+		if ([[aEventDesc stringValue] isEqualToString:@"failed"]) {
+			//NSLog(@"plugin.gettrackinfo: script failed: %@", error);
 			return NO;
 		}
 		
-		if ([aEventDesc numberOfItems] == 4) {
+		if ([aEventDesc numberOfItems] == 8) {
 			[trackName release];
 			trackName = [[[aEventDesc descriptorAtIndex:1L] stringValue] retain];
 			[trackArtist release];
 			trackArtist = [[[aEventDesc descriptorAtIndex:2L] stringValue] retain];
-			trackRating = [[aEventDesc descriptorAtIndex:3L] int32Value];
+			[trackAlbum release];
+			trackAlbum = [[[aEventDesc descriptorAtIndex:3L] stringValue] retain];
+			trackRating = [[aEventDesc descriptorAtIndex:4L] int32Value];
+			trackID = [[aEventDesc descriptorAtIndex:5L] int32Value];
+			trackNumber = [[aEventDesc descriptorAtIndex:6L] int32Value];
+			trackYear = [[aEventDesc descriptorAtIndex:7L] int32Value];
 			[trackLocation release];
 			
-			const OSType dataType = [[aEventDesc descriptorAtIndex:4L] typeCodeValue];
-			NDAlias *alias = [NDAlias aliasWithData:[[aEventDesc descriptorAtIndex:4L] data]];
+			const OSType dataType = [[aEventDesc descriptorAtIndex:8L] typeCodeValue];
+			NDAlias *alias = [NDAlias aliasWithData:[[aEventDesc descriptorAtIndex:8L] data]];
 			trackLocation = [[[alias url] absoluteString] retain];
 		}
 		else {
@@ -225,10 +230,41 @@
 		}
 	}
 	
-	// cleanup
-	[script release];
 	return YES;
 }
+
+- (NSArray *) getCurrentAlbumTracks
+{
+	// Load AppleScript that fetches Album Artwork
+	NSString *scriptContents = AAP_GET_TRACKS_IN_ALBUM_SCRIPT;
+	NSAppleScript   *script = [[[NSAppleScript alloc] initWithSource:scriptContents] autorelease];
+	NSMutableArray *albumTracks = nil;
+	
+	if (!script) {
+		NSLog(@"plugin.getTrackInfo: error initialising applescript");
+		return nil;
+	}
+	
+	// run script
+	if ([self iTunesIsRunning]) {
+		NSAppleEventDescriptor *aEventDesc;
+		NSDictionary *error;
+		long int i;
+		
+		aEventDesc = [script executeAndReturnError:&error];
+		albumTracks = [[NSMutableArray alloc] init];
+		for (i = 0; i < [aEventDesc numberOfItems]/2; i++) {
+			int num = [[aEventDesc descriptorAtIndex:i*2L + 1L] int32Value];
+			NSString *name = [[aEventDesc descriptorAtIndex:(i+1)*2L] stringValue];
+			NSArray *newtrack = [NSArray arrayWithObjects:[NSNumber numberWithInt:num],name,nil];
+			[albumTracks addObject:newtrack];
+		}
+		return albumTracks;
+	}
+	
+	return nil;
+}
+
 
 #pragma mark -
 #pragma mark iTunes Notification
@@ -243,7 +279,11 @@
 		trackName = [[playerInfo objectForKey:@"Name"] retain];
 		[trackArtist release];
 		trackArtist = [[playerInfo objectForKey:@"Artist"] retain];
+		[trackAlbum release];
+		trackAlbum = [[playerInfo objectForKey:@"Album"] retain];
 		trackRating = [[playerInfo objectForKey:@"Rating"] intValue];
+		trackYear = [[playerInfo objectForKey:@"Year"] intValue];
+		trackNumber = [[playerInfo objectForKey:@"Number"] intValue];
 		[trackLocation release];
 		trackLocation = [[playerInfo objectForKey:@"Location"] retain];
 	}
