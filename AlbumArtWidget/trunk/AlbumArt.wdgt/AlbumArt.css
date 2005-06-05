@@ -38,7 +38,7 @@ body {
     margin: 0;
 }
 
-#background {
+.background {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -68,10 +68,11 @@ body {
 }
 
 #text-layer, #shade-layer {
+    /* if you change these, remember to change AlbumArt.js shade_* */
     position:absolute;
     top: 155px;
-    left: 34px;
-    width: 158px;
+    left: 33px;
+    width: 160px;
     height: 40px;
     z-index: 2;
 
@@ -83,8 +84,8 @@ body {
 }
 
 #shade-layer {
-    background-color: #003;
-    opacity: 0.25;
+    background-color: #000;
+    opacity: 0.2;
     top: 150px;
     height: 45px;
 }    
@@ -120,7 +121,7 @@ body {
 }
 
 #flipalbum, #flipalbumback {
-    opacity: 1;
+    opacity: 0;
     margin: 2px 2px 2px 2px;
     background: url(flip.png) no-repeat top left;
     z-index: 10;

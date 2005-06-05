@@ -34,22 +34,21 @@
  
 */
 
-function debug(msg) {
-    if (!debug.box) {
-        debug.box = document.createElement("div");
-        debug.box.setAttribute("style", "background-color: white; " +
-        "font-family: monospace; " +
-        "border: solid black 1px; font-size: x-small; " +
-        "position: absolute;top:0px; left: 0px; height: 100px;" +
-        "padding: 10px; z-index: 100; overflow: scroll;");
-        document.body.appendChild(debug.box);
-    }
-        
-    debug.box.insertBefore(document.createElement("br"), debug.box.firstChild);
-    debug.box.insertBefore(document.createTextNode(msg), debug.box.firstChild);
-}
+var shade_x = 34;
+var shade_y = 140;
+var shade_w = 158;
+var shade_h = 40;
 
+var key_next = 190; // ">"
+var key_prev = 188; // "<"
+var key_playpause = 32; //"space"
 
+var pref_color = "widget_color";
+var pref_color_default = "black";
+var pref_stars = "stars_color";
+var pref_stars_default = "blue";
+var pref_info_opacity = "overlay_opacity";
+var pref_info_opacity_default = 0.2;
 
 if (window.widget)
 {
@@ -61,6 +60,54 @@ if (window.widget)
     widget.ondragstop = ondragstop;
     widget.onremove = onremove;
 }
+
+function select_pref(pref_value, pref_object) {
+    options = pref_object.options;
+    for (i = 0; i < options.length; i++) {
+        if (options[i].value != pref_value) {
+            options[i].selected = false;
+        }
+        else {
+            options[i].selected = true;
+        }
+    }
+}
+
+
+function init() {
+    if (window.widget) {
+        
+        // init widget color scheme
+        color = widget.preferenceForKey(pref_color);
+        if (!color) {
+            color = pref_color_default;
+        }
+        
+        document.getElementById("front-background").src = color + "-Default.png";
+        document.getElementById("overlay").src = color + "-Overlay.png";
+        document.getElementById("albumart").src = color + "-Blank.png";
+        
+        // make sure prefs are in sync
+        select_pref(color, document.getElementById("select-widget-color"));
+        
+        // init info opacity
+        opacity = widget.preferenceForKey(pref_info_opacity);
+        if (!opacity) {
+            opacity = pref_info_opacity_default;
+        }
+        document.getElementById("shade-layer").style.opacity = opacity;
+        select_pref(opacity, document.getElementById("select-info-opacity"));
+        
+        // init star colors
+        starColor = widget.preferenceForKey(pref_stars);
+        if (!starColor) {
+            starColor = pref_stars_default;
+        }
+        select_pref(starColor, document.getElementById("select-stars-color"));
+        
+    }
+}
+
 
 function onremove() {
     if (window.AlbumArt) {
@@ -100,33 +147,57 @@ function reloadImage(status) {
     if (window.AlbumArt) {
         AlbumArt.reload();
         redisplay_values();
-        if ((status == "Paused") || (status == "Stopped")) {
-            document.getElementById("playerstate-layer").visibility = "visible";
-            document.getElementById("playerstate").src = "Paused.png";
-        }
-        else {
-            document.getElementById("playerstate-layer").visibility = "hidden";
-        }
     }
 }
 
 function redisplay_rating() {
     var trackRating = AlbumArt.trackRating();
+    
+    if (window.widget) {
+        starColor = widget.preferenceForKey(pref_stars);
+    }
+    if (!starColor) {
+        starColor = pref_stars_default;
+    }
+
+    if (window.widget) {
+        color = widget.preferenceForKey(pref_color);
+    }
+    if (!color) {
+        color = pref_color_default;
+    }    
+    
+    
     for (i = 1; i < 6; i++) {
-        document.getElementById("rateimg" + i).src = "StarOff.png";
+        document.getElementById("rateimg" + i).src = color + "-StarOff.png";
     }
         
     switch (trackRating) {
     case 100:
-        document.getElementById("rateimg5").src = "StarOn.png";    
+        if (starColor == "rainbow")
+            document.getElementById("rateimg5").src = starColor + "-Star5.png";                
+        else
+            document.getElementById("rateimg5").src = starColor + "-StarOn.png";    
     case 80:
-        document.getElementById("rateimg4").src = "StarOn.png";
+        if (starColor == "rainbow")
+            document.getElementById("rateimg4").src = starColor + "-Star4.png";                
+        else
+            document.getElementById("rateimg4").src = starColor + "-StarOn.png";    
     case 60:
-        document.getElementById("rateimg3").src = "StarOn.png";    
+        if (starColor == "rainbow")
+            document.getElementById("rateimg3").src = starColor + "-Star3.png";                
+        else
+            document.getElementById("rateimg3").src = starColor + "-StarOn.png";            
     case 40:
-        document.getElementById("rateimg2").src = "StarOn.png";
+        if (starColor == "rainbow")
+            document.getElementById("rateimg2").src = starColor + "-Star2.png";                
+        else
+            document.getElementById("rateimg2").src = starColor + "-StarOn.png";            
     case 20:
-        document.getElementById("rateimg1").src = "StarOn.png";   
+        if (starColor == "rainbow")
+            document.getElementById("rateimg1").src = starColor + "-Star1.png";                
+        else
+            document.getElementById("rateimg1").src = starColor + "-StarOn.png";            
     }
 }
 
@@ -135,7 +206,7 @@ function redisplay_values() {
     if (!window.AlbumArt) {
         return;
     }
-
+    
     var trackName = AlbumArt.trackName();
     var trackArtist = AlbumArt.trackArtist();
     var trackRating = AlbumArt.trackRating();
@@ -154,56 +225,113 @@ function redisplay_values() {
     }
     
     if (!trackArt) {
-        trackArt = "Blank.png";
+        if (window.widget) {
+            color = widget.preferenceForKey(pref_color);
+            if (!color) {
+                color = pref_color_default;
+            }
+            trackArt = color + "-Blank.png";
+        }            
+        else {
+            trackArt = "Blank.png";
+        }
     }
     else {
-        
         trackArt = "file://" + trackArt;
     }
     
-    nameNode = document.getElementById("track-name");
-    while (nameNode.firstChild != null) {
-        nameNode.removeChild(nameNode.firstChild);
-    }
-    nameNode.appendChild(document.createTextNode(" " + trackName + " "));
+    document.getElementById("track-name").innerHTML = trackName;
     document.getElementById("track-artist").innerHTML = trackArtist;
     document.getElementById("albumart").src = trackArt;
     redisplay_rating();
 
+    if (isBack) {
+        updateTrackList();
+    }
 }
 
-function rotatefield() {
-     if (!window.AlbumArt) {
+
+function rotatefield(e) {
+    // because overlay-layer has a high z-index than shade/text-layer
+    // therefore, the events do not propagate to those. so we 
+    // hack around it by capturing events in overlay-layer and
+    // manually working out whether we want it.
+    // 
+    // if someone can read this and come up with a better idea,
+    // please let me know:
+    //
+    // http://www.quirksmode.org/index.html?/js/introevents.html
+
+    var posx = 0;
+    var posy = 0;
+    
+    if (!e) {
+        var e = window.event;
+    }
+    
+    if (e.pageX || e.pageY) {
+        posx = e.pageX;
+        posy = e.pageY;
+    }
+    else if (e.clientX || e.clientY) {
+        posx = e.clientX + document.body.scrollLeft;
+        posy = e.clientY + document.body.scrollTop;
+    }
+    
+    if (!window.AlbumArt) {
         return;
     }
     
-    var trackName = AlbumArt.trackName();
-    var trackArtist = AlbumArt.trackArtist();
-    var trackAlbum = AlbumArt.trackAlbum();
+    if ((posx > shade_x) && (posx < shade_x + shade_w) &&
+        (posy > shade_y) && (posy < shade_y + shade_h)) {
+        var trackName = AlbumArt.trackName();
+        var trackArtist = AlbumArt.trackArtist();
+        var trackAlbum = AlbumArt.trackAlbum();
     
-    debug("");
-    
-    if (field.nodeValue == trackName) {
-        field.innerHTML = trackArtist;
-    }
-    else if (field.nodeValue == trackArtist) {
-        field.innerHTML = trackAlbum;
-    }
-    else if (field.nodeValue == trackAlbum) {
-        field.innerHTML = trackName;
-    }
-    else {
-        if (field.id == "track-name") {
-            field.innerHTML = trackName;
-        }
-        else if (field.id == "track-artist") {
-            field.innerHTML = trackArtist;
+        firstField = document.getElementById("track-name");
+        secondField = document.getElementById("track-artist");
+        
+        if (firstField.firstChild) {
+            fieldData = firstField.firstChild.data;
+            if (fieldData == trackName) {
+                firstField.innerHTML = trackAlbum;
+            }
+            else {
+                firstField.innerHTML = trackName;
+            }
         }
     }
 }
 
+function hotkeys(e) {
+    if (!e) {
+        var e = window.event;
+    }
+    
+    if (window.AlbumArt) {
+        if (e.keyCode == key_next) {
+            AlbumArt.playerNext();
+        }
+        else if (e.keyCode == key_prev) {
+            AlbumArt.playerPrev();
+        }
+        else if (e.keyCode == key_playpause) {
+            AlbumArt.playerPlayPause();
+        }
+    }
+    
+}
+document.onkeydown = hotkeys;
+
+
 function trackListCompare(a, b) {
     return a[0] - b[0];
+}
+
+function playTrack(tid) {
+    if (window.AlbumArt) {
+        AlbumArt.playSongFile_(tid);
+    }
 }
 
 function updateTrackList() {
@@ -223,10 +351,14 @@ function updateTrackList() {
         else {
             ol = document.createElement("ol");
             for (i = 0; i < tracks.length; i++) {
-                x = document.createTextNode(" " + tracks[i][1] + " ");
+                x = document.createTextNode(" " + tracks[i][2] + " ");
+                a = document.createElement("a");
+                a.style.color = "white";
+                a.appendChild(x);
+                a.href = "javascript:playTrack('" + tracks[i][1] + "');";
                 li = document.createElement("li");
                 li.value = tracks[i][0];
-                li.appendChild(x);
+                li.appendChild(a);
                 ol.appendChild(li);
             }
             playlist.appendChild(ol);
@@ -234,222 +366,45 @@ function updateTrackList() {
     }
 }
 
+// ---------------------------------------------------------------------------
+// preference manipulating functions
+// ---------------------------------------------------------------------------
 
-
-//
-// showing i-button and flip-button
-//
-
-var isBack = false;
-var flipShown = false;
-var animation = {duration:0, starttime:0, to:1.0, now:0.0, from:0.0, firstElement:null, secondElement:null, timer:null};
-
-function mousemove (event)
-{
-    if (!flipShown)
-    {
-        showFlipButtons();
-        flipShown = true;
+function changeInfoOpacity(selection) {
+    newOpacity = selection.value;
+    
+    shader = document.getElementById("shade-layer");
+    if (shader) shader.style.opacity = newOpacity;
+    
+    if (window.widget) {
+        widget.setPreferenceForKey(newOpacity, pref_info_opacity);
     }
 }
 
-function mouseexit (event)
-{
-    if (flipShown)
-    {
-       hideFlipButtons();
-       flipShown = false;
-    }
-    exitPrefsFlip();
-    exitAlbumFlip();
-}
 
-function showFlipButtons()
-{
-    if (animation.timer != null)
-    {
-        clearInterval (animation.timer);
-        animation.timer  = null;
-    }
-            
-    var starttime = (new Date).getTime() - 13;
-            
-    animation.duration = 500;
-    animation.starttime = starttime;
-    if (!isBack) {
-        animation.firstElement = document.getElementById ('flipprefs');
-        animation.secondElement = document.getElementById('flipalbum');
-    }
-    else {
-        animation.firstElement = document.getElementById ('flipalbumback');    
-    }
-    //debug("second_element: " + animation.secondElement);
-    animation.timer = setInterval ("animate();", 13);
-    animation.from = animation.now;
-    animation.to = 1.0;
-    animate();
-}
-
-function hideFlipButtons() 
-{
- // fade in the info button
-    if (animation.timer != null)
-    {
-        clearInterval (animation.timer);
-        animation.timer  = null;
-    }
-            
-    var starttime = (new Date).getTime() - 13;
-            
-    animation.duration = 500;
-    animation.starttime = starttime;
-   if (!isBack) {
-        animation.firstElement = document.getElementById ('flipprefs');
-        animation.secondElement = document.getElementById('flipalbum');
-    }
-    else {
-        animation.firstElement = document.getElementById ('flipalbumback');    
-    }
-    animation.timer = setInterval ("animate();", 13);
-    animation.from = animation.now;
-    animation.to = 0.0;
-    animate();
-}
-
-function animate()
-{
-    var T;
-    var ease;
-    var time = (new Date).getTime();
-                
-        
-    T = limit_3(time-animation.starttime, 0, animation.duration);
-        
-    if (T >= animation.duration)
-    {
-        clearInterval (animation.timer);
-        animation.timer = null;
-        animation.now = animation.to;
-    }
-    else
-    {
-        ease = 0.5 - (0.5 * Math.cos(Math.PI * T / animation.duration));
-        animation.now = computeNextFloat (animation.from, animation.to, ease);
+function changeWidgetColor(selection) {
+    newColor = selection.value;
+    
+    bg = document.getElementById("front-background");
+    if (bg) bg.src = newColor + "-Default.png";
+    overlay = document.getElementById("overlay");
+    if (overlay) overlay.src = newColor + "-Overlay.png";
+    
+    if (window.widget) {
+        widget.setPreferenceForKey(newColor, pref_color);
     }
     
-    if (animation.firstElement != null)
-        animation.firstElement.style.opacity = animation.now;
-    if (animation.secondElement != null)
-        animation.secondElement.style.opacity = animation.now;    
-}
-function limit_3 (a, b, c)
-{
-    return a < b ? b : (a > c ? c : a);
-}
-function computeNextFloat (from, to, ease)
-{
-    return from + (to - from) * ease;
+    redisplay_values();
 }
 
-
-function enterAlbumFlip(event)
-{
-        document.getElementById('flipalbumrollie').style.display = 'block';
-}
-
-function exitAlbumFlip(event)
-{
-        document.getElementById('flipalbumrollie').style.display = 'none';
-}
-
-function enterPrefsFlip(event)
-{
-        document.getElementById('flipprefsrollie').style.display = 'block';
-}
-
-function exitPrefsFlip(event)
-{
-        document.getElementById('flipprefsrollie').style.display = 'none';
-}
-
-// 
-// switch to showing preferences
-//
-
-function showPrefs() 
-{
-    var front = document.getElementById("front");
-    var prefs = document.getElementById("prefs");
-        
-    if (window.widget)
-        widget.prepareForTransition("ToBack");
-                
-    front.style.display="none";
-    prefs.style.display="block";
-        
-    if (window.widget)
-        setTimeout ('widget.performTransition();', 0);  
-}
-
-function hidePrefs()
-{
-    var front = document.getElementById("front");
-    var prefs = document.getElementById("prefs");
-        
-    if (window.widget)
-        widget.prepareForTransition("ToFront");
-                
-    prefs.style.display="none";
-    front.style.display="block";
-        
-    if (window.widget)
-        setTimeout ('widget.performTransition();', 0);
-}
-
-function showAlbumBack()
-{
-    var front = document.getElementById("front");
-    var back = document.getElementById("back");
-        
-    if (window.widget)
-        widget.prepareForTransition("ToBack");
-                
-    front.style.display="none";
-    back.style.display="block";
-    isBack = true;
+function changeStarsColor(selection) {
+    newColor = selection.value;
     
-    if (flipShown) {
-        hideFlipButtons();
-        flipShown = false;
-        exitAlbumFlip();
-        exitPrefsFlip();
+    if (window.widget) {
+        widget.setPreferenceForKey(newColor, pref_stars);
     }
     
-    updateTrackList();
-     
-    if (window.widget)
-        setTimeout ('widget.performTransition();', 0);  
+    redisplay_values();
 }
 
-function hideAlbumBack()
-{
-    var front = document.getElementById("front");
-    var back = document.getElementById("back");
-        
-    if (window.widget)
-        widget.prepareForTransition("ToFront");
-                
-    back.style.display="none";
-    front.style.display="block";
-    isBack = false;
-        
-    if (flipShown) {
-        hideFlipButtons();
-        flipShown = false;
-        exitAlbumFlip();
-    }
-        
-    if (window.widget)
-        setTimeout ('widget.performTransition();', 0);
-}
 

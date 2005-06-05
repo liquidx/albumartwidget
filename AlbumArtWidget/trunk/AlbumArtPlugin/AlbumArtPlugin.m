@@ -162,7 +162,7 @@
 }
 
 #pragma mark -
-#pragma mark Once Off Applescript Goodies
+#pragma mark Applescript Goodies
 
 - (void) setTrackRating:(int)newRating
 {
@@ -219,7 +219,6 @@
 			trackYear = [[aEventDesc descriptorAtIndex:7L] int32Value];
 			[trackLocation release];
 			
-			const OSType dataType = [[aEventDesc descriptorAtIndex:8L] typeCodeValue];
 			NDAlias *alias = [NDAlias aliasWithData:[[aEventDesc descriptorAtIndex:8L] data]];
 			trackLocation = [[[alias url] absoluteString] retain];
 		}
@@ -253,10 +252,16 @@
 		
 		aEventDesc = [script executeAndReturnError:&error];
 		albumTracks = [[NSMutableArray alloc] init];
-		for (i = 0; i < [aEventDesc numberOfItems]/2; i++) {
-			int num = [[aEventDesc descriptorAtIndex:i*2L + 1L] int32Value];
-			NSString *name = [[aEventDesc descriptorAtIndex:(i+1)*2L] stringValue];
-			NSArray *newtrack = [NSArray arrayWithObjects:[NSNumber numberWithInt:num],name,nil];
+		for (i = 0; i < [aEventDesc numberOfItems]/3; i++) {
+			int num = [[aEventDesc descriptorAtIndex:i*3L + 1L] int32Value];
+			NSString *name = [[aEventDesc descriptorAtIndex:(i+1)*3L] stringValue];
+			NDAlias *alias = [NDAlias aliasWithData:[[aEventDesc descriptorAtIndex:i*3L + 2L] data]];
+			NSString *location = [[[alias url] fileSystemPathHFSStyle] retain];
+			
+			NSLog(@"location: %@", location);
+			NSArray *newtrack = [NSArray arrayWithObjects:[NSNumber numberWithInt:num],
+														  location,
+														  name,nil];
 			[albumTracks addObject:newtrack];
 		}
 		return albumTracks;
@@ -264,6 +269,106 @@
 	
 	return nil;
 }
+
+- (void)playerPrev
+{
+	// Load AppleScript that fetches Album Artwork
+	NSString *scriptContents = AAP_PREV_TRACK;
+	NSAppleScript   *script = [[[NSAppleScript alloc] initWithSource:scriptContents] autorelease];
+	
+	if (!script) {
+		NSLog(@"plugin.playerPrev: error initialising applescript");
+		return;
+	}
+	
+	// run script
+	if ([self iTunesIsRunning]) {
+		NSAppleEventDescriptor *aEventDesc;
+		NSDictionary *error;
+		aEventDesc = [script executeAndReturnError:&error];
+	}
+}
+
+- (void)playerNext
+{
+	// Load AppleScript that fetches Album Artwork
+	NSString *scriptContents = AAP_NEXT_TRACK;
+	NSAppleScript   *script = [[[NSAppleScript alloc] initWithSource:scriptContents] autorelease];
+
+	if (!script) {
+		NSLog(@"plugin.playerNext: error initialising applescript");
+		return;
+	}
+	
+	// run script
+	if ([self iTunesIsRunning]) {
+		NSAppleEventDescriptor *aEventDesc;
+		NSDictionary *error;
+		aEventDesc = [script executeAndReturnError:&error];
+	}
+}
+
+- (void)playerPlayPause
+{
+	// Load AppleScript that fetches Album Artwork
+	NSString *scriptContents = AAP_PLAYPAUSE;
+	NSAppleScript   *script = [[[NSAppleScript alloc] initWithSource:scriptContents] autorelease];
+	
+	if (!script) {
+		NSLog(@"plugin.playerPlayPause: error initialising applescript");
+		return;
+	}
+	
+	// run script
+	if ([self iTunesIsRunning]) {
+		NSAppleEventDescriptor *aEventDesc;
+		NSDictionary *error;
+		aEventDesc = [script executeAndReturnError:&error];
+	}
+}
+
+- (void)playSong:(int)songID
+{
+	// Load AppleScript that fetches Album Artwork
+	NSString *scriptContents = [NSString stringWithFormat:AAP_PLAY_SONG, songID];
+	NSAppleScript   *script = [[[NSAppleScript alloc] initWithSource:scriptContents] autorelease];
+	
+	if (!script) {
+		NSLog(@"plugin.playSong: error initialising applescript");
+		return;
+	}
+	
+	// run script
+	if ([self iTunesIsRunning]) {
+		NSAppleEventDescriptor *aEventDesc;
+		NSDictionary *error;
+		aEventDesc = [script executeAndReturnError:&error];
+		NSLog(@"playSong: %d", songID);
+	}
+}
+
+- (void)playSongFile:(NSString *)filename
+{
+	// Load AppleScript that fetches Album Artwork
+	NSString *scriptContents = [NSString stringWithFormat:AAP_PLAY_SONG_FILE, filename];
+	NSAppleScript   *script = [[[NSAppleScript alloc] initWithSource:scriptContents] autorelease];
+	
+	NSLog(@"script to execute: %@", scriptContents);
+	
+	if (!script) {
+		NSLog(@"plugin.playSong: error initialising applescript");
+		return;
+	}
+	
+	// run script
+	if ([self iTunesIsRunning]) {
+		NSAppleEventDescriptor *aEventDesc;
+		NSDictionary *error;
+		aEventDesc = [script executeAndReturnError:&error];
+	}
+}
+
+
 
 
 #pragma mark -

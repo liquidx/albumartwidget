@@ -36,6 +36,14 @@
 //032
 //033
 //034
+		0310A91008506A8B00AE5DB7 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = AlbumArtApplescript.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
 		0349402808259869003CA55D = {
 			fileEncoding = 4;
 			isa = PBXFileReference;
@@ -378,6 +386,7 @@
 		};
 		08FB77AFFE84173DC02AAC07 = {
 			children = (
+				0310A91008506A8B00AE5DB7,
 				03A7743C0827BC6B00F29C31,
 				03A28F760825280900938C64,
 				03A28F770825280900938C64,
