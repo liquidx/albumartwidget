@@ -44,6 +44,11 @@ quick disclaimer about coding scheme:
 
 */
 
+// ---------------------------------------------------------------------------
+// constants
+// ---------------------------------------------------------------------------
+
+
 var shade_x = 34;
 var shade_y = 140;
 var shade_w = 158;
@@ -53,9 +58,17 @@ var key_next = 190; // ">"
 var key_prev = 188; // "<"
 var key_playpause = 32; //"space"
 
+// ---------------------------------------------------------------------------
+// ugly global state
+// ---------------------------------------------------------------------------
+
 var fetch_attempted = 0; // make sure we don't fetch many times per track
 var fetch_amazon_max_attempts = 4;
 var fetch_result = "";
+var fetch_cache = new Array(); // key = album name, value = album cover url
+
+var current_song_id = null; // used to throttle redraws
+
 
 // ---------------------------------------------------------------------------
 // preferences
@@ -121,6 +134,12 @@ function init() {
             fetch = pref_fetch_default;
         }
         select_pref(fetch, document.getElementById("select-fetch"));
+        
+        
+        // init other global states
+        if (window.AlbumArt) {
+            current_song_id = AlbumArt.trackLocation();
+        }
     }
 }
 
@@ -183,9 +202,9 @@ function fetch_from_amazon(variation) {
         return;
     }
     
+    alert("fetch_from_amazon: " + variation);
+    
     locale = locale.substring(7,9);
-
-    alert("amazon fetch in progress: " + variation );
     
     var title = AlbumArt.trackName();
     var artist = AlbumArt.trackArtist();
@@ -210,21 +229,33 @@ function fetch_from_amazon(variation) {
 function on_amazon_finish(req) {
     var url = amazon_get_url_medium(req);
     if (url != "") {
+    
+        // add URL to cache
+        if (window.AlbumArt) {
+            trackAlbum = AlbumArt.trackAlbum();
+            if (trackAlbum) {
+                fetch_cache[trackAlbum] = url;
+            }
+        }
+        
+        // update interface and store result
         document.getElementById("albumart").src = url;
         fetch_result = url;
     }
     else {
+        // attempt another variatino of artist/album/track combination
         document.getElementById("albumart").src = get_blank_albumart();
         if (fetch_attempted < fetch_amazon_max_attempts) {
             fetch_from_amazon(fetch_attempted);
             fetch_attempted++;            
         }
     }
-    alert("amazon fetch completed");
 }
 
 function on_amazon_error(req) {
+    // something happened with the fetch, aborting.
     document.getElementById("albumart").src = get_blank_albumart();
+    //alert("error retrieving from amazon");
 }
 
 
@@ -262,8 +293,11 @@ function set_rating(rating) {
 function reloadImage(status) {
     if (window.AlbumArt) {
         AlbumArt.reload();
-        fetch_attempted = 0;
-        fetch_result = "";
+        if (AlbumArt.trackLocation() != current_song_id) {
+            fetch_attempted = 0;
+            fetch_result = "";
+        }
+        current_song_id = AlbumArt.trackLocation();
         redisplay_values();
     }
 }
@@ -352,14 +386,20 @@ function redisplay_values() {
                 }
             }
             
-            if (fetch_method.indexOf("amazon_") != -1) {
-                fetch_from_amazon(fetch_attempted);
+            if ((trackAlbum != null) && (trackAlbum != "") && (fetch_cache[trackAlbum] != null)) {
+                fetch_attempted++;
+                trackArt = fetch_cache[trackAlbum];
+                fetch_result = fetch_cache[trackAlbum];
             }
-            
-            // increment this anyway, even if we don't fetch anything
-            // at least we don't have to check a second time.
-            fetch_attempted++;
-            trackArt = get_blank_albumart();
+            else if (fetch_method.indexOf("amazon_") != -1) {
+                fetch_from_amazon(fetch_attempted);
+                fetch_attempted++;
+                trackArt = get_blank_albumart();                
+            }
+            else {
+                fetch_attempted++;
+                trackArt = get_blank_albumart();
+            }
         }
         else if (fetch_result != "") {
             trackArt = fetch_result;

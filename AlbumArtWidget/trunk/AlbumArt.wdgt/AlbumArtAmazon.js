@@ -57,7 +57,12 @@ amazon_params["Keywords"] = "";
 amazon_params["Artist"] = "";
 amazon_params["Title"] = "";
 
-var amazon_req = {req: null, on_finish: null, on_error: null}
+var amazon_req = {req: null, on_finish: null, on_error: null};
+var amazon_req_interval = 1000; // 3 seconds delay
+var amazon_req_time = 0; // keep track of the last request, and throttle
+
+var amazon_throttle_timer = null;
+var amazon_throttle_args = null;
 
 function amazon_make_url(artist, albumname, trackname, locale) {
     var url = amazon_base[locale] + "?";
@@ -74,6 +79,7 @@ function amazon_make_url(artist, albumname, trackname, locale) {
 
 function amazon_process_request() {
     if (amazon_req.req.readyState == 4) { 
+        amazon_req_time = (new Date).getTime();
         if (amazon_req.req.status == 200) {
             if (amazon_req.on_finish != null) {
                 amazon_req.on_finish(amazon_req.req);
@@ -89,6 +95,13 @@ function amazon_process_request() {
 
 function amazon_make_request(artist, albumname, trackname, locale, on_finish, on_error) {
     var url = amazon_make_url(artist, albumname, trackname, locale);
+    now = (new Date).getTime();
+
+    if (amazon_req_time + amazon_req_interval > now) {
+        amazon_throttle_delay(amazon_req_interval, artist, albumname, trackname, locale, on_finish, on_error);
+        return;
+    }
+    amazon_req_time = now;
 
     if (window.XMLHttpRequest) {
         amazon_req.req = new XMLHttpRequest();
@@ -131,11 +144,43 @@ function amazon_get_urls(req) {
     }
 }
 
+function amazon_throttle_delay(delay, artist, album, title, locale, on_finish, on_error) {
+
+    if (amazon_throttle_timer != null) {
+        clearInterval(amazon_throttle_timer);
+        amazon_throttle_timer = null;
+    }
+    amazon_throttle_args = new Object
+    amazon_throttle_args.artist = artist;
+    amazon_throttle_args.album = album;
+    amazon_throttle_args.title = title;
+    amazon_throttle_args.on_finish = on_finish;
+    amazon_throttle_args.on_error = on_error;
+    amazon_throttle_args.locale = locale;
+    amazon_throttle_timer = setInterval("amazon_throttle_resume();", delay);    
+}
+
+function amazon_throttle_resume() {
+    artist = amazon_throttle_args.artist;
+    album = amazon_throttle_args.album;
+    title = amazon_throttle_args.title;
+    on_finish = amazon_throttle_args.on_finish;
+    on_error = amazon_throttle_args.on_error;
+    locale = amazon_throttle_args.locale;
+    
+    if (amazon_throttle_timer != null) {
+        clearInterval(amazon_throttle_timer);
+        amazon_throttle_timer = null;
+    }
+
+    amazon_make_request(artist, album, title, locale, on_finish, on_error);
+}
+
 function test_request() {
     var title = document.getElementById("title").value;
     var album = document.getElementById("album").value;
     var artist = document.getElementById("artist").value;
-    amazon_make_request(artist, album, title, "uk", amazon_get_urls, alert);
+    amazon_make_request(artist, album, title, "us", amazon_get_urls, alert);
 }    
 
 /* To test this, put the code below in an HTML file and play! 
