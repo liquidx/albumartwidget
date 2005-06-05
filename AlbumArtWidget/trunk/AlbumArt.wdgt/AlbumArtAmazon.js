@@ -57,12 +57,17 @@ amazon_params["Keywords"] = "";
 amazon_params["Artist"] = "";
 amazon_params["Title"] = "";
 
+
+/* some global state - inevitable with javascript */
+
 var amazon_req = {req: null, on_finish: null, on_error: null};
 var amazon_req_interval = 1000; // 3 seconds delay
 var amazon_req_time = 0; // keep track of the last request, and throttle
 
 var amazon_throttle_timer = null;
 var amazon_throttle_args = null;
+
+/* constructs a url for album art fetching */
 
 function amazon_make_url(artist, albumname, trackname, locale) {
     var url = amazon_base[locale] + "?";
@@ -76,6 +81,8 @@ function amazon_make_url(artist, albumname, trackname, locale) {
     }
     return url;
 }
+
+/* handler for when the XmlHttpRequest comes back */
 
 function amazon_process_request() {
     if (amazon_req.req.readyState == 4) { 
@@ -92,6 +99,9 @@ function amazon_process_request() {
         }
     }
 }
+
+/* creates a request - if you execute this faster than the throttle, it will
+    either queue your request or silently discard it */
 
 function amazon_make_request(artist, albumname, trackname, locale, on_finish, on_error) {
     var url = amazon_make_url(artist, albumname, trackname, locale);
@@ -113,6 +123,8 @@ function amazon_make_request(artist, albumname, trackname, locale, on_finish, on
     }
 }
 
+/* return the first album cover that is medium size (eg. 160x160) */
+
 function amazon_get_url_medium(req) {
     var urls = req.responseXML.getElementsByTagName("URL");
     var medium_img = "._SCMZZZZZZZ_.jpg";
@@ -127,22 +139,39 @@ function amazon_get_url_medium(req) {
     return medium_url;
 }    
 
+/* ability to return all the urls returned, and displays them in a DOM
+    element called 'images' and a textarea element called 'debug'  */
+
 function amazon_get_urls(req) {
     var urls = req.responseXML.getElementsByTagName("URL");
     var display = document.getElementById("images");
+    var texturls = new Array();
     
-    document.getElementById("debug").value = req.responseText;
+    debug = document.getElementById("debug");
+    if (debug)
+        document.getElementById("debug").value = req.responseText;
     
-    while (display.firstChild != null) {
-        display.removeChild(display.firstChild);
+    if (display) {
+        while (display.firstChild != null) {
+            display.removeChild(display.firstChild);
+        }
     }
     
     for (var i = 0; i < urls.length; i++) {
-        img = document.createElement("img");
-        img.src = urls[i].firstChild.nodeValue;
-        display.appendChild(img);
+        if (display) {
+            img = document.createElement("img");
+            img.src = urls[i].firstChild.nodeValue;
+            display.appendChild(img);
+        }
+        texturls[i] = urls[i].firstChild.nodeValue;
     }
+    
+    return texturls;
 }
+
+// --------------------------------------------------------------------------
+// private functions you don't have to care about
+// --------------------------------------------------------------------------
 
 function amazon_throttle_delay(delay, artist, album, title, locale, on_finish, on_error) {
 
@@ -176,6 +205,11 @@ function amazon_throttle_resume() {
     amazon_make_request(artist, album, title, locale, on_finish, on_error);
 }
 
+// --------------------------------------------------------------------------
+// debugging !!!
+// --------------------------------------------------------------------------
+
+
 function test_request() {
     var title = document.getElementById("title").value;
     var album = document.getElementById("album").value;
@@ -198,4 +232,5 @@ title: <input type="text" id="title" value="" /><br />
 <p id="images"></p>
 </body>
 </html>
+
 */
