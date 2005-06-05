@@ -258,7 +258,6 @@
 			NDAlias *alias = [NDAlias aliasWithData:[[aEventDesc descriptorAtIndex:i*3L + 2L] data]];
 			NSString *location = [[[alias url] fileSystemPathHFSStyle] retain];
 			
-			NSLog(@"location: %@", location);
 			NSArray *newtrack = [NSArray arrayWithObjects:[NSNumber numberWithInt:num],
 														  location,
 														  name,nil];
@@ -343,7 +342,9 @@
 		NSAppleEventDescriptor *aEventDesc;
 		NSDictionary *error;
 		aEventDesc = [script executeAndReturnError:&error];
+#if  AAP_DEBUG		
 		NSLog(@"playSong: %d", songID);
+#endif
 	}
 }
 
@@ -352,8 +353,6 @@
 	// Load AppleScript that fetches Album Artwork
 	NSString *scriptContents = [NSString stringWithFormat:AAP_PLAY_SONG_FILE, filename];
 	NSAppleScript   *script = [[[NSAppleScript alloc] initWithSource:scriptContents] autorelease];
-	
-	NSLog(@"script to execute: %@", scriptContents);
 	
 	if (!script) {
 		NSLog(@"plugin.playSong: error initialising applescript");
@@ -367,8 +366,6 @@
 		aEventDesc = [script executeAndReturnError:&error];
 	}
 }
-
-
 
 
 #pragma mark -

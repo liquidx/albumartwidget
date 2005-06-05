@@ -266,7 +266,7 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>2</integer>
+									<integer>5</integer>
 									<integer>1</integer>
 									<integer>0</integer>
 								</array>
@@ -309,7 +309,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>AlbumArtApplescript.h</string>
+								<string>AlbumArtPlugin.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -317,11 +317,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>AlbumArtApplescript.h</string>
+										<string>AlbumArtPlugin.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>0310A9C908507F2900AE5DB7</string>
+										<string>032A5B9E08538593005DA913</string>
 										<key>history</key>
 										<array>
 											<string>0310A9640850753E00AE5DB7</string>
@@ -336,10 +336,10 @@
 											<string>0310A9910850793C00AE5DB7</string>
 											<string>0310A9920850793C00AE5DB7</string>
 											<string>0310A9940850793C00AE5DB7</string>
-											<string>0310A9BB08507A8B00AE5DB7</string>
-											<string>0310A9BC08507A8B00AE5DB7</string>
-											<string>0310A9BD08507A8B00AE5DB7</string>
-											<string>0310A9C808507F2900AE5DB7</string>
+											<string>032A5B800853714F005DA913</string>
+											<string>032A5B9408538091005DA913</string>
+											<string>032A5B9508538091005DA913</string>
+											<string>032A5B9608538091005DA913</string>
 										</array>
 										<key>prevStack</key>
 										<array>
@@ -348,43 +348,7 @@
 											<string>03A4E19E082A6A42000D073B</string>
 											<string>03A4E1A2082A6A42000D073B</string>
 											<string>03A4E1A8082A6A42000D073B</string>
-											<string>0310A91608506AB900AE5DB7</string>
 											<string>0310A91708506AB900AE5DB7</string>
-											<string>0310A91808506AB900AE5DB7</string>
-											<string>0310A91908506AB900AE5DB7</string>
-											<string>0310A91A08506AB900AE5DB7</string>
-											<string>0310A91B08506AB900AE5DB7</string>
-											<string>0310A92B08506B5600AE5DB7</string>
-											<string>0310A92C08506B5600AE5DB7</string>
-											<string>0310A92D08506B5600AE5DB7</string>
-											<string>0310A92E08506B5600AE5DB7</string>
-											<string>0310A94A085070E800AE5DB7</string>
-											<string>0310A94B085070E800AE5DB7</string>
-											<string>0310A94C085070E800AE5DB7</string>
-											<string>0310A94D085070E800AE5DB7</string>
-											<string>0310A94E085070E800AE5DB7</string>
-											<string>0310A94F085070E800AE5DB7</string>
-											<string>0310A950085070E800AE5DB7</string>
-											<string>0310A951085070E800AE5DB7</string>
-											<string>0310A952085070E800AE5DB7</string>
-											<string>0310A953085070E800AE5DB7</string>
-											<string>0310A954085070E800AE5DB7</string>
-											<string>0310A955085070E800AE5DB7</string>
-											<string>0310A956085070E800AE5DB7</string>
-											<string>0310A957085070E800AE5DB7</string>
-											<string>0310A9670850753E00AE5DB7</string>
-											<string>0310A9680850753E00AE5DB7</string>
-											<string>0310A9690850753E00AE5DB7</string>
-											<string>0310A96A0850753E00AE5DB7</string>
-											<string>0310A96B0850753E00AE5DB7</string>
-											<string>0310A96C0850753E00AE5DB7</string>
-											<string>0310A96D0850753E00AE5DB7</string>
-											<string>0310A96E0850753E00AE5DB7</string>
-											<string>0310A96F0850753E00AE5DB7</string>
-											<string>0310A9700850753E00AE5DB7</string>
-											<string>0310A9780850774A00AE5DB7</string>
-											<string>0310A9790850774A00AE5DB7</string>
-											<string>0310A9970850793C00AE5DB7</string>
 											<string>0310A9980850793C00AE5DB7</string>
 											<string>0310A9990850793C00AE5DB7</string>
 											<string>0310A99A0850793C00AE5DB7</string>
@@ -395,25 +359,10 @@
 											<string>0310A99F0850793C00AE5DB7</string>
 											<string>0310A9A00850793C00AE5DB7</string>
 											<string>0310A9A10850793C00AE5DB7</string>
-											<string>0310A9A20850793C00AE5DB7</string>
-											<string>0310A9A30850793C00AE5DB7</string>
-											<string>0310A9A40850793C00AE5DB7</string>
-											<string>0310A9A50850793C00AE5DB7</string>
-											<string>0310A9A60850793C00AE5DB7</string>
-											<string>0310A9A70850793C00AE5DB7</string>
-											<string>0310A9A80850793C00AE5DB7</string>
-											<string>0310A9A90850793C00AE5DB7</string>
-											<string>0310A9AA0850793C00AE5DB7</string>
-											<string>0310A9AB0850793C00AE5DB7</string>
-											<string>0310A9AC0850793C00AE5DB7</string>
-											<string>0310A9AD0850793C00AE5DB7</string>
-											<string>0310A9AE0850793C00AE5DB7</string>
-											<string>0310A9AF0850793C00AE5DB7</string>
-											<string>0310A9BE08507A8B00AE5DB7</string>
-											<string>0310A9BF08507A8B00AE5DB7</string>
-											<string>0310A9C008507A8B00AE5DB7</string>
-											<string>0310A9C108507A8B00AE5DB7</string>
-											<string>0310A9C208507A8B00AE5DB7</string>
+											<string>032A5B820853714F005DA913</string>
+											<string>032A5B9708538091005DA913</string>
+											<string>032A5B9808538091005DA913</string>
+											<string>032A5B9908538091005DA913</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -471,9 +420,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>0310A90D08506A5300AE5DB7</string>
+				<string>032A5B840853714F005DA913</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>0310A90E08506A5300AE5DB7</string>
+				<string>032A5B850853714F005DA913</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -607,7 +556,6 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>0387309C08255B1B00A3134D</string>
 		<string>/Users/liquidx/Dev/cocoa/AlbumArtWidget/AlbumArtPlugin/AlbumArtPlugin.xcode</string>
 	</array>
 	<key>WindowString</key>
