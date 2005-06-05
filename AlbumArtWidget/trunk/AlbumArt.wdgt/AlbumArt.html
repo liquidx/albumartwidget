@@ -42,6 +42,7 @@
 <style type="text/css" title="AppleStyle">
         @import "AlbumArt.css";
 </style>
+<script type="text/javascript" src="AlbumArtAmazon.js" charset="utf-8" />
 <script type="text/javascript" src="AlbumArt.js" charset="utf-8" />
 <script type="text/javascript" src="AlbumArtFlip.js" charset="utf-8" />
 </head>
@@ -117,12 +118,19 @@
             <div class="pref-group" id="pref-fetch">
                 <div class="label">Fetch Art Online:</div>
                 <div class="field">
-                <select id="select-fetch" onchange="changeFetchOnline(this);">
-                <option value="0">disabled</option>
-                <option value="amazon.com">amazon.com</option>
+                <select id="select-fetch" onchange="changeFetchMethod(this);">
+                <option value="none">disabled</option>
+                <option value="amazon_us">amazon.com</option>
+                <option value="amazon_uk">amazon.co.uk</option>
+                <option value="amazon_jp">amazon.co.jp</option>
+                <option value="amazon_de">amazon.de</option>
+                <option value="amazon_fr">amazon.fr</option>
+                <option value="amazon_ca">amazon.ca</option>
+                <!--
                 <option value="images.google.com">images.google.com</option>
                 <option value="boxup.com">boxup.com</option>
                 <option value="yesasia.com">yesasia.com</option>
+                -->
                 </select>
                 </div>
             </div>

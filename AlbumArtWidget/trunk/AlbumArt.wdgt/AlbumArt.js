@@ -34,6 +34,16 @@
  
 */
 
+/*
+
+quick disclaimer about coding scheme:
+
+- this is my first time i've written anything complex in javascript.
+- all external functions use CamelCase with java-esque conventions.
+- all internal functions use normal_underscore_syntax because i'm used to it.
+
+*/
+
 var shade_x = 34;
 var shade_y = 140;
 var shade_w = 158;
@@ -43,23 +53,21 @@ var key_next = 190; // ">"
 var key_prev = 188; // "<"
 var key_playpause = 32; //"space"
 
+var fetch_attempted = 0; // make sure we don't fetch many times per track
+var fetch_amazon_max_attempts = 4;
+
+// ---------------------------------------------------------------------------
+// preferences
+// ---------------------------------------------------------------------------
+
 var pref_color = "widget_color";
 var pref_color_default = "black";
 var pref_stars = "stars_color";
 var pref_stars_default = "blue";
 var pref_info_opacity = "overlay_opacity";
 var pref_info_opacity_default = 0.2;
-
-if (window.widget)
-{
-    widget.onshow = onshow;
-    widget.onhide = onhide;
-    widget.onfocus = onfocus;
-    widget.onblur = onblur;
-    widget.ondragstart = ondragstart;
-    widget.ondragstop = ondragstop;
-    widget.onremove = onremove;
-}
+var pref_fetch = "fetch_method";
+var pref_fetch_default = "none";
 
 function select_pref(pref_value, pref_object) {
     options = pref_object.options;
@@ -78,7 +86,7 @@ function init() {
     if (window.widget) {
         
         // init widget color scheme
-        color = widget.preferenceForKey(pref_color);
+        var color = widget.preferenceForKey(pref_color);
         if (!color) {
             color = pref_color_default;
         }
@@ -91,7 +99,7 @@ function init() {
         select_pref(color, document.getElementById("select-widget-color"));
         
         // init info opacity
-        opacity = widget.preferenceForKey(pref_info_opacity);
+        var opacity = widget.preferenceForKey(pref_info_opacity);
         if (!opacity) {
             opacity = pref_info_opacity_default;
         }
@@ -99,15 +107,37 @@ function init() {
         select_pref(opacity, document.getElementById("select-info-opacity"));
         
         // init star colors
-        starColor = widget.preferenceForKey(pref_stars);
+        var starColor = widget.preferenceForKey(pref_stars);
         if (!starColor) {
             starColor = pref_stars_default;
         }
         select_pref(starColor, document.getElementById("select-stars-color"));
         
+        
+        // init fetch prefs
+        var fetch = widget.preferenceForKey(pref_fetch);
+        if (!fetch) {
+            fetch = pref_fetch_default;
+        }
+        select_pref(fetch, document.getElementById("select-fetch"));
     }
 }
 
+// ---------------------------------------------------------------------------
+// widget api callbacks
+// ---------------------------------------------------------------------------
+
+
+if (window.widget)
+{
+    widget.onshow = onshow;
+    widget.onhide = onhide;
+    widget.onfocus = onfocus;
+    widget.onblur = onblur;
+    widget.ondragstart = ondragstart;
+    widget.ondragstop = ondragstop;
+    widget.onremove = onremove;
+}
 
 function onremove() {
     if (window.AlbumArt) {
@@ -134,6 +164,90 @@ function onshow() {
     }
 }
 
+// ---------------------------------------------------------------------------
+// album art fetching logic
+// ---------------------------------------------------------------------------
+
+function fetch_from_amazon(variation) {
+    if (!window.AlbumArt) {
+        return;
+    }
+
+    locale = widget.preferenceForKey(pref_fetch);
+    if (!locale) {
+        locale = pref_fetch_default;
+    }
+    
+    if (locale.indexOf("amazon_") == -1) {
+        return;
+    }
+    
+    locale = locale.substring(7,9);
+
+    alert("amazon fetch in progress: " + variation );
+    
+    var title = AlbumArt.trackName();
+    var artist = AlbumArt.trackArtist();
+    var album = AlbumArt.trackAlbum();
+
+    switch (variation) {
+        case 0:
+            amazon_make_request(artist, album, title, locale, on_amazon_finish, on_amazon_error);
+            break;
+        case 1:
+            amazon_make_request(artist, album, "", locale, on_amazon_finish, on_amazon_error);
+            break;
+        case 2:
+            amazon_make_request(artist, "", album, locale, on_amazon_finish, on_amazon_error);
+            break;
+        case 3:
+            amazon_make_request(artist, "", "", locale, on_amazon_finish, on_amazon_error);
+            break;
+    }
+}
+
+function on_amazon_finish(req) {
+    var url = amazon_get_url_medium(req);
+    if (url != "") {
+        document.getElementById("albumart").src = url;
+    }
+    else {
+        document.getElementById("albumart").src = get_blank_albumart();
+        if (fetch_attempted < fetch_amazon_max_attempts) {
+            fetch_from_amazon(fetch_attempted);
+            fetch_attempted++;            
+        }
+    }
+    alert("amazon fetch completed");
+}
+
+function on_amazon_error(req) {
+    document.getElementById("albumart").src = get_blank_albumart();
+}
+
+
+// ---------------------------------------------------------------------------
+// ui components
+// ---------------------------------------------------------------------------
+
+
+function get_blank_albumart() {
+    var trackArt = null;
+    var color = null;
+    
+    if (window.widget) {
+        color = widget.preferenceForKey(pref_color);
+        if (!color) {
+            color = pref_color_default;
+        }
+        trackArt = color + "-Blank.png";
+    }            
+    else {
+        trackArt = "Blank.png";
+    }
+    return trackArt;
+}
+
 
 function set_rating(rating) {
     if (window.AlbumArt) {
@@ -146,6 +260,7 @@ function set_rating(rating) {
 function reloadImage(status) {
     if (window.AlbumArt) {
         AlbumArt.reload();
+        fetch_attempted = 0;
         redisplay_values();
     }
 }
@@ -225,16 +340,25 @@ function redisplay_values() {
     }
     
     if (!trackArt) {
-        if (window.widget) {
-            color = widget.preferenceForKey(pref_color);
-            if (!color) {
-                color = pref_color_default;
+        if (fetch_attempted == 0) {
+            var fetch_method = pref_fetch_default;
+            if (window.widget) {
+                fetch_method = widget.preferenceForKey(pref_fetch);
+                if (!fetch_method) {
+                    fetch_method = pref_fetch_default;
+                }
             }
-            trackArt = color + "-Blank.png";
-        }            
-        else {
-            trackArt = "Blank.png";
+            
+            if (fetch_method.indexOf("amazon_") != -1) {
+                fetch_from_amazon(fetch_attempted);
+            }
+            
+            // increment this anyway, even if we don't fetch anything
+            // at least we don't have to check a second time.
+            fetch_attempted++;
         }
+        
+        trackArt = get_blank_albumart();
     }
     else {
         trackArt = "file://" + trackArt;
@@ -302,6 +426,10 @@ function rotatefield(e) {
         }
     }
 }
+
+// ---------------------------------------------------------------------------
+// itunes controlling functions
+// ---------------------------------------------------------------------------
 
 function hotkeys(e) {
     if (!e) {
@@ -407,4 +535,9 @@ function changeStarsColor(selection) {
     redisplay_values();
 }
 
-
+function changeFetchMethod(selection) {
+    fetch_method = selection.value;
+    if (window.widget) {
+        widget.setPreferenceForKey(fetch_method, pref_fetch);
+    }
+}
