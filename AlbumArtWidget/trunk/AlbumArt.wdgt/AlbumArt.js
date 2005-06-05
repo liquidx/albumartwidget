@@ -55,6 +55,7 @@ var key_playpause = 32; //"space"
 
 var fetch_attempted = 0; // make sure we don't fetch many times per track
 var fetch_amazon_max_attempts = 4;
+var fetch_result = "";
 
 // ---------------------------------------------------------------------------
 // preferences
@@ -210,6 +211,7 @@ function on_amazon_finish(req) {
     var url = amazon_get_url_medium(req);
     if (url != "") {
         document.getElementById("albumart").src = url;
+        fetch_result = url;
     }
     else {
         document.getElementById("albumart").src = get_blank_albumart();
@@ -261,6 +263,7 @@ function reloadImage(status) {
     if (window.AlbumArt) {
         AlbumArt.reload();
         fetch_attempted = 0;
+        fetch_result = "";
         redisplay_values();
     }
 }
@@ -356,9 +359,14 @@ function redisplay_values() {
             // increment this anyway, even if we don't fetch anything
             // at least we don't have to check a second time.
             fetch_attempted++;
+            trackArt = get_blank_albumart();
         }
-        
-        trackArt = get_blank_albumart();
+        else if (fetch_result != "") {
+            trackArt = fetch_result;
+        }
+        else {
+           trackArt = get_blank_albumart();
+        }
     }
     else {
         trackArt = "file://" + trackArt;

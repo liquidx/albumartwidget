@@ -118,6 +118,8 @@ function amazon_get_urls(req) {
     var urls = req.responseXML.getElementsByTagName("URL");
     var display = document.getElementById("images");
     
+    document.getElementById("debug").value = req.responseText;
+    
     while (display.firstChild != null) {
         display.removeChild(display.firstChild);
     }
@@ -133,7 +135,7 @@ function test_request() {
     var title = document.getElementById("title").value;
     var album = document.getElementById("album").value;
     var artist = document.getElementById("artist").value;
-    amazon_make_request(artist, album, title, "jp", amazon_get_urls, alert);
+    amazon_make_request(artist, album, title, "uk", amazon_get_urls, alert);
 }    
 
 /* To test this, put the code below in an HTML file and play! 
