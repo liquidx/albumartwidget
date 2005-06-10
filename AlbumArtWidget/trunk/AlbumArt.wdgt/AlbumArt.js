@@ -57,18 +57,30 @@ var shade_h = 40;
 var key_next = 190; // ">"
 var key_prev = 188; // "<"
 var key_playpause = 32; //"space"
+var key_debug = 68; // 'd'
+
+var str_default_artist = "Unknown Artist";
+var str_default_album  = "Untitled Album";
+var str_default_title  = "Untitled";
 
 // ---------------------------------------------------------------------------
 // ugly global state
 // ---------------------------------------------------------------------------
 
 var fetch_attempted = 0; // make sure we don't fetch many times per track
-var fetch_amazon_max_attempts = 4;
+var fetch_amazon_max_attempts = 5;
 var fetch_result = "";
 var fetch_cache = new Array(); // key = album name, value = album cover url
 
-var current_song_id = null; // used to throttle redraws
+var current_song_id = null;          // used to throttle redraws
+var current_song_shared_name = null; // temporary hack for shared libraries
 
+var debug_level = 0;
+function debug(s) {
+    if (debug_level > 0) {
+        alert(s);
+    }
+}
 
 // ---------------------------------------------------------------------------
 // preferences
@@ -77,7 +89,7 @@ var current_song_id = null; // used to throttle redraws
 var pref_color = "widget_color";
 var pref_color_default = "black";
 var pref_stars = "stars_color";
-var pref_stars_default = "blue";
+var pref_stars_default = "grey";
 var pref_info_opacity = "overlay_opacity";
 var pref_info_opacity_default = 0.2;
 var pref_fetch = "fetch_method";
@@ -188,6 +200,59 @@ function onshow() {
 // album art fetching logic
 // ---------------------------------------------------------------------------
 
+function fetch_album_art(trackArtist, trackAlbum, trackName) {
+    var fetch_method = pref_fetch_default;
+    var album_art = get_blank_albumart();
+    
+    // if we've already fetched before, return that
+    if (fetch_attempted > 0) {
+        if (fetch_result != "") {
+            return fetch_result 
+        }
+        else {
+            return album_art;
+        }
+    }
+    
+    // if we have no details, don't bother fetching
+    if ((trackArtist == "") || (trackArtist == str_default_artist)) {
+        return album_art;
+    }
+    if ((trackAlbum == "") || (trackAlbum == str_default_album)) {
+        return album_art;
+    }
+    if ((trackName == "") || (trackName == str_default_title)) {
+        return album_art;
+    }
+    
+    
+    // if we haven't attempted to fetch for this track, do it now
+    if (window.widget) {
+        user_fetch_method = widget.preferenceForKey(pref_fetch);
+        if (user_fetch_method) {
+            fetch_method = user_fetch_method;
+        }
+    }
+    
+    // return the result if found in cache
+    if (fetch_cache[trackAlbum] != null) {
+        fetch_attempted++;
+        trackArt = fetch_cache[trackAlbum];
+        fetch_result = trackArt;
+        return fetch_cache[trackAlbum];
+    }
+    
+    // if user wants to fetch, we do it.    
+    if (fetch_method.indexOf("amazon_") != -1) {
+        debug("fetching via amazon");
+        fetch_from_amazon(fetch_attempted);
+        fetch_attempted++;
+    }
+    
+    
+    return album_art; // return placeholder
+}
+
 function fetch_from_amazon(variation) {
     if (!window.AlbumArt) {
         return;
@@ -202,7 +267,7 @@ function fetch_from_amazon(variation) {
         return;
     }
     
-    alert("fetch_from_amazon: " + variation);
+    debug("fetch_from_amazon: method: " + variation);
     
     locale = locale.substring(7,9);
     
@@ -221,6 +286,9 @@ function fetch_from_amazon(variation) {
             amazon_make_request(artist, "", album, locale, on_amazon_finish, on_amazon_error);
             break;
         case 3:
+            amazon_make_request(artist, "", title, locale, on_amazon_finish, on_amazon_error);        
+            break;
+        case 4:
             amazon_make_request(artist, "", "", locale, on_amazon_finish, on_amazon_error);
             break;
     }
@@ -263,6 +331,9 @@ function on_amazon_error(req) {
 // ui components
 // ---------------------------------------------------------------------------
 
+function html_escape(sss) {
+    return sss.replace("&","&amp;");
+}
 
 function get_blank_albumart() {
     var trackArt = null;
@@ -291,12 +362,29 @@ function set_rating(rating) {
 
 /* called from AlbumArt object ! */
 function reloadImage(status) {
+    var songChanged = false;
+
     if (window.AlbumArt) {
         AlbumArt.reload();
+
+        if ((AlbumArt.trackType() == "Radio") && (status == "Playing")) {
+            songChanged = true;
+        }
+
         if (AlbumArt.trackLocation() != current_song_id) {
+            songChanged = true;
+        }
+        if (AlbumArt.trackLocation() == null) {
+            songChanged = true; // this happens for shared tracks
+        }
+        
+        //alert("songchanged: " + AlbumArt.trackLocation());
+
+        if (songChanged) {        
             fetch_attempted = 0;
             fetch_result = "";
         }
+        
         current_song_id = AlbumArt.trackLocation();
         redisplay_values();
     }
@@ -366,54 +454,25 @@ function redisplay_values() {
     var trackAlbum = AlbumArt.trackAlbum();
     
     if (!trackName) {
-        trackName  = "Untitled";
+        trackName  = str_default_title;
     }
     if (!trackArtist) {
-        trackArtist = "Unknown Artist";
+        trackArtist = str_default_artist;
     }
     
     if (!trackAlbum) {
-        trackAlbum = "Unknown Album";
+        trackAlbum = str_default_album;
     }
     
     if (!trackArt) {
-        if (fetch_attempted == 0) {
-            var fetch_method = pref_fetch_default;
-            if (window.widget) {
-                fetch_method = widget.preferenceForKey(pref_fetch);
-                if (!fetch_method) {
-                    fetch_method = pref_fetch_default;
-                }
-            }
-            
-            if ((trackAlbum != null) && (trackAlbum != "") && (fetch_cache[trackAlbum] != null)) {
-                fetch_attempted++;
-                trackArt = fetch_cache[trackAlbum];
-                fetch_result = fetch_cache[trackAlbum];
-            }
-            else if (fetch_method.indexOf("amazon_") != -1) {
-                fetch_from_amazon(fetch_attempted);
-                fetch_attempted++;
-                trackArt = get_blank_albumart();                
-            }
-            else {
-                fetch_attempted++;
-                trackArt = get_blank_albumart();
-            }
-        }
-        else if (fetch_result != "") {
-            trackArt = fetch_result;
-        }
-        else {
-           trackArt = get_blank_albumart();
-        }
+        trackArt = fetch_album_art(trackArtist, trackAlbum, trackName);
     }
     else {
         trackArt = "file://" + trackArt;
     }
     
-    document.getElementById("track-name").innerHTML = trackName;
-    document.getElementById("track-artist").innerHTML = trackArtist;
+    document.getElementById("track-name").innerHTML = html_escape(trackName);
+    document.getElementById("track-artist").innerHTML = html_escape(trackArtist);
     document.getElementById("albumart").src = trackArt;
     redisplay_rating();
 
@@ -456,9 +515,15 @@ function rotatefield(e) {
     
     if ((posx > shade_x) && (posx < shade_x + shade_w) &&
         (posy > shade_y) && (posy < shade_y + shade_h)) {
-        var trackName = AlbumArt.trackName();
-        var trackArtist = AlbumArt.trackArtist();
-        var trackAlbum = AlbumArt.trackAlbum();
+        var trackName = html_escape(AlbumArt.trackName());
+        var trackArtist = html_escape(AlbumArt.trackArtist());
+        var trackAlbum = html_escape(AlbumArt.trackAlbum());
+        if (!trackName)
+            trackName = str_default_title;
+        if (!trackArtist)
+            trackArtist = str_default_artist;
+        if (!trackAlbum)
+            trackAlbum = str_default_album;
     
         firstField = document.getElementById("track-name");
         secondField = document.getElementById("track-artist");
@@ -495,7 +560,17 @@ function hotkeys(e) {
             AlbumArt.playerPlayPause();
         }
     }
-    
+
+    if (e.keyCode == key_debug) {
+        if (debug_level > 0) {
+            debug("debug mode disabled");
+            debug_level = 0;
+        }
+        else {
+            debug_level = 1;
+            debug("debug mode enabled");
+        }
+    }
 }
 document.onkeydown = hotkeys;
 

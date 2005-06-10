@@ -14,13 +14,6 @@
 #import "AlbumArtConstants.h"
 #import "AlbumArtApplescript.h"
 
-typedef enum {
-	itPLAYING,
-	itPAUSED,
-	itSTOPPED,
-	itUNKNOWN
-} iTunesState;  
-
 @interface AlbumArtPlugin : NSObject {
 	WebView			*webview;
 	AlbumArtHolder	*albumArt;
@@ -35,7 +28,9 @@ typedef enum {
 	int				trackID;
 	int				trackRating;
 	
-	iTunesState		playerState;
+	NSString		*trackType;
+	
+	NSString 		*playerState;
 }
 
 - (NSString *)trackArt;
@@ -43,10 +38,13 @@ typedef enum {
 - (NSString *)trackArtist;
 - (NSString *)trackLocation;
 - (NSString *)trackAlbum;
+- (NSString *)trackType;
 - (int) trackNumber;
 - (int) trackYear;
 - (int) trackID;
 - (int) trackRating;
+
+- (NSString *)playerState;
 
 - (BOOL) iTunesIsRunning;
 - (void)reload;

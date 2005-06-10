@@ -1,0 +1,64 @@
+body {
+    background: #333;
+    color: #666;
+    font-family: Lucida Grande, Lucida Sans, Vera Sans, Tahoma, Verdana, Sans;
+    font-size: small;
+}
+
+.document {
+    background: white;
+    padding: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border: 1px soild #999;
+    width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: black;
+    font-size: x-large;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding-top: 10px;
+    border-top: 5px solid #aaa;
+}
+
+h2 {
+    color: #333;
+    font-size: large;
+    border-bottom: 1px solid #ccc;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+h1.title {
+    font-size: xx-large;
+    margin-top: 50px;
+    padding: 5px;
+    text-align: right;
+    border: 0;    
+    border-bottom: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+}
+
+pre {
+    font-family: Monaco, Lucida Console, monospaced;
+    font-size: small;
+    padding: 5px;
+    background-color: #eef;
+    border: 1px solid #ccc;
+}
+
+
+
+.section {
+    
+}
+
+.section h1 { 
+    
+}

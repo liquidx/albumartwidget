@@ -1,0 +1,230 @@
+===================================
+Unofficial iTunes Programming Guide
+===================================
+
+At the time of writing, there weren't many documented ways of accessing iTunes programmatically from Cocoa. iTunes itself is really a Carbon application, hence there are no public or private Objective-C frameworks we can exploit.
+
+The only real way of accessing iTunes from Cocoa is via Applescript. This tutorial shows you how to use and manipulate the Applescript interface to make a simple iTunes access framework. 
+
+In addition, it will touch on the new notification events that iTunes 4.7 sends to the Distributed Notification Center and how to make use of it, especially attempting to make some unofficial documentation about it
+
+
+Contents
+========
+
+1. Interacting with iTunes via Applescript
+2. Integrating Applescript with Cocoa
+3. Beginnings of an iTunes Framework
+4. iTunes Global Notification Specification
+
+
+Controlling iTunes in Cocoa via AppleScript
+===========================================
+
+1. Crash Course in Applescript
+------------------------------
+
+Applescript was designed to be easy to understand by non-programmers. However, as a programmer myself, I find it quite difficuly to understand it's verbose syntax. However, the rules are relatively simple and human-readable. Once you get the hang of the syntax, it is a breeze:
+
+Here are some examples to help you:
+
+(a) Variable Assignment:
+
+  * In Python::
+    
+        variable_x = 1234
+        variable_y = an_object.x_value
+    
+  * In C++::
+  
+        variable_x = 1234;
+        variable_y = a_struct.x_value;
+
+  * In Applescript::
+  
+        set variable_x to 1234
+        set variable_y to x_value of an_object
+    
+
+(b) Exception Catching:
+ 
+ 
+  * In Python::
+  
+        try:
+            do_something()
+        except:
+            handle_error()
+            
+  * In C++::
+  
+        try {
+            do_something();
+        }
+        catch (Exception e) {
+            handle_error();
+        }
+        
+  * In Applescript::
+  
+        try 
+            do_something
+        on error
+            handle_error
+        end try
+        
+(c) Data structures:
+
+
+    * In Python::
+    
+            a_string = "abcde"
+            a_list = [1, 2, 3, 4]
+            a_dict = { 1:"a", 2:"b", 3:"c" }
+            
+    * In C++::
+    
+            a_string = "abcde";
+            a_list = {1, 2, 3, 4}
+            a_dict doesn't exist
+            
+    * In Applescript::
+    
+            set a_string to "abcde"
+            set a_list to {1, 2, 3, 4}
+
+(d) Comments:
+
+    * In Python::
+    
+            # this is a comment
+            """ or this is as well """
+            
+    * In C++::
+    
+            // this is a comment
+            /* or this is as well */
+            
+    * In Applescript::
+    
+            -- this is a comment
+            (* or this is as well *)
+            
+(e) Debugging:
+
+    * In Python::
+    
+            print "some debugging statment"
+        
+    * In C++::
+    
+            cout << "some debugging statement" << endl
+            
+    * In Applescript::
+    
+            log "some debugging statement"
+            
+
+2. My First iTunes Script
+-------------------------
+
+There's no point doing a Hello World here. We all just want to control iTunes and get information from iTunes. So here's our first script::
+
+    tell application "iTunes"
+        try
+            set playingTrack to current track
+        end try
+        return playingTrack
+    end tell
+    
+To run this script, you can't just put it into a text file because Applescript has some weird format. So open up *Script Editor*, then copy and paste the above script into it.
+
+Once you do that, press the Run button or Cmd+R to run the script. In the results pane at the bottom, you should see the following gibberish::
+
+    file track id 44120 of user playlist id 12108 of source id 34 of application "iTunes"
+    
+That is a string representation of the track that is playing. Now edit the script to just display the name of the track::
+
+    tell application "iTunes"
+        try
+            set playingTrack to name of current track
+        end try
+        return playingTrack
+    end tell
+
+Run this and you should get the actual track name. How simple was that?
+
+.. image:: itunes_script_editor.png
+
+
+3. Understanding iTunes' AppleScript interface
+-----------------------------------------------
+
+So now we know the basic syntax of Applescript, we can try to write something that gets more than a song ID from iTunes. To know what Applescript functions and objects are presented by an application, we use the Script Editor's Dictionary.
+
+Go to ``File > Open Dictionary`` in *Script Editor* and you will be presented by all the applications that have a published Applescript Interface. We are interested in iTunes, so open that up:
+
+.. image:: itunes_dict.png
+
+
+On the top is a Finder style multi-column browser. The first column shows *Suites*. If you select the iTunes Suite you will see a list of functions and object classes that you can use. The *description pane* displays the description each item in the suite.
+
+The description of objects and functions actually looks like a dictionary. Functions (verbs) are denoted with a "v" and objects (nouns) are denoted with a "n".
+
+Objects
+~~~~~~~
+
+For objects, the contents in the square brackets denote the object's inheritance. Note that it should be read from right to left. For instance::
+
+    device playlist n [inh. playlist > item]
+
+means that playlist is a subclass of item. "Device playlist is a subclass of *playlist*.
+
+Listed in the object's description pane are *Elements* and *Properties*. Their distinction is a little subtle and I don't really understand it. Just think of *Elements* as properties that return a list and *Properties* return only singletons, eg. a string or an integer.
+
+Functions
+~~~~~~~~~
+
+For Functions the listing is slightly different. You'll basically find out what sort of inputs that the function accepts and what it outputs.
+
+For inputs, the type is listed after the command name: eg:
+
+.. image:: itunes_search.png
+
+The above description means the *search* command accepts two parameters, *playlist* and *unicode text* with an optional third parameter. The listing denotes the type of the parameter and the description follows the colon on each line.
+
+For an example execution of the search command would be::
+
+    search library playlist 1 for "silverchair" only artists
+    
+or alternatively::
+
+    search library playlist 1 for "jacky"
+    
+
+
+4. Putting it all together
+---------------------------
+
+
+5. Gotchas
+-----------
+
+Unicode
+~~~~~~~
+
+Using ``as string`` and ``as unicode``
+
+Path Aliases
+~~~~~~~~~~~~
+
+Use of MacOS HFS Syntax rather than Unix path syntax.
+
+Integrating Applescript in Cocoa
+=================================
+
+Beginnings of an iTunes Framework for Cocoa
+============================================
+
+iTunes Notifications
+====================

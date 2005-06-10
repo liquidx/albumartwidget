@@ -291,7 +291,7 @@
 							<real>272</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>61 114 792 632 0 0 1024 746 </string>
+						<string>-1 114 792 632 0 0 1024 746 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -321,7 +321,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>032A5B9E08538593005DA913</string>
+										<string>032257020859A50700E67FAC</string>
 										<key>history</key>
 										<array>
 											<string>0310A9640850753E00AE5DB7</string>
@@ -335,11 +335,12 @@
 											<string>0310A9900850793C00AE5DB7</string>
 											<string>0310A9910850793C00AE5DB7</string>
 											<string>0310A9920850793C00AE5DB7</string>
-											<string>0310A9940850793C00AE5DB7</string>
 											<string>032A5B800853714F005DA913</string>
 											<string>032A5B9408538091005DA913</string>
-											<string>032A5B9508538091005DA913</string>
-											<string>032A5B9608538091005DA913</string>
+											<string>032256CB08599CF700E67FAC</string>
+											<string>032256F00859A1B300E67FAC</string>
+											<string>032256FD0859A50100E67FAC</string>
+											<string>032256FE0859A50100E67FAC</string>
 										</array>
 										<key>prevStack</key>
 										<array>
@@ -359,10 +360,19 @@
 											<string>0310A99F0850793C00AE5DB7</string>
 											<string>0310A9A00850793C00AE5DB7</string>
 											<string>0310A9A10850793C00AE5DB7</string>
-											<string>032A5B820853714F005DA913</string>
-											<string>032A5B9708538091005DA913</string>
-											<string>032A5B9808538091005DA913</string>
-											<string>032A5B9908538091005DA913</string>
+											<string>032256BE08599B9800E67FAC</string>
+											<string>032256BF08599B9800E67FAC</string>
+											<string>032256CE08599CF700E67FAC</string>
+											<string>032256CF08599CF700E67FAC</string>
+											<string>032256D008599CF700E67FAC</string>
+											<string>032256D108599CF700E67FAC</string>
+											<string>032256DD08599F8700E67FAC</string>
+											<string>032256DE08599F8700E67FAC</string>
+											<string>032256DF08599F8700E67FAC</string>
+											<string>032256F20859A1B300E67FAC</string>
+											<string>032256F30859A1B300E67FAC</string>
+											<string>032256FF0859A50100E67FAC</string>
+											<string>032257000859A50100E67FAC</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -376,7 +386,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {498, 497}}</string>
 								<key>RubberWindowFrame</key>
-								<string>61 114 792 632 0 0 1024 746 </string>
+								<string>-1 114 792 632 0 0 1024 746 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -396,7 +406,7 @@
 								<key>Frame</key>
 								<string>{{0, 502}, {498, 89}}</string>
 								<key>RubberWindowFrame</key>
-								<string>61 114 792 632 0 0 1024 746 </string>
+								<string>-1 114 792 632 0 0 1024 746 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
@@ -420,9 +430,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>032A5B840853714F005DA913</string>
+				<string>032256B4085999C600E67FAC</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>032A5B850853714F005DA913</string>
+				<string>032256B5085999C600E67FAC</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -559,7 +569,7 @@
 		<string>/Users/liquidx/Dev/cocoa/AlbumArtWidget/AlbumArtPlugin/AlbumArtPlugin.xcode</string>
 	</array>
 	<key>WindowString</key>
-	<string>61 114 792 632 0 0 1024 746 </string>
+	<string>-1 114 792 632 0 0 1024 746 </string>
 	<key>WindowTools</key>
 	<array>
 		<dict>

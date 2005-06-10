@@ -129,6 +129,17 @@
 	return trackRating;
 }
 
+- (NSString *)trackType
+{
+	return trackType;
+}
+
+
+- (NSString *)playerState
+{
+	return playerState;
+}
+
 - (BOOL) iTunesIsRunning
 {
 	if (albumArt) {
@@ -374,43 +385,70 @@
 - (void) songChanged:(NSNotification *)aNotification
 {
 	NSDictionary *playerInfo = [aNotification userInfo];
-	playerState = [[playerInfo objectForKey:@"Player State"] intValue];
 	
-	if ((playerState == itPLAYING) || (playerState == itPAUSED)) {
+	// update player state
+	[playerState release];
+	playerState = [[playerInfo objectForKey:@"Player State"] retain];
+	
+#if AAP_DEBUG
+	NSLog(@"%@", playerInfo);
+#endif
+	
+	// for radio
+	if ([playerInfo objectForKey:@"Stream Title"] != nil) {
+		[trackType release];
+		trackType = [@"Radio" retain];
+		NSArray *streamTitle = [[playerInfo objectForKey:@"Stream Title"] componentsSeparatedByString:@" - "];
+		if ([streamTitle count] > 1) {
+			[trackName release];
+			trackName = [[streamTitle objectAtIndex:1] retain];
+			[trackArtist release];
+			trackArtist = [[streamTitle objectAtIndex:0] retain];
+			[trackAlbum release];
+			trackAlbum = [[playerInfo objectForKey:@"Name"] retain];
+			[trackLocation release];
+			trackLocation = [[playerInfo objectForKey:@"Location"] retain];
+			
+			trackYear = 0;
+			trackRating = 0;
+			trackNumber = 0;
+		}
+		else {
+			[trackName release];
+			trackName = [[playerInfo objectForKey:@"Name"] retain];
+			[trackArtist release];
+			trackArtist = [[playerInfo objectForKey:@"Genre"] retain];
+			[trackAlbum release];
+			trackAlbum = nil;
+			[trackLocation release];
+			trackLocation = [[playerInfo objectForKey:@"Location"] retain];
+			
+			trackYear = 0;
+			trackRating = 0;
+			trackNumber = 0;
+		}
+	}
+	else {
+		[trackType release];
+		trackType = [@"File" retain];
+		// stream urls, shared tracks, file, store tracks
 		[trackName release];
 		trackName = [[playerInfo objectForKey:@"Name"] retain];
 		[trackArtist release];
 		trackArtist = [[playerInfo objectForKey:@"Artist"] retain];
 		[trackAlbum release];
 		trackAlbum = [[playerInfo objectForKey:@"Album"] retain];
+		[trackLocation release];
+		trackLocation = [[playerInfo objectForKey:@"Location"] retain];
+		
 		trackRating = [[playerInfo objectForKey:@"Rating"] intValue];
 		trackYear = [[playerInfo objectForKey:@"Year"] intValue];
 		trackNumber = [[playerInfo objectForKey:@"Number"] intValue];
-		[trackLocation release];
-		trackLocation = [[playerInfo objectForKey:@"Location"] retain];
-	}
-
-#if AAP_DEBUG
-	NSLog(@"plugin.songchanged: iTunes changed state: %d", playerState);
-#endif
-	
-	// TODO: have default paused/stopped icons
-	NSArray *args;
-	if (playerState == itPLAYING) {
-		args = [NSArray arrayWithObject:@"Playing"];
-	}
-	else if (playerState == itPAUSED) {
-		args = [NSArray arrayWithObject:@"Paused"];
-	}
-	else if (playerState == itSTOPPED) {
-		args = [NSArray arrayWithObject:@"Stopped"];
-	}
-	else {
-		args = [NSArray arrayWithObject:@"Unknown"];
+		
 	}
 	
 	[[webview windowScriptObject] callWebScriptMethod:@"reloadImage"
-										withArguments:args];
+										withArguments:[NSArray arrayWithObject:playerState]];
 }
 
 @end
