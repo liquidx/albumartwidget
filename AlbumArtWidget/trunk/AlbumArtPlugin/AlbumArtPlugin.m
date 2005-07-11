@@ -33,6 +33,10 @@
 							 selector:@selector(songChanged:)
 								 name:@"com.apple.iTunes.playerInfo"
 							   object:nil];
+		
+		NSStringBig5Encoding = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingBig5_HKSCS_1999);
+		NSStringGBEncoding = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingHZ_GB_2312);		
+		
 	}
 	return self;
 }
@@ -119,9 +123,9 @@
 	return trackYear;
 }
 
-- (int) trackID
+- (int) trackTime
 {
-	return trackID;
+	return trackTime;
 }
 
 - (int) trackRating
@@ -225,7 +229,7 @@
 			[trackAlbum release];
 			trackAlbum = [[[aEventDesc descriptorAtIndex:3L] stringValue] retain];
 			trackRating = [[aEventDesc descriptorAtIndex:4L] int32Value];
-			trackID = [[aEventDesc descriptorAtIndex:5L] int32Value];
+			trackTime = [[aEventDesc descriptorAtIndex:5L] int32Value];
 			trackNumber = [[aEventDesc descriptorAtIndex:6L] int32Value];
 			trackYear = [[aEventDesc descriptorAtIndex:7L] int32Value];
 			[trackLocation release];
@@ -241,6 +245,19 @@
 	}
 	
 	return YES;
+}
+
+
+int trackSort(id track1, id track2, void *context)
+{
+    int v1 = [[track1 objectAtIndex:0] intValue];
+    int v2 = [[track2 objectAtIndex:0] intValue];
+    if (v1 < v2)
+        return NSOrderedAscending;
+    else if (v1 > v2)
+        return NSOrderedDescending;
+    else
+        return NSOrderedSame;
 }
 
 - (NSArray *) getCurrentAlbumTracks
@@ -274,6 +291,8 @@
 														  name,nil];
 			[albumTracks addObject:newtrack];
 		}
+		
+		[albumTracks sortUsingFunction:trackSort context:nil];
 		return albumTracks;
 	}
 	
@@ -378,6 +397,131 @@
 	}
 }
 
+- (BOOL)addAlbumArtToCurrentSong:(NSString *)songURL withContentsOfURL:(NSString *)url
+{
+	
+#if AAP_DEBUG
+	NSLog(@"addAlbumArtToCurrentSong:withContentsOfURL:");
+#endif
+	
+	int songDuration = [self trackTime];
+	
+	if (!songURL || !url || ([songURL length] == 0) || ([url length] == 0))  {
+		return NO;
+	}
+	
+	if (![[NSURL URLWithString:songURL] isFileURL]) {
+#if AAP_DEBUG		
+		NSLog(@"plugin.addAlbumArt: songURL is not local file");
+#endif
+		return NO;
+	}
+	
+	
+	NSImage *image = [[[NSImage alloc] initWithContentsOfURL:[NSURL URLWithString:url]] autorelease];
+	if (!image) {
+		NSLog(@"plugin.addAlbumArt: unable to load image from URL");
+		return NO;
+	}
+	
+	
+	NSArray *reps = [image representations];
+	if (!reps || ([reps count] == 0)) {
+		NSLog(@"plugin.addAlbumArt: image has no representations");
+		return NO;
+	}
+	
+	NSEnumerator *e = [reps objectEnumerator];
+	NSBitmapImageRep *r;
+	NSData *imageData;
+	while (r = [e nextObject]) {
+		imageData = [r representationUsingType:NSJPEGFileType properties:nil];
+		if (imageData)
+			break;
+	}
+	if (!imageData) {
+		NSLog(@"plugin.addAlbumArt: cannot convert to JPEG");
+		return NO;
+	}
+	
+	NSString *tempFilename = [AlbumArtTempFile randomTemporaryPathWithExtension:@"jpg"];
+	if (![imageData writeToFile:tempFilename atomically:YES]) {
+		NSLog(@"plugin.addAlbumArt: unable to write to temporary file");
+		return NO;
+	}
+	
+	// Load AppleScript that fetches Album Artwork
+	NSString *tempPictname = [[AlbumArtTempFile randomTemporaryPathWithExtension:@"pic"] fileSystemPathHFSStyle];
+	NSString *scriptContents = [NSString stringWithFormat:AAP_ADD_ALBUM_ART,tempFilename,
+										tempPictname, songDuration, tempPictname, tempPictname];
+	NSAppleScript   *script = [[[NSAppleScript alloc] initWithSource:scriptContents] autorelease];
+	if (!script) {
+		NSLog(@"plugin.addAlbumArt: error initialising applescript");
+		[[NSFileManager defaultManager] removeFileAtPath:tempFilename handler:nil];
+		return NO;			
+	}
+	
+	// run script
+	if ([self iTunesIsRunning]) {
+		NSAppleEventDescriptor *aEventDesc;
+		NSDictionary *myerror = nil;
+		aEventDesc = [script executeAndReturnError:&myerror];
+		if (myerror != nil) {
+			NSLog(@"plugin.addAlbumArt: error executing applescript: %@", myerror);
+			[[NSFileManager defaultManager] removeFileAtPath:tempPictname handler:nil];
+			[[NSFileManager defaultManager] removeFileAtPath:tempFilename handler:nil];			
+			return NO;			
+		}
+	}
+	
+	[[NSFileManager defaultManager] removeFileAtPath:tempFilename handler:nil];	
+#if AAP_DEBUG	
+	NSLog(@"plugin.addAlbumArt: added artwork to (%d) file \"%@\" with URL \"%@\"", songDuration, songPath, url);
+#endif
+	return YES;
+
+}
+
+- (NSString *)trackNameInEncoding:(NSString *)encoding
+{
+	return [self uriEncodedString:[self trackName] withEncoding:encoding];
+}
+
+- (NSString *)trackArtistInEncoding:(NSString *)encoding
+{
+	return [self uriEncodedString:[self trackArtist] withEncoding:encoding];
+}
+
+- (NSString *)trackAlbumInEncoding:(NSString *)encoding
+{
+	return [self uriEncodedString:[self trackAlbum] withEncoding:encoding];
+}
+
+- (NSString *)uriEncodedString:(NSString *)utf8String withEncoding:(NSString *)encoding
+{
+	UInt32 encodingType;
+	
+	if ([encoding isEqualTo:@"gb"]) {
+		encodingType = NSStringGBEncoding;
+	}
+	else if ([encoding isEqualTo:@"b5"]) {
+		encodingType = NSStringBig5Encoding;
+	}
+	else {
+		encodingType = NSUTF8StringEncoding;
+	}
+	
+	const char *encodedString = [utf8String cStringUsingEncoding:encodingType];
+	NSMutableString *uriEncodedString = [NSMutableString string];
+	int i, len = strlen(encodedString);
+	
+	for (i = 0; i < len; i++) {
+		[uriEncodedString appendString:[NSString stringWithFormat:@"%%%2x",(encodedString[i] & 0xff)]];
+	}
+
+	return uriEncodedString;
+}
+
 
 #pragma mark -
 #pragma mark iTunes Notification
@@ -412,6 +556,7 @@
 			trackYear = 0;
 			trackRating = 0;
 			trackNumber = 0;
+			trackTime = 0;
 		}
 		else {
 			[trackName release];
@@ -426,6 +571,7 @@
 			trackYear = 0;
 			trackRating = 0;
 			trackNumber = 0;
+			trackTime = 0;
 		}
 	}
 	else {
@@ -441,6 +587,7 @@
 		[trackLocation release];
 		trackLocation = [[playerInfo objectForKey:@"Location"] retain];
 		
+		trackTime = [[playerInfo objectForKey:@"Total Time"] intValue]/1000;
 		trackRating = [[playerInfo objectForKey:@"Rating"] intValue];
 		trackYear = [[playerInfo objectForKey:@"Year"] intValue];
 		trackNumber = [[playerInfo objectForKey:@"Number"] intValue];
@@ -450,5 +597,6 @@
 	[[webview windowScriptObject] callWebScriptMethod:@"reloadImage"
 										withArguments:[NSArray arrayWithObject:playerState]];
 }
+
 
 @end

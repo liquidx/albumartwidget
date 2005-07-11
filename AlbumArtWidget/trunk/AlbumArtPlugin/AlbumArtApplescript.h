@@ -1,3 +1,6 @@
+/* Various scripts that we run, in this form so that we can do
+	variable substitution at runtime. */
+
 #define AAP_SET_RATING_SCRIPT \
 @"try\n" \
 "	tell application \"iTunes\"\n" \
@@ -14,7 +17,7 @@
 "      set trackArtist to artist of aTrack\n" \
 "      set trackAlbum to album of aTrack\n" \
 "      set trackRating to rating of aTrack\n" \
-"      set trackID to database ID of aTrack\n" \
+"      set trackTime to duration of aTrack\n" \
 "      set trackNumber to track number of aTrack\n" \
 "      set trackYear to year of aTrack\n" \
 "      try\n" \
@@ -26,7 +29,7 @@
 "             set trackLocation to \"\"\n" \
 "         end try\n"\
 "     end try\n"\
-"     return {trackName, trackArtist, trackAlbum, trackRating, trackID, trackNumber, trackYear, trackLocation}\n"\
+"     return {trackName, trackArtist, trackAlbum, trackRating, trackTime, trackNumber, trackYear, trackLocation}\n"\
 "   end tell\n" \
 " end try\n" \
 " return \"failed\"\n"
@@ -91,3 +94,28 @@
 "		play track %d of library playlist 1\n"\
 "	end tell\n"\
 "end try\n"
+
+#define AAP_ADD_ALBUM_ART \
+@"set jpegFilename to \"%@\"\n"\
+"set jpegFile to (POSIX file jpegFilename)\n"\
+"tell application \"Image Events\"\n"\
+"   set myImage to open (jpegFile as file)\n"\
+"	save myImage as PICT in (file \"%@\")\n"\
+"	close myImage\n"\
+"end tell\n"\
+"tell application \"iTunes\"\n"\
+"	set myTrack to current track\n"\
+"	if duration of myTrack = %d then\n"\
+"		set artworkCount to count of artwork of myTrack\n"\
+"		set myArt to read (file \"%@\") from 513 as picture\n"\
+"		if artworkCount > 0 then\n"\
+"			set data of artwork (artworkCount + 1) of current track to myArt\n"\
+"		else\n"\
+"			set data of artwork 1 of current track to myArt\n"\
+"		end if\n"\
+"	end if\n"\
+"end tell\n"\
+"tell application \"Image Events\"\n"\
+"	delete (file \"%@\")\n"\
+"end tell\n"
+

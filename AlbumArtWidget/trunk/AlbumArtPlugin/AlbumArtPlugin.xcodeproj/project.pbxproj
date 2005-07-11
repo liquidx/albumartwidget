@@ -1,0 +1,401 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		034940290825986E003CA55D /* GetAlbumArt.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 0349402808259869003CA55D /* GetAlbumArt.scpt */; };
+		034940A50825A866003CA55D /* AlbumArtHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 034940A40825A866003CA55D /* AlbumArtHolder.m */; };
+		0387307F08255A5200A3134D /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0387307E08255A5200A3134D /* WebKit.framework */; };
+		03A28F780825280900938C64 /* AlbumArtPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A28F770825280900938C64 /* AlbumArtPlugin.m */; };
+		03B044AA088051AB00D12928 /* AlbumArtTempFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B044A9088051AB00D12928 /* AlbumArtTempFile.m */; };
+		03D3000108277CB0009EDCE0 /* NSURL+NDCarbonUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D3FFF508277CB0009EDCE0 /* NSURL+NDCarbonUtilities.m */; };
+		03D3000208277CB0009EDCE0 /* NSString+NDCarbonUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D3FFF708277CB0009EDCE0 /* NSString+NDCarbonUtilities.m */; };
+		03D3000308277CB0009EDCE0 /* NDResourceFork.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D3FFF908277CB0009EDCE0 /* NDResourceFork.m */; };
+		03D3000408277CB0009EDCE0 /* NDResourceFork+OtherSorces.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D3FFFB08277CB0009EDCE0 /* NDResourceFork+OtherSorces.m */; };
+		03D3000508277CB0009EDCE0 /* NDAlias.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D3FFFF08277CB0009EDCE0 /* NDAlias.m */; };
+		03D3000608277CB0009EDCE0 /* NDAlias+AliasFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D3000008277CB0009EDCE0 /* NDAlias+AliasFile.m */; };
+		03D3FF5E0826E4FC009EDCE0 /* GetTrackInfo.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 03D3FF230826DFDB009EDCE0 /* GetTrackInfo.scpt */; };
+		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
+		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildStyle section */
+		014CEA420018CDE011CA2923 /* Development */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		014CEA430018CDE011CA2923 /* Deployment */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+/* End PBXBuildStyle section */
+
+/* Begin PBXFileReference section */
+		0310A91008506A8B00AE5DB7 /* AlbumArtApplescript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumArtApplescript.h; sourceTree = "<group>"; };
+		0349402808259869003CA55D /* GetAlbumArt.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.scpt; path = GetAlbumArt.scpt; sourceTree = "<group>"; };
+		034940A30825A866003CA55D /* AlbumArtHolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumArtHolder.h; sourceTree = "<group>"; };
+		034940A40825A866003CA55D /* AlbumArtHolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumArtHolder.m; sourceTree = "<group>"; };
+		0387307E08255A5200A3134D /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
+		03A28F760825280900938C64 /* AlbumArtPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumArtPlugin.h; sourceTree = "<group>"; };
+		03A28F770825280900938C64 /* AlbumArtPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumArtPlugin.m; sourceTree = "<group>"; };
+		03A7743C0827BC6B00F29C31 /* AlbumArtConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumArtConstants.h; sourceTree = "<group>"; };
+		03B044A8088051AA00D12928 /* AlbumArtTempFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumArtTempFile.h; sourceTree = "<group>"; };
+		03B044A9088051AB00D12928 /* AlbumArtTempFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumArtTempFile.m; sourceTree = "<group>"; };
+		03D3000008277CB0009EDCE0 /* NDAlias+AliasFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NDAlias+AliasFile.m"; sourceTree = "<group>"; };
+		03D3FF230826DFDB009EDCE0 /* GetTrackInfo.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.scpt; path = GetTrackInfo.scpt; sourceTree = "<group>"; };
+		03D3FFF508277CB0009EDCE0 /* NSURL+NDCarbonUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+NDCarbonUtilities.m"; sourceTree = "<group>"; };
+		03D3FFF608277CB0009EDCE0 /* NSURL+NDCarbonUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+NDCarbonUtilities.h"; sourceTree = "<group>"; };
+		03D3FFF708277CB0009EDCE0 /* NSString+NDCarbonUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+NDCarbonUtilities.m"; sourceTree = "<group>"; };
+		03D3FFF808277CB0009EDCE0 /* NSString+NDCarbonUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+NDCarbonUtilities.h"; sourceTree = "<group>"; };
+		03D3FFF908277CB0009EDCE0 /* NDResourceFork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NDResourceFork.m; sourceTree = "<group>"; };
+		03D3FFFA08277CB0009EDCE0 /* NDResourceFork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDResourceFork.h; sourceTree = "<group>"; };
+		03D3FFFB08277CB0009EDCE0 /* NDResourceFork+OtherSorces.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NDResourceFork+OtherSorces.m"; sourceTree = "<group>"; };
+		03D3FFFC08277CB0009EDCE0 /* NDAlias.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDAlias.h; sourceTree = "<group>"; };
+		03D3FFFD08277CB0009EDCE0 /* NDAlias+AliasFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NDAlias+AliasFile.h"; sourceTree = "<group>"; };
+		03D3FFFE08277CB0009EDCE0 /* NDResourceFork+OtherSorces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NDResourceFork+OtherSorces.h"; sourceTree = "<group>"; };
+		03D3FFFF08277CB0009EDCE0 /* NDAlias.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NDAlias.m; sourceTree = "<group>"; };
+		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		32DBCF630370AF2F00C91783 /* AlbumArtPlugin_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumArtPlugin_Prefix.pch; sourceTree = "<group>"; };
+		8D5B49B6048680CD000E48DA /* AlbumArtPlugin.widgetplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AlbumArtPlugin.widgetplugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Info.plist; sourceTree = "<group>"; };
+		D2F7E65807B2D6F200F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D5B49B3048680CD000E48DA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
+				0387307F08255A5200A3134D /* WebKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		03D3FFF408277CA3009EDCE0 /* NDAlias */ = {
+			isa = PBXGroup;
+			children = (
+				03D3FFF508277CB0009EDCE0 /* NSURL+NDCarbonUtilities.m */,
+				03D3FFF608277CB0009EDCE0 /* NSURL+NDCarbonUtilities.h */,
+				03D3FFF708277CB0009EDCE0 /* NSString+NDCarbonUtilities.m */,
+				03D3FFF808277CB0009EDCE0 /* NSString+NDCarbonUtilities.h */,
+				03D3FFF908277CB0009EDCE0 /* NDResourceFork.m */,
+				03D3FFFA08277CB0009EDCE0 /* NDResourceFork.h */,
+				03D3FFFB08277CB0009EDCE0 /* NDResourceFork+OtherSorces.m */,
+				03D3FFFC08277CB0009EDCE0 /* NDAlias.h */,
+				03D3FFFD08277CB0009EDCE0 /* NDAlias+AliasFile.h */,
+				03D3FFFE08277CB0009EDCE0 /* NDResourceFork+OtherSorces.h */,
+				03D3FFFF08277CB0009EDCE0 /* NDAlias.m */,
+				03D3000008277CB0009EDCE0 /* NDAlias+AliasFile.m */,
+			);
+			name = NDAlias;
+			sourceTree = "<group>";
+		};
+		089C166AFE841209C02AAC07 /* AlbumArtPlugin */ = {
+			isa = PBXGroup;
+			children = (
+				08FB77AFFE84173DC02AAC07 /* Classes */,
+				32C88E010371C26100C91783 /* Other Sources */,
+				089C167CFE841241C02AAC07 /* Resources */,
+				089C1671FE841209C02AAC07 /* Frameworks and Libraries */,
+				19C28FB8FE9D52D311CA2CBB /* Products */,
+			);
+			name = AlbumArtPlugin;
+			sourceTree = "<group>";
+		};
+		089C1671FE841209C02AAC07 /* Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */,
+				1058C7AEFEA557BF11CA2CBB /* Other Frameworks */,
+			);
+			name = "Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		089C167CFE841241C02AAC07 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				03D3FF230826DFDB009EDCE0 /* GetTrackInfo.scpt */,
+				0349402808259869003CA55D /* GetAlbumArt.scpt */,
+				8D5B49B7048680CD000E48DA /* Info.plist */,
+				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		08FB77AFFE84173DC02AAC07 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				0310A91008506A8B00AE5DB7 /* AlbumArtApplescript.h */,
+				03A7743C0827BC6B00F29C31 /* AlbumArtConstants.h */,
+				03A28F760825280900938C64 /* AlbumArtPlugin.h */,
+				03A28F770825280900938C64 /* AlbumArtPlugin.m */,
+				034940A30825A866003CA55D /* AlbumArtHolder.h */,
+				034940A40825A866003CA55D /* AlbumArtHolder.m */,
+				03B044A8088051AA00D12928 /* AlbumArtTempFile.h */,
+				03B044A9088051AB00D12928 /* AlbumArtTempFile.m */,
+				03D3FFF408277CA3009EDCE0 /* NDAlias */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0387307E08255A5200A3134D /* WebKit.framework */,
+				1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7AEFEA557BF11CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				089C167FFE841241C02AAC07 /* AppKit.framework */,
+				D2F7E65807B2D6F200F64583 /* CoreData.framework */,
+				089C1672FE841209C02AAC07 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FB8FE9D52D311CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D5B49B6048680CD000E48DA /* AlbumArtPlugin.widgetplugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		32C88E010371C26100C91783 /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				32DBCF630370AF2F00C91783 /* AlbumArtPlugin_Prefix.pch */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D5B49AC048680CD000E48DA /* AlbumArtPlugin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 03B04492088042C900D12928 /* Build configuration list for PBXNativeTarget "AlbumArtPlugin" */;
+			buildPhases = (
+				8D5B49AF048680CD000E48DA /* Resources */,
+				8D5B49B1048680CD000E48DA /* Sources */,
+				8D5B49B3048680CD000E48DA /* Frameworks */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G4;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = AlbumArtPlugin_Prefix.pch;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				PREBINDING = NO;
+				PRODUCT_NAME = AlbumArtPlugin;
+				WRAPPER_EXTENSION = widgetplugin;
+			};
+			dependencies = (
+			);
+			name = AlbumArtPlugin;
+			productInstallPath = "$(HOME)/Library/Bundles";
+			productName = AlbumArtPlugin;
+			productReference = 8D5B49B6048680CD000E48DA /* AlbumArtPlugin.widgetplugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		089C1669FE841209C02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 03B04496088042C900D12928 /* Build configuration list for PBXProject "AlbumArtPlugin" */;
+			buildSettings = {
+			};
+			buildStyles = (
+				014CEA420018CDE011CA2923 /* Development */,
+				014CEA430018CDE011CA2923 /* Deployment */,
+			);
+			hasScannedForEncodings = 1;
+			mainGroup = 089C166AFE841209C02AAC07 /* AlbumArtPlugin */;
+			projectDirPath = "";
+			targets = (
+				8D5B49AC048680CD000E48DA /* AlbumArtPlugin */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D5B49AF048680CD000E48DA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03D3FF5E0826E4FC009EDCE0 /* GetTrackInfo.scpt in Resources */,
+				034940290825986E003CA55D /* GetAlbumArt.scpt in Resources */,
+				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D5B49B1048680CD000E48DA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03A28F780825280900938C64 /* AlbumArtPlugin.m in Sources */,
+				034940A50825A866003CA55D /* AlbumArtHolder.m in Sources */,
+				03D3000108277CB0009EDCE0 /* NSURL+NDCarbonUtilities.m in Sources */,
+				03D3000208277CB0009EDCE0 /* NSString+NDCarbonUtilities.m in Sources */,
+				03D3000308277CB0009EDCE0 /* NDResourceFork.m in Sources */,
+				03D3000408277CB0009EDCE0 /* NDResourceFork+OtherSorces.m in Sources */,
+				03D3000508277CB0009EDCE0 /* NDAlias.m in Sources */,
+				03D3000608277CB0009EDCE0 /* NDAlias+AliasFile.m in Sources */,
+				03B044AA088051AB00D12928 /* AlbumArtTempFile.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C167DFE841241C02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C167EFE841241C02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		03B04493088042C900D12928 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = AlbumArtPlugin_Prefix.pch;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				PREBINDING = NO;
+				PRODUCT_NAME = AlbumArtPlugin;
+				WRAPPER_EXTENSION = widgetplugin;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		03B04494088042C900D12928 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G4;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = AlbumArtPlugin_Prefix.pch;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				PREBINDING = NO;
+				PRODUCT_NAME = AlbumArtPlugin;
+				WRAPPER_EXTENSION = widgetplugin;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		03B04495088042C900D12928 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G4;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = AlbumArtPlugin_Prefix.pch;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				PREBINDING = NO;
+				PRODUCT_NAME = AlbumArtPlugin;
+				WRAPPER_EXTENSION = widgetplugin;
+			};
+			name = Default;
+		};
+		03B04497088042C900D12928 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Development;
+		};
+		03B04498088042C900D12928 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Deployment;
+		};
+		03B04499088042C900D12928 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Default;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		03B04492088042C900D12928 /* Build configuration list for PBXNativeTarget "AlbumArtPlugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03B04493088042C900D12928 /* Development */,
+				03B04494088042C900D12928 /* Deployment */,
+				03B04495088042C900D12928 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		03B04496088042C900D12928 /* Build configuration list for PBXProject "AlbumArtPlugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03B04497088042C900D12928 /* Development */,
+				03B04498088042C900D12928 /* Deployment */,
+				03B04499088042C900D12928 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 089C1669FE841209C02AAC07 /* Project object */;
+}

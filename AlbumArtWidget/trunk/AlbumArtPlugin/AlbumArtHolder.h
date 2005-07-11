@@ -5,12 +5,14 @@
 
 #import <Cocoa/Cocoa.h>
 #import "AlbumArtConstants.h"
-
+#import "AlbumArtTempFile.h"
 
 @interface AlbumArtHolder : NSObject {
 	NSImage			*playingAlbumArt;
 	NSString		*temporaryFilename;
 	NSAppleScript	*fetchScript;
+	
+	NSDictionary	*jpegProperties;
 }
 - (NSString *) filename;
 - (void) reload;
@@ -18,7 +20,6 @@
 @end
 
 @interface AlbumArtHolder (Private)
-- (NSString *)randomFilenameWithExtension:(NSString *)ext;
 - (BOOL) resizeImage:(NSImage *)anImage 
 			  toSize:(NSSize)newSize 
 		outputToFile:(NSString *)filename;

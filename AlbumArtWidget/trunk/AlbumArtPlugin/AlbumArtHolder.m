@@ -54,6 +54,12 @@
 		// initialise current state
 		playingAlbumArt = nil;
 		temporaryFilename = nil;
+		
+		
+		jpegProperties = [[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:1.0],
+			NSImageCompressionFactor,
+			nil] retain];
+		
 		[self reload];
 	}
 	return self;
@@ -71,6 +77,7 @@
 	
 	[playingAlbumArt release];
 	[fetchScript release];
+	[jpegProperties release];
 	[super dealloc];
 }	
 
@@ -111,9 +118,7 @@
 		}
 		
 		// generate a random name and make sure it is clean
-		temporaryFilename = [[NSTemporaryDirectory() 
-			stringByAppendingPathComponent:[self randomFilenameWithExtension:@"jpg"]]
-			retain];
+		temporaryFilename = [[AlbumArtTempFile randomTemporaryPathWithExtension:@"jpg"] retain];
 		if ([manager fileExistsAtPath:temporaryFilename]) {
 			[manager removeFileAtPath:temporaryFilename handler:nil];
 		}
@@ -192,11 +197,6 @@
 	
 }
 
-- (NSString *)randomFilenameWithExtension:(NSString *)ext
-{
-	return [NSString stringWithFormat:@"%@_%x%x.%@", AAF_PREFIX, Random(), Random(), ext];
-}
-
 - (BOOL) resizeImage:(NSImage *)anImage toSize:(NSSize)newSize outputToFile:(NSString *)filename
 {
 	NSImage *resizedImage = nil;
@@ -238,7 +238,7 @@
 	}
 	
 	bitmapData = [outputBitmap representationUsingType:NSJPEGFileType
-											properties:nil];
+											properties:jpegProperties];
 	if (!bitmapData) {
 		NSLog(@"holder.resizeImage: failed to convert to JPEG");
 		return NO;

@@ -10,7 +10,9 @@
 #import <Webkit/Webkit.h>
 #import "NDAlias.h"
 #import "NSURL+NDCarbonUtilities.h"
+#import "NSString+NDCarbonUtilities.h"
 #import "AlbumArtHolder.h"
+#import "AlbumArtTempFile.h"
 #import "AlbumArtConstants.h"
 #import "AlbumArtApplescript.h"
 
@@ -25,12 +27,15 @@
 	NSString		*trackAlbum;
 	int				trackNumber;
 	int				trackYear;
-	int				trackID;
+	int				trackTime; // we use this as a rough track id
 	int				trackRating;
 	
 	NSString		*trackType;
 	
 	NSString 		*playerState;
+	
+	UInt32			NSStringBig5Encoding;
+	UInt32			NSStringGBEncoding;
 }
 
 - (NSString *)trackArt;
@@ -41,21 +46,29 @@
 - (NSString *)trackType;
 - (int) trackNumber;
 - (int) trackYear;
-- (int) trackID;
+- (int) trackTime;
 - (int) trackRating;
 
 - (NSString *)playerState;
 
-- (BOOL) iTunesIsRunning;
+- (BOOL)iTunesIsRunning;
 - (void)reload;
 - (void)remove;
 
-- (void)updateRating:(id)newRating;
-- (NSArray *) getCurrentAlbumTracks;
 - (void)playerPrev;
 - (void)playerNext;
 - (void)playerPlayPause;
 - (void)playSong:(int)songID;
 - (void)playSongFile:(NSString *)filename;
+
+- (void)updateRating:(id)newRating;
+- (NSArray *)getCurrentAlbumTracks;
+- (BOOL)addAlbumArtToCurrentSong:(NSString *)songURL withContentsOfURL:(NSString *)url;
+
+- (NSString *)trackNameInEncoding:(NSString *)encoding;
+- (NSString *)trackArtistInEncoding:(NSString *)encoding;
+- (NSString *)trackAlbumInEncoding:(NSString *)encoding;
+
+- (NSString *)uriEncodedString:(NSString *)utf8String withEncoding:(NSString *)encoding;
 
 @end
