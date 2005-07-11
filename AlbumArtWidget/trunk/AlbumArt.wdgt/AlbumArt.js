@@ -326,6 +326,8 @@ function fetch_from_yesasia(variation) {
             yesasia_make_request(artist, "", "", locale, on_yesasia_finish, on_fetch_error);
             break;
     }
+    
+    show_spinner();
 }
 
 
@@ -371,6 +373,7 @@ function on_yesasia_finish(req) {
         document.getElementById("albumart").height = 160;
         fetch_result = url_large; // use large! url_small;
         fetch_save_url = url_large;
+        hide_spinner();
     }
     else {
         // attempt another variation of artist/album/track combination
@@ -378,6 +381,9 @@ function on_yesasia_finish(req) {
         if (fetch_attempted < fetch_yesasia_max_attempts) {
             fetch_from_yesasia(fetch_attempted);
             fetch_attempted++;            
+        }
+        else {
+            hide_spinner();
         }
     }
 }
@@ -454,6 +460,7 @@ function fetch_from_google(variation) {
         default:
             break;
     }
+    show_spinner();
 }
 
 function on_google_finish(req) {
@@ -492,6 +499,7 @@ function on_google_finish(req) {
         document.getElementById("albumart").height = 160;
         fetch_result = url_large; // use large! url_small;
         fetch_save_url = url_large;
+        hide_spinner();
     }
     else {
         // attempt another variation of artist/album/track combination
@@ -499,6 +507,9 @@ function on_google_finish(req) {
         if (fetch_attempted < fetch_google_max_attempts) {
             fetch_from_google(fetch_attempted);
             fetch_attempted++;            
+        }
+        else {
+            hide_spinner();
         }
     }
 }
@@ -547,6 +558,7 @@ function fetch_from_amazon(variation) {
             amazon_make_request(artist, "", "", locale, on_amazon_finish, on_fetch_error);
             break;
     }
+    show_spinner();
 }
 
 function on_amazon_finish(req) {
@@ -575,6 +587,7 @@ function on_amazon_finish(req) {
         document.getElementById("albumart").src = url;
         fetch_result = url;
         fetch_save_url = url_large;
+        hide_spinner();
     }
     else {
         // attempt another variation of artist/album/track combination
@@ -583,6 +596,9 @@ function on_amazon_finish(req) {
             fetch_from_amazon(fetch_attempted);
             fetch_attempted++;            
         }
+        else {
+            hide_spinner();
+        }
     }
 }
 
@@ -590,6 +606,7 @@ function on_fetch_error(req) {
     // something happened with the fetch, aborting.
     debug("on_fetch_error: error fetching");
     document.getElementById("albumart").src = get_blank_albumart();
+    hide_spinner();
 }
 
 
@@ -599,6 +616,16 @@ function on_fetch_error(req) {
 
 function html_escape(sss) {
     return sss.replace("&","&amp;");
+}
+
+function show_spinner() {
+    var spinner = document.getElementById("spinner-layer");
+    spinner.style.display = "block";
+}
+
+function hide_spinner() {
+    var spinner = document.getElementById("spinner-layer");
+    spinner.style.display = "none";
 }
 
 function get_blank_albumart() {
@@ -629,8 +656,10 @@ function set_rating(rating) {
 function saveArt() {
     if (window.AlbumArt) {
         if ((fetch_save_url != "") && (current_song_id != "")) {
+            show_spinner();
             AlbumArt.addAlbumArtToCurrentSong_withContentsOfURL_(current_song_id, fetch_save_url);
             fetch_save_url = ""; // prevent updating twice
+            hide_spinner();
         }
     }
 }        

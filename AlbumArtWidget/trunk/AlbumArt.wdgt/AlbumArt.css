@@ -58,13 +58,28 @@ body {
     height: 160px;
 }
 
+
+#spinner-layer {
+    position: absolute;
+    top: 32px;
+    left: 169px;
+    width: 16px;
+    height: 16px;
+    padding: 4px 4px 2px 2px;
+    z-index: 3;
+    background-color: white;
+    border: 1px solid #ccc;
+    display: none;
+    opacity: 0.5;
+}
+
 #overlay-layer {
     position: absolute;
     top: 31px;
     left: 31px;
     width: 164px;
     height: 164px;
-    z-index: 3;
+    z-index: 4;
 }
 
 #text-layer, #shade-layer {
