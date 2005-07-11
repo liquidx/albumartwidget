@@ -153,6 +153,51 @@ body {
     background: url(/System/Library/WidgetResources/ibutton/white_rollie.png) no-repeat top left;        
 }
 
+.saveart {
+    position:absolute;
+    top: 195px;
+    left: 180px;
+    width: 13px;
+    height: 13px;
+    z-index: 2;
+}
+
+#saveart {
+    opacity: 0;
+    background: url(save.png) no-repeat top left;    
+}
+
+#saveartrollie {
+    display: none;
+    opacity: 0.25;
+    background: url(/System/Library/WidgetResources/ibutton/white_rollie.png) no-repeat top left;        
+}
+
+
+.refresh {
+    position:absolute;
+    top: 195px;
+    left: 35px;
+    width: 13px;
+    height: 13px;
+    z-index: 2;
+}
+
+#refresh {
+    opacity: 0;
+    background: url(refresh.png) no-repeat top left;    
+    margin: 2px 2px 2px 2px;
+     
+}
+
+#refreshrollie {
+    display: none;
+    opacity: 0.25;
+    margin: 2px 2px 2px 2px;
+    
+    background: url(/System/Library/WidgetResources/ibutton/white_rollie.png) no-repeat top left;        
+}
+
 #prefs, #back {
     position: absolute;
     top: 0px;
@@ -163,9 +208,9 @@ body {
 
 #config-layer {
     position: absolute;
-    top: 40px;
+    top: 30px;
     left: 34px;
-    width: 128px;
+    width: 160px;
     height: 128px;
 
     font: 11px "Lucida Grande";
@@ -200,16 +245,49 @@ li {
     padding-left: 0;
 }
 
+.liquidx-logo {
+    position: absolute;
+    top: 170px;
+    left: 0px;
+}
+
 .done-button {
     position: absolute;
-    top: 160px;
+    top: 170px;
     left: 110px;
 }
 
 .pref-group {
+    position: relative;
     margin-bottom: 5px;
     margin-top: 5px;
 }
+
+#pref-stars-color {
+    height: 32px;
+}
+
+#blue-star-link {
+    position: absolute;
+    top: 15px;
+    left: 0;
+    padding: 2px;
+}
+
+#grey-star-link {
+    position: absolute;
+    top: 15px;
+    left: 52px;
+    padding: 2px;
+}
+
+#rainbow-star-link {
+    position: absolute;
+    top: 15px;
+    left: 104px;
+    padding: 2px;    
+}
+
 
 /*
 

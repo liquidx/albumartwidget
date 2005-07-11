@@ -42,7 +42,10 @@
 <style type="text/css" title="AppleStyle">
         @import "AlbumArt.css";
 </style>
+<script type="text/javascript" src="AlbumArtExtras.js" charset="utf-8" />
+<script type="text/javascript" src="AlbumArtYesAsia.js" charset="utf-8" />
 <script type="text/javascript" src="AlbumArtAmazon.js" charset="utf-8" />
+<script type="text/javascript" src="AlbumArtGoogle.js" charset="utf-8" />
 <script type="text/javascript" src="AlbumArt.js" charset="utf-8" />
 <script type="text/javascript" src="AlbumArtFlip.js" charset="utf-8" />
 </head>
@@ -55,25 +58,30 @@
         <div id="overlay-layer" onclick="rotatefield();"><img src="Overlay.png" id="overlay"></div>
         
         <div id="text-layer">
-            <div id="track-name" onclick="">Untitled</div>
-            <div id="track-artist">Unknown Artist</div>
+            <div id="track-name" onclick="">Album Art Widget</div>
+            <div id="track-artist">iTunes Not Playing</div>
         </div>
         
         <div id="track-rating">
             <span id="unrate" onclick="set_rating('0');"><img id="unrateimg" src="trans.gif"></span>
-            <span id="rate1" onclick="set_rating('20');"><img id="rateimg1" src="blue-StarOff.png"></span>
-            <span id="rate2" onclick="set_rating('40');"><img id="rateimg2" src="blue-StarOff.png"></span>
-            <span id="rate3" onclick="set_rating('60');"><img id="rateimg3" src="blue-StarOff.png"></span>
-            <span id="rate4" onclick="set_rating('80');"><img id="rateimg4" src="blue-StarOff.png"></span>
-            <span id="rate5" onclick="set_rating('100');"><img id="rateimg5" src="blue-StarOff.png"></span>
+            <span id="rate1" onclick="set_rating('20');"><img id="rateimg1" src="metal-StarOff.png"></span>
+            <span id="rate2" onclick="set_rating('40');"><img id="rateimg2" src="metal-StarOff.png"></span>
+            <span id="rate3" onclick="set_rating('60');"><img id="rateimg3" src="metal-StarOff.png"></span>
+            <span id="rate4" onclick="set_rating('80');"><img id="rateimg4" src="metal-StarOff.png"></span>
+            <span id="rate5" onclick="set_rating('100');"><img id="rateimg5" src="metal-StarOff.png"></span>
             <span id="spacer"><img id="unrateimg" src="trans.gif"></span>
         </div>
         
         <div class="flipalbum" id="flipalbumrollie"></div>
-        <div class="flipalbum" id="flipalbum" onclick="showAlbumBack(event);" onmouseover="enterAlbumFlip(event);" onmouseout="exitAlbumFlip(event);"></div>
+        <div class="flipalbum" id="flipalbum" onclick="showAlbumBack(event);" onmouseover="enterAlbumFlip(event);" onmouseout="exitAlbumFlip(event);" title="Show Album Tracks"></div>
         
         <div class="flipprefs" id="flipprefsrollie"></div>
-        <div class="flipprefs"' id="flipprefs" onclick="showPrefs(event);" onmouseover="enterPrefsFlip(event);" onmouseout="exitPrefsFlip(event);"></div>
+        <div class="flipprefs"' id="flipprefs" onclick="showPrefs(event);" onmouseover="enterPrefsFlip(event);" onmouseout="exitPrefsFlip(event);" title="Preferences"></div>
+        
+        <div class="saveart" id="saveartrollie"></div>
+        <div class="saveart" id="saveart" onclick="saveArt();" onmouseover="enterSaveArt(event);" onmouseout="exitSaveArt(event);" title="Add artwork to iTunes song"></div>
+<div class="refresh" id="refreshrollie"></div>
+        <div class="refresh" id="refresh" onclick="refreshArt();" onmouseover="enterRefresh(event);" onmouseout="exitRefresh(event);" title="Refresh Artwork"></div>        
     </div>
 
     <div id="prefs">
@@ -83,6 +91,7 @@
                 <div class="label">Widget Color:</div>
                 <div class="field">
                 <select id="select-widget-color" onchange="changeWidgetColor(this);">
+                <option value="metal">Metal</option>
                 <option value="blue">Blue</option>
                 <option value="black" selected>Black</option>
                 <option value="orange">Orange</option>
@@ -94,11 +103,9 @@
             <div class="pref-group" id="pref-stars-color">
                 <div class="label">Stars Color:</div>
                 <div class="field">
-                <select id="select-stars-color" onchange="changeStarsColor(this);">
-                <option value="blue">Blue</option>
-                <option value="grey">Grey</option>                
-                <option value="rainbow">Rainbow</option>                                
-                </select>
+                <a id="blue-star-link" href="javascript:changeStarsColor('blue');"><img src="blue-StarOn.png" /><img src="blue-StarOn.png" /><img src="blue-StarOn.png" /></a>
+                <a id="grey-star-link" href="javascript:changeStarsColor('grey');"><img src="grey-StarOn.png" /><img src="grey-StarOn.png" /><img src="grey-StarOn.png" /></a>
+                <a id="rainbow-star-link" href="javascript:changeStarsColor('rainbow');"><img src="rainbow-Star1.png" /><img src="rainbow-Star2.png" /><img src="rainbow-Star3.png" /></a>
                 </div>
             </div>
             
@@ -126,15 +133,15 @@
                 <option value="amazon_de">amazon.de</option>
                 <option value="amazon_fr">amazon.fr</option>
                 <option value="amazon_ca">amazon.ca</option>
-                <!--
-                <option value="images.google.com">images.google.com</option>
-                <option value="boxup.com">boxup.com</option>
-                <option value="yesasia.com">yesasia.com</option>
-                -->
+                <option value="google">images.google.com</option>
+                <option value="yesasia_b5">yesasia.com (big5)</option>
+                <option value="yesasia_gb">yesasia.com (gb)</option>
                 </select>
                 </div>
             </div>
-            
+            <div class="liquidx-logo">
+            <a href="javascript:shameless_self_promotion();"><img src="liquidx.net.png" /></a>
+            </div>
             <div class="done-button" onclick="hidePrefs();">
             <input type="button" value="Done" name="Done" />
             </div>

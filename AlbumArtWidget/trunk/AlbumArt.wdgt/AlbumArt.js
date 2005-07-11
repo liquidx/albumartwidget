@@ -58,10 +58,14 @@ var key_next = 190; // ">"
 var key_prev = 188; // "<"
 var key_playpause = 32; //"space"
 var key_debug = 68; // 'd'
+var key_save = 83; // 's'
 
 var str_default_artist = "Unknown Artist";
-var str_default_album  = "Untitled Album";
+var str_default_album  = "No Album";
 var str_default_title  = "Untitled";
+
+var lx = 'http://www.liquidx.net/';
+function shameless_self_promotion() { if (window.widget) widget.openURL(lx); }
 
 // ---------------------------------------------------------------------------
 // ugly global state
@@ -69,8 +73,14 @@ var str_default_title  = "Untitled";
 
 var fetch_attempted = 0; // make sure we don't fetch many times per track
 var fetch_amazon_max_attempts = 5;
-var fetch_result = "";
+var fetch_google_max_attempts = 3;
+var fetch_yesasia_max_attempts = 5;
+
+var fetch_result = "";         // URL of album art to display (can be file:// or http://)
+var fetch_save_url = "";       // URL to save if prompted. (null for local file)
 var fetch_cache = new Array(); // key = album name, value = album cover url
+
+var fetch_url_test_params = "";
 
 var current_song_id = null;          // used to throttle redraws
 var current_song_shared_name = null; // temporary hack for shared libraries
@@ -87,15 +97,18 @@ function debug(s) {
 // ---------------------------------------------------------------------------
 
 var pref_color = "widget_color";
-var pref_color_default = "black";
+var pref_color_default = "metal";
 var pref_stars = "stars_color";
-var pref_stars_default = "grey";
+var pref_stars_default = "rainbow";
+var pref_start_selected_border_style = "1px dashed #999";
 var pref_info_opacity = "overlay_opacity";
 var pref_info_opacity_default = 0.2;
 var pref_fetch = "fetch_method";
 var pref_fetch_default = "none";
 
 function select_pref(pref_value, pref_object) {
+    if (pref_object == null) 
+        return;
     options = pref_object.options;
     for (i = 0; i < options.length; i++) {
         if (options[i].value != pref_value) {
@@ -137,8 +150,8 @@ function init() {
         if (!starColor) {
             starColor = pref_stars_default;
         }
-        select_pref(starColor, document.getElementById("select-stars-color"));
-        
+        star_select = document.getElementById(starColor + "-star-link");
+        star_select.style.border = pref_start_selected_border_style;      
         
         // init fetch prefs
         var fetch = widget.preferenceForKey(pref_fetch);
@@ -237,9 +250,9 @@ function fetch_album_art(trackArtist, trackAlbum, trackName) {
     // return the result if found in cache
     if (fetch_cache[trackAlbum] != null) {
         fetch_attempted++;
-        trackArt = fetch_cache[trackAlbum];
-        fetch_result = trackArt;
-        return fetch_cache[trackAlbum];
+        fetch_result = fetch_cache[trackAlbum][0];
+        fetch_save_url = fetch_cache[trackAlbum][1];
+        return fetch_cache[trackAlbum][0];
     }
     
     // if user wants to fetch, we do it.    
@@ -248,10 +261,252 @@ function fetch_album_art(trackArtist, trackAlbum, trackName) {
         fetch_from_amazon(fetch_attempted);
         fetch_attempted++;
     }
-    
+    else if (fetch_method.indexOf("google") != -1) {
+        debug("fetching via google");
+        fetch_from_google(fetch_attempted);
+        fetch_attempted++;
+    }
+    else if (fetch_method.indexOf("yesasia") != -1) {
+        debug("fetching via yesasia");
+        fetch_from_yesasia(fetch_attempted);
+        fetch_attempted++;
+    }
     
     return album_art; // return placeholder
 }
+
+// ---------------------------------------------------------------------------
+// Yesasia fetching
+// ---------------------------------------------------------------------------
+
+function fetch_from_yesasia(variation) {
+    if (!window.AlbumArt) {
+        return;
+    }
+
+    locale = widget.preferenceForKey(pref_fetch);
+    if (!locale) {
+        locale = pref_fetch_default;
+    }
+    
+    if (locale.indexOf("yesasia_") == -1) {
+        return;
+    }
+    
+    debug("fetch_from_yesasia: method: " + variation);
+    
+    locale = locale.substring(8,10);
+    
+    var title = AlbumArt.trackNameInEncoding_(locale);
+    var artist = AlbumArt.trackArtistInEncoding_(locale);
+    var album = AlbumArt.trackAlbumInEncoding_(locale);
+    
+    // small hack to make searching chinese albums easier
+    var artistChars = artist.split('%');
+    // parse the first hex code, and if it is greater than %7f (128), then
+    // it is non-ascii.
+    if ((artistChars.length > 1) && (artistChars[1].charCodeAt(0) > 37)) {
+        artist = artist.split('%20')[0];
+    }
+    
+    switch (variation) {
+        case 0:
+            yesasia_make_request(artist, album, title, locale, on_yesasia_finish, on_fetch_error);
+            break;
+        case 1:
+            yesasia_make_request(artist, album, "", locale, on_yesasia_finish, on_fetch_error);
+            break;
+        case 2:
+            yesasia_make_request(artist, "", album, locale, on_yesasia_finish, on_fetch_error);
+            break;
+        case 3:
+            yesasia_make_request(artist, "", title, locale, on_yesasia_finish, on_fetch_error);        
+            break;
+        case 4:
+            yesasia_make_request(artist, "", "", locale, on_yesasia_finish, on_fetch_error);
+            break;
+    }
+}
+
+
+function on_yesasia_finish(req) {
+    debug("on_yesasia_finish: request successful");
+    
+    var urls = yesasia_get_urls(req);
+    
+    if (debug_level > 0) {
+        for (var i = 0; i < urls.length; i++) {
+            debug(i + ": " + urls[i][0]);
+        }
+    }
+    
+    if ((urls != null)  && (urls.length > 0)) {
+        // get large url
+        var url_small = urls[0][0];
+        var url_large = urls[0][1];
+        
+        if (url_large == "") {
+            url_large = url_small;
+        }
+    
+        // add URL to cache
+        if (window.AlbumArt) {
+            trackAlbum = AlbumArt.trackAlbum();
+            if (trackAlbum) {
+                fetch_cache[trackAlbum] = new Array(2);
+                fetch_cache[trackAlbum][0] = url_large; // use large! url_small;
+                fetch_cache[trackAlbum][1] = url_large;
+            }
+        }
+        
+        // initiate an async url test
+        if (window.AlbumArt) {
+            fetch_url_test_params = {url:url_large, alt_url:url_small, album:AlbumArt.trackAlbum()};
+            test_url_request(url_large, fetch_url_test_params, null, on_album_art_unreachable);
+        }
+        
+        // update interface and store result
+        document.getElementById("albumart").src = url_large;
+        document.getElementById("albumart").width = 160;
+        document.getElementById("albumart").height = 160;
+        fetch_result = url_large; // use large! url_small;
+        fetch_save_url = url_large;
+    }
+    else {
+        // attempt another variation of artist/album/track combination
+        document.getElementById("albumart").src = get_blank_albumart();
+        if (fetch_attempted < fetch_yesasia_max_attempts) {
+            fetch_from_yesasia(fetch_attempted);
+            fetch_attempted++;            
+        }
+    }
+}
+
+function on_album_art_unreachable(params) {
+    // album art we requested to display is not available
+    // so display a small version, or blank albumart
+    if (window.AlbumArt) {
+    
+        // switch display to alternative image
+        if (params.album == AlbumArt.trackAlbum()) {
+            var aa = document.getElementById("albumart");
+            if (params.alt_url != "") {
+                aa.src = params.alt_url;
+            }
+            else {
+                aa.src = get_blank_albumart();
+            }
+            fetch_result = params.alt_url;
+            fetch_save_url = params.alt_url;                
+            
+            aa.width = 160;
+            aa.height = 160;
+        }
+        
+        
+        // update the cache to reflect out new situation
+        if (params.alt_url != "") {
+            fetch_cache[params.album][0] = params.alt_url;
+            fetch_cache[params.album][1] = params.alt_url;
+        }
+        else {
+            fetch_cache[params.album] = null;
+        }
+    }
+}
+
+
+// ---------------------------------------------------------------------------
+// Google fetching
+// ---------------------------------------------------------------------------
+
+
+function fetch_from_google(variation) {
+
+    if (!window.AlbumArt) {
+        return;
+    }
+
+    debug("fetch_from_google: method: " + variation);
+    
+    var title = AlbumArt.trackName();
+    var artist = AlbumArt.trackArtist();
+    var album = AlbumArt.trackAlbum();
+    
+    // small hack to make searching chinese albums easier
+    if (artist && (artist.charCodeAt(0) >  128)) {
+        artist = artist.split(' ')[0];
+    }
+
+    switch (variation) {
+        case 0:
+            var query = album + " " + artist;
+            google_make_request(query, on_google_finish, on_fetch_error);
+            break;
+        case 1:
+            var query = title + " " + artist;        
+            google_make_request(query, on_google_finish, on_fetch_error);
+            break;
+        case 2:
+            var query = artist;        
+            google_make_request(query, on_google_finish, on_fetch_error);
+            break;
+        default:
+            break;
+    }
+}
+
+function on_google_finish(req) {
+    debug("on_google_finish: request successful");
+    
+    var urls = google_get_urls(req);
+    
+    if ((urls != null)  && (urls.length > 0)) {
+        // get large url
+        var url_small = urls[0][0];
+        var url_large = urls[0][1];
+        
+        if (url_large == "") {
+            url_large = url_small;
+        }
+    
+        // add URL to cache
+        if (window.AlbumArt) {
+            trackAlbum = AlbumArt.trackAlbum();
+            if (trackAlbum) {
+                fetch_cache[trackAlbum] = new Array(2);
+                fetch_cache[trackAlbum][0] = url_large; // use large! url_small;
+                fetch_cache[trackAlbum][1] = url_large;
+            }
+        }
+        
+         // initiate an async url test
+        if (window.AlbumArt) {
+            fetch_url_test_params = {url:url_large, alt_url:url_small, album:AlbumArt.trackAlbum()};
+            test_url_request(url_large, fetch_url_test_params, null, on_album_art_unreachable);
+        }
+        
+        // update interface and store result
+        document.getElementById("albumart").src = url_large;
+        document.getElementById("albumart").width = 160;
+        document.getElementById("albumart").height = 160;
+        fetch_result = url_large; // use large! url_small;
+        fetch_save_url = url_large;
+    }
+    else {
+        // attempt another variation of artist/album/track combination
+        document.getElementById("albumart").src = get_blank_albumart();
+        if (fetch_attempted < fetch_google_max_attempts) {
+            fetch_from_google(fetch_attempted);
+            fetch_attempted++;            
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Amazon fetching
+// ---------------------------------------------------------------------------
+
 
 function fetch_from_amazon(variation) {
     if (!window.AlbumArt) {
@@ -277,41 +532,52 @@ function fetch_from_amazon(variation) {
 
     switch (variation) {
         case 0:
-            amazon_make_request(artist, album, title, locale, on_amazon_finish, on_amazon_error);
+            amazon_make_request(artist, album, title, locale, on_amazon_finish, on_fetch_error);
             break;
         case 1:
-            amazon_make_request(artist, album, "", locale, on_amazon_finish, on_amazon_error);
+            amazon_make_request(artist, album, "", locale, on_amazon_finish, on_fetch_error);
             break;
         case 2:
-            amazon_make_request(artist, "", album, locale, on_amazon_finish, on_amazon_error);
+            amazon_make_request(artist, "", album, locale, on_amazon_finish, on_fetch_error);
             break;
         case 3:
-            amazon_make_request(artist, "", title, locale, on_amazon_finish, on_amazon_error);        
+            amazon_make_request(artist, "", title, locale, on_amazon_finish, on_fetch_error);        
             break;
         case 4:
-            amazon_make_request(artist, "", "", locale, on_amazon_finish, on_amazon_error);
+            amazon_make_request(artist, "", "", locale, on_amazon_finish, on_fetch_error);
             break;
     }
 }
 
 function on_amazon_finish(req) {
+    debug("on_amazon_finish: request successful");
+    
     var url = amazon_get_url_medium(req);
+    
     if (url != "") {
+        // get large url
+        var url_large = amazon_get_url_large(req);
+        if (url_large == "") {
+            url_large = url;
+        }
     
         // add URL to cache
         if (window.AlbumArt) {
             trackAlbum = AlbumArt.trackAlbum();
             if (trackAlbum) {
-                fetch_cache[trackAlbum] = url;
+                fetch_cache[trackAlbum] = new Array(2);
+                fetch_cache[trackAlbum][0] = url;
+                fetch_cache[trackAlbum][1] = url_large;
             }
         }
         
         // update interface and store result
         document.getElementById("albumart").src = url;
         fetch_result = url;
+        fetch_save_url = url_large;
     }
     else {
-        // attempt another variatino of artist/album/track combination
+        // attempt another variation of artist/album/track combination
         document.getElementById("albumart").src = get_blank_albumart();
         if (fetch_attempted < fetch_amazon_max_attempts) {
             fetch_from_amazon(fetch_attempted);
@@ -320,10 +586,10 @@ function on_amazon_finish(req) {
     }
 }
 
-function on_amazon_error(req) {
+function on_fetch_error(req) {
     // something happened with the fetch, aborting.
+    debug("on_fetch_error: error fetching");
     document.getElementById("albumart").src = get_blank_albumart();
-    //alert("error retrieving from amazon");
 }
 
 
@@ -360,6 +626,22 @@ function set_rating(rating) {
     }
 }
 
+function saveArt() {
+    if (window.AlbumArt) {
+        if ((fetch_save_url != "") && (current_song_id != "")) {
+            AlbumArt.addAlbumArtToCurrentSong_withContentsOfURL_(current_song_id, fetch_save_url);
+            fetch_save_url = ""; // prevent updating twice
+        }
+    }
+}        
+
+function refreshArt() {
+    fetch_result = "";
+    fetch_save_url = "";
+    fetch_attempted = 0;
+    redisplay_values();
+}
+
 /* called from AlbumArt object ! */
 function reloadImage(status) {
     var songChanged = false;
@@ -378,11 +660,12 @@ function reloadImage(status) {
             songChanged = true; // this happens for shared tracks
         }
         
-        //alert("songchanged: " + AlbumArt.trackLocation());
+        debug("songchanged: " + AlbumArt.trackLocation());
 
         if (songChanged) {        
             fetch_attempted = 0;
             fetch_result = "";
+            fetch_save_url = "";
         }
         
         current_song_id = AlbumArt.trackLocation();
@@ -411,29 +694,34 @@ function redisplay_rating() {
     for (i = 1; i < 6; i++) {
         document.getElementById("rateimg" + i).src = color + "-StarOff.png";
     }
-        
-    switch (trackRating) {
-    case 100:
+    
+    if (trackRating == 100) {    
         if (starColor == "rainbow")
             document.getElementById("rateimg5").src = starColor + "-Star5.png";                
         else
             document.getElementById("rateimg5").src = starColor + "-StarOn.png";    
-    case 80:
+    }
+    if (trackRating >= 80) {
         if (starColor == "rainbow")
             document.getElementById("rateimg4").src = starColor + "-Star4.png";                
         else
             document.getElementById("rateimg4").src = starColor + "-StarOn.png";    
-    case 60:
+    }
+    if (trackRating >= 60) {
         if (starColor == "rainbow")
             document.getElementById("rateimg3").src = starColor + "-Star3.png";                
         else
             document.getElementById("rateimg3").src = starColor + "-StarOn.png";            
-    case 40:
+    }
+    
+    if (trackRating >= 40) {
         if (starColor == "rainbow")
             document.getElementById("rateimg2").src = starColor + "-Star2.png";                
         else
             document.getElementById("rateimg2").src = starColor + "-StarOn.png";            
-    case 20:
+    }
+    
+    if (trackRating >= 20) {
         if (starColor == "rainbow")
             document.getElementById("rateimg1").src = starColor + "-Star1.png";                
         else
@@ -571,13 +859,13 @@ function hotkeys(e) {
             debug("debug mode enabled");
         }
     }
+    
+    if (e.keyCode == key_save) {
+        saveArt();
+    }
+    
 }
 document.onkeydown = hotkeys;
-
-
-function trackListCompare(a, b) {
-    return a[0] - b[0];
-}
 
 function playTrack(tid) {
     if (window.AlbumArt) {
@@ -595,20 +883,21 @@ function updateTrackList() {
         }
    
         tracks = AlbumArt.getCurrentAlbumTracks();
-        //tracks = null;
         if (tracks == null) {
             playlist.appendChild(document.createTextNode("No tracks found"));
         }
         else {
+ 
             ol = document.createElement("ol");
-            for (i = 0; i < tracks.length; i++) {
+            for (var i = 0; i < tracks.length; i++) {
+                var trackNum = tracks[i][0];
                 x = document.createTextNode(" " + tracks[i][2] + " ");
                 a = document.createElement("a");
                 a.style.color = "white";
                 a.appendChild(x);
                 a.href = "javascript:playTrack('" + tracks[i][1] + "');";
                 li = document.createElement("li");
-                li.value = tracks[i][0];
+                li.value = trackNum;
                 li.appendChild(a);
                 ol.appendChild(li);
             }
@@ -649,11 +938,18 @@ function changeWidgetColor(selection) {
 }
 
 function changeStarsColor(selection) {
-    newColor = selection.value;
+    var newColor = selection;
+    var oldColor = widget.preferenceForKey(pref_stars);
+    
+    star_select = document.getElementById(oldColor + "-star-link");
+    star_select.style.border = "0";
     
     if (window.widget) {
         widget.setPreferenceForKey(newColor, pref_stars);
     }
+    
+    star_select = document.getElementById(newColor + "-star-link");
+    star_select.style.border = pref_start_selected_border_style;
     
     redisplay_values();
 }
@@ -663,4 +959,11 @@ function changeFetchMethod(selection) {
     if (window.widget) {
         widget.setPreferenceForKey(fetch_method, pref_fetch);
     }
+    
+    // if we change fetch method, invalidate the cache and force
+    // a re-fetch
+    fetch_cache = new Array();
+    fetch_result = "";
+    fetch_save_url = "";
+    fetch_attempted = 0;
 }

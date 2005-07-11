@@ -40,7 +40,7 @@
 
 var isBack = false;
 var flipShown = false;
-var animation = {duration:0, starttime:0, to:1.0, now:0.0, from:0.0, firstElement:null, secondElement:null, timer:null};
+var animation = {duration:0, starttime:0, to:1.0, now:0.0, from:0.0, elements:null, timer:null};
 
 function mousemove (event)
 {
@@ -75,11 +75,15 @@ function showFlipButtons()
     animation.duration = 500;
     animation.starttime = starttime;
     if (!isBack) {
-        animation.firstElement = document.getElementById ('flipprefs');
-        animation.secondElement = document.getElementById('flipalbum');
+        animation.elements = new Array();
+        animation.elements[0] = document.getElementById('flipprefs');
+        animation.elements[1] = document.getElementById('flipalbum');
+        animation.elements[2] = document.getElementById('saveart');
+        animation.elements[3] = document.getElementById('refresh');        
     }
     else {
-        animation.firstElement = document.getElementById ('flipalbumback');    
+        animation.elements = new Array();
+        animation.elements[0]  = document.getElementById ('flipalbumback');    
     }
     animation.timer = setInterval ("animate();", 13);
     animation.from = animation.now;
@@ -101,11 +105,15 @@ function hideFlipButtons()
     animation.duration = 500;
     animation.starttime = starttime;
    if (!isBack) {
-        animation.firstElement = document.getElementById ('flipprefs');
-        animation.secondElement = document.getElementById('flipalbum');
+        animation.elements = new Array();
+        animation.elements[0] = document.getElementById('flipprefs');
+        animation.elements[1] = document.getElementById('flipalbum');
+        animation.elements[2] = document.getElementById('saveart');
+        animation.elements[3] = document.getElementById('refresh');        
     }
     else {
-        animation.firstElement = document.getElementById ('flipalbumback');    
+        animation.elements = new Array();
+        animation.elements[0]  = document.getElementById ('flipalbumback');    
     }
     animation.timer = setInterval ("animate();", 13);
     animation.from = animation.now;
@@ -134,10 +142,9 @@ function animate()
         animation.now = computeNextFloat (animation.from, animation.to, ease);
     }
     
-    if (animation.firstElement != null)
-        animation.firstElement.style.opacity = animation.now;
-    if (animation.secondElement != null)
-        animation.secondElement.style.opacity = animation.now;    
+    for (var i = 0; i < animation.elements.length; i++) {
+        animation.elements[i].style.opacity = animation.now;
+    }    
 }
 function limit_3 (a, b, c)
 {
@@ -179,6 +186,27 @@ function exitPrefsFlip(event)
 {
         document.getElementById('flipprefsrollie').style.display = 'none';
 }
+
+function enterSaveArt(event)
+{
+        document.getElementById('saveartrollie').style.display = 'block';
+}
+
+function exitSaveArt(event)
+{
+        document.getElementById('saveartrollie').style.display = 'none';
+}
+
+function enterRefresh(event)
+{
+        document.getElementById('refreshrollie').style.display = 'block';
+}
+
+function exitRefresh(event)
+{
+        document.getElementById('refreshrollie').style.display = 'none';
+}
+
 
 // 
 // switch to showing preferences

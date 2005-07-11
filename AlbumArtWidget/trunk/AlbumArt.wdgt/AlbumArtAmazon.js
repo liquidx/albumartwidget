@@ -127,16 +127,32 @@ function amazon_make_request(artist, albumname, trackname, locale, on_finish, on
 
 function amazon_get_url_medium(req) {
     var urls = req.responseXML.getElementsByTagName("URL");
-    var medium_img = "._SCMZZZZZZZ_.jpg";
+    var medium_suffix = "._SCMZZZZZZZ_.jpg";
     var medium_url = "";
     for (var i = 0; i < urls.length; i++) {
         url = urls[i].firstChild.nodeValue;
-        if (url.indexOf(medium_img) != -1) {
+        if (url.indexOf(medium_suffix) != -1) {
             medium_url = url;
             break;
         }
     }
     return medium_url;
+}    
+
+/* return the first album cover that is large size (eg. 300x300) */
+
+function amazon_get_url_large(req) {
+    var urls = req.responseXML.getElementsByTagName("URL");
+    var large_suffix = "._SCLZZZZZZZ_.jpg";
+    var large_url = "";
+    for (var i = 0; i < urls.length; i++) {
+        url = urls[i].firstChild.nodeValue;
+        if (url.indexOf(large_suffix) != -1) {
+            large_url = url;
+            break;
+        }
+    }
+    return large_url;
 }    
 
 /* ability to return all the urls returned, and displays them in a DOM
