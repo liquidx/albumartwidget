@@ -1,0 +1,47 @@
+* AlbumArtWidget 2.2.1
+ - Fixed rare bug that occurs if you choose Yesasia Big5 Fetching and 
+   play a song encoded in something other than Big5.
+
+* AlbumArtWidget 2.2
+ - Added button to save fetched artwork to iTunes.
+ - Added images.google.com support (with small tweak for chinese songs).
+ - Added prelimiary yesasia.com chinese album cover support.
+ - Sorted track list pane properly.
+ - Changed default song titles to "Album Art Widget" and "iTunes Not Playing"
+ - Added logo.
+ - Added new default theme (Metal).
+ - Changed star-color selection to be more visually pleasing.
+ - Added button to forcefully refresh fetched artwork.
+ - Added spinner to indicate album art fetching in progress.
+
+* AlbumArtWidget 2.1
+ - Fixed un-encoded & (eg. X&Y displays as X)
+ - Fixed disappearing artwork bug
+ - Added support for Radio streams
+ 
+* AlbumArtWidget 2.0
+
+ - Added Un-Rate Functionality (similar to iTunes) by clicking on the
+   blank space before the first star.
+ - Added preferences pane to change look'n'feel
+ - Added preferences for online album cover fetching
+ - Added toggling of album name display when clicking on name/title
+ - Flip feature to view available track list of album. Just like a real CD.
+ - clicking on a track on back side will skip to it. (note: doesn't work 
+   for non-english track names)
+ - Respect Aspect Ratio of Album Cover
+ - Removed ugly CD album art. Now just presents with blank shading for no
+   album art.
+ - Keyboard shortcuts [<] prev track, [space] play/pause, [>] next track
+ - Search's for Album Art via Amazon(.com/.co.uk/.co.jp/.de/.fr/.ca)
+ - Customise the UI, widget colors, star colors and info panel.
+
+ TODO:
+ - Get Tracklist from Amazon and then link to iTMS
+ - Feedback with saving artwork
+ - Improve hueristics with yesasia URLs (s_ and p URLs)
+ - Add saving artwork to all songs with the same album name.
+ - Case insensitive tag parsing
+ - Add link to the URL of the fetched artwork, or the query that generated it
+ - Use album art from another song with the same album name before fetching.
+

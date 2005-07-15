@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		032CEDD4088722C400F33185 /* EyeTunes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032CEDD3088722C400F33185 /* EyeTunes.framework */; };
+		032CEDE0088722E500F33185 /* EyeTunes.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 032CEDD3088722C400F33185 /* EyeTunes.framework */; };
 		034940290825986E003CA55D /* GetAlbumArt.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 0349402808259869003CA55D /* GetAlbumArt.scpt */; };
 		034940A50825A866003CA55D /* AlbumArtHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 034940A40825A866003CA55D /* AlbumArtHolder.m */; };
 		0387307F08255A5200A3134D /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0387307E08255A5200A3134D /* WebKit.framework */; };
@@ -47,8 +49,22 @@
 		};
 /* End PBXBuildStyle section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		032CEDDE088722D200F33185 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				032CEDE0088722E500F33185 /* EyeTunes.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		0310A91008506A8B00AE5DB7 /* AlbumArtApplescript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumArtApplescript.h; sourceTree = "<group>"; };
+		032CEDD3088722C400F33185 /* EyeTunes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EyeTunes.framework; path = ../../EyeTunes/build/Release/EyeTunes.framework; sourceTree = SOURCE_ROOT; };
 		0349402808259869003CA55D /* GetAlbumArt.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.scpt; path = GetAlbumArt.scpt; sourceTree = "<group>"; };
 		034940A30825A866003CA55D /* AlbumArtHolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumArtHolder.h; sourceTree = "<group>"; };
 		034940A40825A866003CA55D /* AlbumArtHolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumArtHolder.m; sourceTree = "<group>"; };
@@ -88,12 +104,23 @@
 			files = (
 				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
 				0387307F08255A5200A3134D /* WebKit.framework in Frameworks */,
+				032CEDD4088722C400F33185 /* EyeTunes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		032CED3408871B8600F33185 /* Deprecated */ = {
+			isa = PBXGroup;
+			children = (
+				0310A91008506A8B00AE5DB7 /* AlbumArtApplescript.h */,
+				03D3FF230826DFDB009EDCE0 /* GetTrackInfo.scpt */,
+				0349402808259869003CA55D /* GetAlbumArt.scpt */,
+			);
+			name = Deprecated;
+			sourceTree = "<group>";
+		};
 		03D3FFF408277CA3009EDCE0 /* NDAlias */ = {
 			isa = PBXGroup;
 			children = (
@@ -137,8 +164,6 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				03D3FF230826DFDB009EDCE0 /* GetTrackInfo.scpt */,
-				0349402808259869003CA55D /* GetAlbumArt.scpt */,
 				8D5B49B7048680CD000E48DA /* Info.plist */,
 				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
 			);
@@ -148,7 +173,7 @@
 		08FB77AFFE84173DC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				0310A91008506A8B00AE5DB7 /* AlbumArtApplescript.h */,
+				032CED3408871B8600F33185 /* Deprecated */,
 				03A7743C0827BC6B00F29C31 /* AlbumArtConstants.h */,
 				03A28F760825280900938C64 /* AlbumArtPlugin.h */,
 				03A28F770825280900938C64 /* AlbumArtPlugin.m */,
@@ -164,6 +189,7 @@
 		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				032CEDD3088722C400F33185 /* EyeTunes.framework */,
 				0387307E08255A5200A3134D /* WebKit.framework */,
 				1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */,
 			);
@@ -206,6 +232,7 @@
 				8D5B49AF048680CD000E48DA /* Resources */,
 				8D5B49B1048680CD000E48DA /* Sources */,
 				8D5B49B3048680CD000E48DA /* Frameworks */,
+				032CEDDE088722D200F33185 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -299,6 +326,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../../EyeTunes/build/Release\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -321,6 +349,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../../EyeTunes/build/Release\"";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G4;
@@ -340,6 +369,7 @@
 		03B04495088042C900D12928 /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../../EyeTunes/build/Release\"";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

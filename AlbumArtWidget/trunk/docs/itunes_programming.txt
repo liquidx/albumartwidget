@@ -220,8 +220,37 @@ Path Aliases
 
 Use of MacOS HFS Syntax rather than Unix path syntax.
 
+
 Integrating Applescript in Cocoa
 =================================
+
+How to do it without Applescript -- Apple Events Primer
+=======================================================
+
+1. Apple Events?
+~~~~~~~~~~~~~~~~~
+
+So, executing raw Applescript is all well and good, but this is inefficient because you are going through multiple layers. For a diagram on how that actually works in real life, take a look at this diagram from the Apple Documentation
+
+http://developer.apple.com/documentation/AppleScript/Conceptual/AppleScriptX/Concepts/osa.html#//apple_ref/doc/uid/TP40001571
+
+http://developer.apple.com/documentation/AppleScript/Conceptual/AppleScriptX/art/execute_script.gif
+
+If we want to get as close to the metal as possible, we should be sending AppleEvents rather than executing Applescript. Unfortuantely, AppleEvents is a mainly Carbon concept, and most of the documentation is copious, yet obscure.
+
+2. Finding out an Apple Events Interface from a Carbon Application
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Script Editor's Open Dictionary is very nice, but it doesn't give us the Event Class and Event ID's that an application responds to. This is actually contained inside the resource (archive) file. For iTunes, this is in iTunes.app/Contents/Resources/iTunes.rsrc.
+
+The file is just a bunch of garbage, so it is hard to read. The interface, if you check out the Apple documentation is called AETE (Apple Event Terminology E??). The resource file is an archive of non-code resources that the application uses for Carbon apps. For Cocoa apps, it is in a more friendlier sdef or scriptSuite format.
+
+So the interface is somewhere inside this resource file. Luckily, someone has written an aete to sdef (XML format) generator.
+
+http://webperso.easyconnect.fr/bdesgraupes/DocHTML/Aete2sdefHelp.html
+
+So once you run that tool over the iTunes.rsrc file, you will get the complete definition of all the Apple Events that it publically admits on handling. Now that we have that, we can programmatically trigger AppleEvents and skip Applescript altogether!
+
 
 Beginnings of an iTunes Framework for Cocoa
 ============================================
