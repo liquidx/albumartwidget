@@ -38,14 +38,9 @@
 #import <Webkit/Webkit.h>
 #import <EyeTunes/EyeTunes.h>
 
-//#import "NDAlias.h"
-//#import "NSURL+NDCarbonUtilities.h"
-//#import "NSString+NDCarbonUtilities.h"
-
 #import "AlbumArtHolder.h"
 #import "AlbumArtTempFile.h"
 #import "AlbumArtConstants.h"
-#import "AlbumArtApplescript.h"
 
 @interface AlbumArtPlugin : NSObject {
 	WebView			*webview;

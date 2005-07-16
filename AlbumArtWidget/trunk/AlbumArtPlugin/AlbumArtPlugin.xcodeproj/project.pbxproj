@@ -44,8 +44,7 @@
 /* End PBXBuildStyle section */
 
 /* Begin PBXFileReference section */
-		0310A91008506A8B00AE5DB7 /* AlbumArtApplescript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumArtApplescript.h; sourceTree = "<group>"; };
-		0349402808259869003CA55D /* GetAlbumArt.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.scpt; path = GetAlbumArt.scpt; sourceTree = "<group>"; };
+		0310A91008506A8B00AE5DB7 /* AlbumArtApplescript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlbumArtApplescript.h; path = deprecated/AlbumArtApplescript.h; sourceTree = "<group>"; };
 		034940A30825A866003CA55D /* AlbumArtHolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumArtHolder.h; sourceTree = "<group>"; };
 		034940A40825A866003CA55D /* AlbumArtHolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumArtHolder.m; sourceTree = "<group>"; };
 		0387307E08255A5200A3134D /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
@@ -54,7 +53,6 @@
 		03A7743C0827BC6B00F29C31 /* AlbumArtConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumArtConstants.h; sourceTree = "<group>"; };
 		03B044A8088051AA00D12928 /* AlbumArtTempFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumArtTempFile.h; sourceTree = "<group>"; };
 		03B044A9088051AB00D12928 /* AlbumArtTempFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumArtTempFile.m; sourceTree = "<group>"; };
-		03D3FF230826DFDB009EDCE0 /* GetTrackInfo.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.scpt; path = GetTrackInfo.scpt; sourceTree = "<group>"; };
 		03EF8A3F088847C40010AC2E /* EyeTunesEventCodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EyeTunesEventCodes.h; path = ../../EyeTunes/EyeTunesEventCodes.h; sourceTree = SOURCE_ROOT; };
 		03EF8A40088847C40010AC2E /* EyeTunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EyeTunes.h; path = ../../EyeTunes/EyeTunes.h; sourceTree = SOURCE_ROOT; };
 		03EF8A41088847C40010AC2E /* EyeTunes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EyeTunes.m; path = ../../EyeTunes/EyeTunes.m; sourceTree = SOURCE_ROOT; };
@@ -91,8 +89,6 @@
 			isa = PBXGroup;
 			children = (
 				0310A91008506A8B00AE5DB7 /* AlbumArtApplescript.h */,
-				03D3FF230826DFDB009EDCE0 /* GetTrackInfo.scpt */,
-				0349402808259869003CA55D /* GetAlbumArt.scpt */,
 			);
 			name = Deprecated;
 			sourceTree = "<group>";

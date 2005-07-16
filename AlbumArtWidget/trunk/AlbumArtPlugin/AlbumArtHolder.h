@@ -39,6 +39,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import <EyeTunes/EyeTunes.h>
+
 #import "AlbumArtConstants.h"
 #import "AlbumArtTempFile.h"
 
