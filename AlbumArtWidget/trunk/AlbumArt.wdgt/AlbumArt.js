@@ -48,7 +48,6 @@ quick disclaimer about coding scheme:
 // constants
 // ---------------------------------------------------------------------------
 
-
 var shade_x = 34;
 var shade_y = 140;
 var shade_w = 158;
@@ -64,7 +63,7 @@ var str_default_artist = "Unknown Artist";
 var str_default_album  = "No Album";
 var str_default_title  = "Untitled";
 
-var lx = 'http://www.liquidx.net/';
+var lx = "http://www.liquidx.net/";
 function shameless_self_promotion() { if (window.widget) widget.openURL(lx); }
 
 // ---------------------------------------------------------------------------
@@ -98,13 +97,48 @@ function debug(s) {
 
 var pref_color = "widget_color";
 var pref_color_default = "metal";
+var pref_color_choices = new Array("metal", "blue", "black");
+
 var pref_stars = "stars_color";
 var pref_stars_default = "rainbow";
-var pref_start_selected_border_style = "1px dashed #999";
+var pref_stars_choices = new Array("rainbow", "grey", "blue");
+var pref_stars_selected_border_style = "1px dashed #999";
+
 var pref_info_opacity = "overlay_opacity";
 var pref_info_opacity_default = 0.2;
+
 var pref_fetch = "fetch_method";
 var pref_fetch_default = "none";
+var pref_fetch_choices = new Array("amazon_us", "amazon_uk", "amazon_jp", "amazon_de", "amazon_fr", "amazon_ca", "google", "yesasia_b5", "yesasia_gb");
+
+var pref_choices = new Array();
+pref_choices[pref_color] = pref_color_choices;
+pref_choices[pref_stars] = pref_stars_choices;
+pref_choices[pref_fetch] = pref_fetch_choices;
+
+var pref_defaults = new Array();
+pref_defaults[pref_color] = pref_color_default;
+pref_defaults[pref_stars] = pref_stars_default;
+pref_defaults[pref_fetch] = pref_fetch_default;
+pref_defaults[pref_info_opacity] = pref_info_opacity_default;
+
+function verify_pref(pref_value, pref_name) {
+    var choices = pref_choices[pref_name];
+    var def = pref_defaults[pref_name];
+    if (pref_value == null) {
+        return def;
+    }
+    
+    if (choices != null) {
+        for (var i = 0; i < choices.length; i++) {
+            if (choices[i] == pref_value) {
+                return pref_value;
+            }
+        }
+    }
+    
+    return def;
+}
 
 function select_pref(pref_value, pref_object) {
     if (pref_object == null) 
@@ -123,44 +157,36 @@ function select_pref(pref_value, pref_object) {
 
 function init() {
     if (window.widget) {
-        
+
         // init widget color scheme
         var color = widget.preferenceForKey(pref_color);
-        if (!color) {
-            color = pref_color_default;
-        }
-        
+        color = verify_pref(color, pref_color);
+        widget.setPreferenceForKey(color, pref_color);
+        select_pref(color, document.getElementById("select-widget-color"));        
         document.getElementById("front-background").src = color + "-Default.png";
         document.getElementById("overlay").src = color + "-Overlay.png";
         document.getElementById("albumart").src = color + "-Blank.png";
-        
-        // make sure prefs are in sync
-        select_pref(color, document.getElementById("select-widget-color"));
-        
+
         // init info opacity
         var opacity = widget.preferenceForKey(pref_info_opacity);
-        if (!opacity) {
-            opacity = pref_info_opacity_default;
-        }
+        opacity = verify_pref(opacity, pref_info_opacity);
+        widget.setPreferenceForKey(opacity, pref_info_opacity);
         document.getElementById("shade-layer").style.opacity = opacity;
         select_pref(opacity, document.getElementById("select-info-opacity"));
         
         // init star colors
-        var starColor = widget.preferenceForKey(pref_stars);
-        if (!starColor) {
-            starColor = pref_stars_default;
-        }
-        star_select = document.getElementById(starColor + "-star-link");
-        star_select.style.border = pref_start_selected_border_style;      
+        var star_color = widget.preferenceForKey(pref_stars);
+        star_color = verify_pref(star_color, pref_stars);
+        widget.setPreferenceForKey(star_color, pref_stars);
+        star_select = document.getElementById(star_color + "-star-link");
+        star_select.style.border = pref_stars_selected_border_style;      
         
         // init fetch prefs
         var fetch = widget.preferenceForKey(pref_fetch);
-        if (!fetch) {
-            fetch = pref_fetch_default;
-        }
+        fetch = verify_pref(fetch, pref_fetch);
+        widget.setPreferenceForKey(fetch, pref_fetch);
         select_pref(fetch, document.getElementById("select-fetch"));
-        
-        
+                
         // init other global states
         if (window.AlbumArt) {
             current_song_id = AlbumArt.trackLocation();
@@ -940,7 +966,7 @@ function updateTrackList() {
 // ---------------------------------------------------------------------------
 
 function changeInfoOpacity(selection) {
-    newOpacity = selection.value;
+    newOpacity = verify_pref(selection.value, pref_info_opacity);
     
     shader = document.getElementById("shade-layer");
     if (shader) shader.style.opacity = newOpacity;
@@ -952,7 +978,7 @@ function changeInfoOpacity(selection) {
 
 
 function changeWidgetColor(selection) {
-    newColor = selection.value;
+    newColor = verify_pref(selection.value, pref_color);
     
     bg = document.getElementById("front-background");
     if (bg) bg.src = newColor + "-Default.png";
@@ -967,18 +993,20 @@ function changeWidgetColor(selection) {
 }
 
 function changeStarsColor(selection) {
-    var newColor = selection;
+    var newColor = verify_pref(selection, pref_stars);
     var oldColor = widget.preferenceForKey(pref_stars);
     
-    star_select = document.getElementById(oldColor + "-star-link");
-    star_select.style.border = "0";
+    if (oldColor != null) {
+        star_select = document.getElementById(oldColor + "-star-link");
+        star_select.style.border = "0";
+    }
     
     if (window.widget) {
         widget.setPreferenceForKey(newColor, pref_stars);
     }
     
     star_select = document.getElementById(newColor + "-star-link");
-    star_select.style.border = pref_start_selected_border_style;
+    star_select.style.border = pref_stars_selected_border_style;
     
     redisplay_values();
 }
