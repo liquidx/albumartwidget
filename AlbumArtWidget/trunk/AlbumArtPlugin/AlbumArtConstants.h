@@ -35,7 +35,7 @@
  */
 
 
-#define AAP_DEBUG		0
+#define AAP_DEBUG		1
 #define AAF_PREFIX		@"net.liquidx.AlbumArtWidget"
 #define AAF_BUNDLE_ID	@"net.liquidx.AlbumArtWidget.AlbumArtPlugin"
 

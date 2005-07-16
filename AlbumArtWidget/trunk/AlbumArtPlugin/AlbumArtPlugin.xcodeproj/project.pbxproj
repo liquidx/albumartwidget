@@ -7,20 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		034940290825986E003CA55D /* GetAlbumArt.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 0349402808259869003CA55D /* GetAlbumArt.scpt */; };
 		034940A50825A866003CA55D /* AlbumArtHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 034940A40825A866003CA55D /* AlbumArtHolder.m */; };
 		0387307F08255A5200A3134D /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0387307E08255A5200A3134D /* WebKit.framework */; };
 		03A28F780825280900938C64 /* AlbumArtPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A28F770825280900938C64 /* AlbumArtPlugin.m */; };
 		03B044AA088051AB00D12928 /* AlbumArtTempFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B044A9088051AB00D12928 /* AlbumArtTempFile.m */; };
-		03D3FF5E0826E4FC009EDCE0 /* GetTrackInfo.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 03D3FF230826DFDB009EDCE0 /* GetTrackInfo.scpt */; };
-		03EF8A48088847C40010AC2E /* EyeTunesEventCodes.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 03EF8A3F088847C40010AC2E /* EyeTunesEventCodes.h */; };
-		03EF8A49088847C40010AC2E /* EyeTunes.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 03EF8A40088847C40010AC2E /* EyeTunes.h */; };
 		03EF8A4A088847C40010AC2E /* EyeTunes.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF8A41088847C40010AC2E /* EyeTunes.m */; };
-		03EF8A4B088847C40010AC2E /* ETTrack.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 03EF8A42088847C40010AC2E /* ETTrack.h */; };
 		03EF8A4C088847C40010AC2E /* ETTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF8A43088847C40010AC2E /* ETTrack.m */; };
-		03EF8A4D088847C40010AC2E /* ETAppleEventObject.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 03EF8A44088847C40010AC2E /* ETAppleEventObject.h */; };
 		03EF8A4E088847C40010AC2E /* ETAppleEventObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF8A45088847C40010AC2E /* ETAppleEventObject.m */; };
-		03EF8A4F088847C40010AC2E /* ETPlaylist.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 03EF8A46088847C40010AC2E /* ETPlaylist.h */; };
 		03EF8A50088847C40010AC2E /* ETPlaylist.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF8A47088847C40010AC2E /* ETPlaylist.m */; };
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
@@ -50,23 +43,6 @@
 		};
 /* End PBXBuildStyle section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		032CEDDE088722D200F33185 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				03EF8A48088847C40010AC2E /* EyeTunesEventCodes.h in CopyFiles */,
-				03EF8A49088847C40010AC2E /* EyeTunes.h in CopyFiles */,
-				03EF8A4B088847C40010AC2E /* ETTrack.h in CopyFiles */,
-				03EF8A4D088847C40010AC2E /* ETAppleEventObject.h in CopyFiles */,
-				03EF8A4F088847C40010AC2E /* ETPlaylist.h in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		0310A91008506A8B00AE5DB7 /* AlbumArtApplescript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumArtApplescript.h; sourceTree = "<group>"; };
 		0349402808259869003CA55D /* GetAlbumArt.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.scpt; path = GetAlbumArt.scpt; sourceTree = "<group>"; };
@@ -78,19 +54,7 @@
 		03A7743C0827BC6B00F29C31 /* AlbumArtConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumArtConstants.h; sourceTree = "<group>"; };
 		03B044A8088051AA00D12928 /* AlbumArtTempFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumArtTempFile.h; sourceTree = "<group>"; };
 		03B044A9088051AB00D12928 /* AlbumArtTempFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumArtTempFile.m; sourceTree = "<group>"; };
-		03D3000008277CB0009EDCE0 /* NDAlias+AliasFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NDAlias+AliasFile.m"; sourceTree = "<group>"; };
 		03D3FF230826DFDB009EDCE0 /* GetTrackInfo.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.scpt; path = GetTrackInfo.scpt; sourceTree = "<group>"; };
-		03D3FFF508277CB0009EDCE0 /* NSURL+NDCarbonUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+NDCarbonUtilities.m"; sourceTree = "<group>"; };
-		03D3FFF608277CB0009EDCE0 /* NSURL+NDCarbonUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+NDCarbonUtilities.h"; sourceTree = "<group>"; };
-		03D3FFF708277CB0009EDCE0 /* NSString+NDCarbonUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+NDCarbonUtilities.m"; sourceTree = "<group>"; };
-		03D3FFF808277CB0009EDCE0 /* NSString+NDCarbonUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+NDCarbonUtilities.h"; sourceTree = "<group>"; };
-		03D3FFF908277CB0009EDCE0 /* NDResourceFork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NDResourceFork.m; sourceTree = "<group>"; };
-		03D3FFFA08277CB0009EDCE0 /* NDResourceFork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDResourceFork.h; sourceTree = "<group>"; };
-		03D3FFFB08277CB0009EDCE0 /* NDResourceFork+OtherSorces.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NDResourceFork+OtherSorces.m"; sourceTree = "<group>"; };
-		03D3FFFC08277CB0009EDCE0 /* NDAlias.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDAlias.h; sourceTree = "<group>"; };
-		03D3FFFD08277CB0009EDCE0 /* NDAlias+AliasFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NDAlias+AliasFile.h"; sourceTree = "<group>"; };
-		03D3FFFE08277CB0009EDCE0 /* NDResourceFork+OtherSorces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NDResourceFork+OtherSorces.h"; sourceTree = "<group>"; };
-		03D3FFFF08277CB0009EDCE0 /* NDAlias.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NDAlias.m; sourceTree = "<group>"; };
 		03EF8A3F088847C40010AC2E /* EyeTunesEventCodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EyeTunesEventCodes.h; path = ../../EyeTunes/EyeTunesEventCodes.h; sourceTree = SOURCE_ROOT; };
 		03EF8A40088847C40010AC2E /* EyeTunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EyeTunes.h; path = ../../EyeTunes/EyeTunes.h; sourceTree = SOURCE_ROOT; };
 		03EF8A41088847C40010AC2E /* EyeTunes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EyeTunes.m; path = ../../EyeTunes/EyeTunes.m; sourceTree = SOURCE_ROOT; };
@@ -131,25 +95,6 @@
 				0349402808259869003CA55D /* GetAlbumArt.scpt */,
 			);
 			name = Deprecated;
-			sourceTree = "<group>";
-		};
-		03D3FFF408277CA3009EDCE0 /* NDAlias */ = {
-			isa = PBXGroup;
-			children = (
-				03D3FFF508277CB0009EDCE0 /* NSURL+NDCarbonUtilities.m */,
-				03D3FFF608277CB0009EDCE0 /* NSURL+NDCarbonUtilities.h */,
-				03D3FFF708277CB0009EDCE0 /* NSString+NDCarbonUtilities.m */,
-				03D3FFF808277CB0009EDCE0 /* NSString+NDCarbonUtilities.h */,
-				03D3FFF908277CB0009EDCE0 /* NDResourceFork.m */,
-				03D3FFFA08277CB0009EDCE0 /* NDResourceFork.h */,
-				03D3FFFB08277CB0009EDCE0 /* NDResourceFork+OtherSorces.m */,
-				03D3FFFC08277CB0009EDCE0 /* NDAlias.h */,
-				03D3FFFD08277CB0009EDCE0 /* NDAlias+AliasFile.h */,
-				03D3FFFE08277CB0009EDCE0 /* NDResourceFork+OtherSorces.h */,
-				03D3FFFF08277CB0009EDCE0 /* NDAlias.m */,
-				03D3000008277CB0009EDCE0 /* NDAlias+AliasFile.m */,
-			);
-			name = NDAlias;
 			sourceTree = "<group>";
 		};
 		03EF8A3E088847A50010AC2E /* EyeTunes */ = {
@@ -210,7 +155,6 @@
 				034940A40825A866003CA55D /* AlbumArtHolder.m */,
 				03B044A8088051AA00D12928 /* AlbumArtTempFile.h */,
 				03B044A9088051AB00D12928 /* AlbumArtTempFile.m */,
-				03D3FFF408277CA3009EDCE0 /* NDAlias */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -260,7 +204,6 @@
 				8D5B49AF048680CD000E48DA /* Resources */,
 				8D5B49B1048680CD000E48DA /* Sources */,
 				8D5B49B3048680CD000E48DA /* Frameworks */,
-				032CEDDE088722D200F33185 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -311,8 +254,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03D3FF5E0826E4FC009EDCE0 /* GetTrackInfo.scpt in Resources */,
-				034940290825986E003CA55D /* GetAlbumArt.scpt in Resources */,
 				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -310,12 +310,15 @@ int trackSort(id track1, id track2, void *context)
 	NSLog(@"addAlbumArtToCurrentSong:withContentsOfURL:");
 #endif
 	if (!songURL || !url || ([songURL length] == 0) || ([url length] == 0))  {
+#if AAP_DEBUG
+		NSLog(@"Not enough parameters: songURL: %@ url: %@", songURL, url);
+#endif
 		return NO;
 	}
 	
 	if (![[NSURL URLWithString:songURL] isFileURL]) {
 #if AAP_DEBUG		
-		NSLog(@"plugin.addAlbumArt: songURL is not local file");
+		NSLog(@"plugin.addAlbumArt: songURL is not local file: %@", songURL);
 #endif
 		return NO;
 	}
