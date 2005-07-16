@@ -209,65 +209,29 @@
 
 - (void) setTrackRating:(int)newRating
 {
-	NSString *scriptContents = [NSString stringWithFormat:AAP_SET_RATING_SCRIPT, newRating];
-	NSAppleScript *script = [[[NSAppleScript alloc] initWithSource:scriptContents] autorelease];
-	NSDictionary *error;
-	
-	if (!script) {
-		NSLog(@"plugin.setTrackRating: error initialising script");
-		return;
-	}
-	
-	NSAppleEventDescriptor *desc = [script executeAndReturnError:&error];
-	if (!desc) {
-		//NSLog(@"plugin.setTrackRating: error executing script: %@", error);
-		return;
-	}
-	
-	return;
+	[[[EyeTunes sharedInstance] currentTrack] setRating:newRating];
 }
 
 - (BOOL) getTrackInfo
 {
-	// Load AppleScript that fetches Album Artwork
-	NSString *scriptContents = AAP_GET_TRACK_INFO_SCRIPT;
-	NSAppleScript   *script = [[[NSAppleScript alloc] initWithSource:scriptContents] autorelease];
-	
-	if (!script) {
-		NSLog(@"plugin.getTrackInfo: error initialising applescript");
-		return NO;
-	}
-	
-	// run script
 	if ([self iTunesIsRunning]) {
-		NSAppleEventDescriptor *aEventDesc;
-		NSDictionary *error;
-		
-		aEventDesc = [script executeAndReturnError:&error];
-		if ([[aEventDesc stringValue] isEqualToString:@"failed"]) {
-			//NSLog(@"plugin.gettrackinfo: script failed: %@", error);
-			return NO;
-		}
-		
-		if ([aEventDesc numberOfItems] == 8) {
+		ETTrack *currentTrack = [[EyeTunes sharedInstance] currentTrack];
+		if (currentTrack != nil) {
 			[trackName release];
-			trackName = [[[aEventDesc descriptorAtIndex:1L] stringValue] retain];
+			trackName = [[currentTrack name] retain];
 			[trackArtist release];
-			trackArtist = [[[aEventDesc descriptorAtIndex:2L] stringValue] retain];
+			trackArtist = [[currentTrack artist] retain];
 			[trackAlbum release];
-			trackAlbum = [[[aEventDesc descriptorAtIndex:3L] stringValue] retain];
-			trackRating = [[aEventDesc descriptorAtIndex:4L] int32Value];
-			trackTime = [[aEventDesc descriptorAtIndex:5L] int32Value];
-			trackNumber = [[aEventDesc descriptorAtIndex:6L] int32Value];
-			trackYear = [[aEventDesc descriptorAtIndex:7L] int32Value];
+			trackAlbum = [[currentTrack album] retain];
 			[trackLocation release];
+			trackLocation = [[currentTrack location] retain];
 			
-			NDAlias *alias = [NDAlias aliasWithData:[[aEventDesc descriptorAtIndex:8L] data]];
-			trackLocation = [[[alias url] absoluteString] retain];
+			trackRating = [currentTrack rating];
+			trackTime = [currentTrack duration];
+			trackNumber = [currentTrack trackNumber];
+			trackYear = [currentTrack year];
 		}
 		else {
-			NSLog(@"plugin.gettrackinfo: returned unexpected results: %d",
-				  [aEventDesc numberOfItems]);
 			return NO;
 		}
 	}
@@ -290,139 +254,53 @@ int trackSort(id track1, id track2, void *context)
 
 - (NSArray *) getCurrentAlbumTracks
 {
-	// Load AppleScript that fetches Album Artwork
-	NSString *scriptContents = AAP_GET_TRACKS_IN_ALBUM_SCRIPT;
-	NSAppleScript   *script = [[[NSAppleScript alloc] initWithSource:scriptContents] autorelease];
-	NSMutableArray *albumTracks = nil;
 	
-	if (!script) {
-		NSLog(@"plugin.getTrackInfo: error initialising applescript");
-		return nil;
-	}
+	NSMutableArray *trackNumberLocationNameList = nil;
 	
-	// run script
-	if ([self iTunesIsRunning]) {
-		NSAppleEventDescriptor *aEventDesc;
-		NSDictionary *error;
-		long int i;
+	if ([self iTunesIsRunning] && ([self trackAlbum] != nil) && ([[self trackAlbum] length] > 0)) {
+		EyeTunes *itunes = [EyeTunes sharedInstance];
+		NSArray *tracks = [itunes search:[itunes libraryPlaylist] 
+							   forString:[self trackAlbum] 
+								 inField:kETSearchAttributeAlbums];
 		
-		aEventDesc = [script executeAndReturnError:&error];
-		albumTracks = [[NSMutableArray alloc] init];
-		for (i = 0; i < [aEventDesc numberOfItems]/3; i++) {
-			int num = [[aEventDesc descriptorAtIndex:i*3L + 1L] int32Value];
-			NSString *name = [[aEventDesc descriptorAtIndex:(i+1)*3L] stringValue];
-			NDAlias *alias = [NDAlias aliasWithData:[[aEventDesc descriptorAtIndex:i*3L + 2L] data]];
-			NSString *location = [[[alias url] fileSystemPathHFSStyle] retain];
+		if (tracks) {
+			trackNumberLocationNameList = [NSMutableArray arrayWithCapacity:[tracks count]];
+			NSEnumerator *e = [tracks objectEnumerator];
+			ETTrack *track = nil;
 			
-			NSArray *newtrack = [NSArray arrayWithObjects:[NSNumber numberWithInt:num],
-														  location,
-														  name,nil];
-			[albumTracks addObject:newtrack];
+			while (track = [e nextObject]) {
+				NSArray *trackInfoArray = [NSArray arrayWithObjects:
+					[NSNumber numberWithInt:[track trackNumber]],
+					[track location],
+					[track name], nil];
+				[trackNumberLocationNameList addObject:trackInfoArray];
+			}
+			
 		}
 		
-		[albumTracks sortUsingFunction:trackSort context:nil];
-		return albumTracks;
 	}
 	
-	return nil;
+	return trackNumberLocationNameList;
 }
 
 - (void)playerPrev
 {
-	// Load AppleScript that fetches Album Artwork
-	NSString *scriptContents = AAP_PREV_TRACK;
-	NSAppleScript   *script = [[[NSAppleScript alloc] initWithSource:scriptContents] autorelease];
-	
-	if (!script) {
-		NSLog(@"plugin.playerPrev: error initialising applescript");
-		return;
-	}
-	
-	// run script
-	if ([self iTunesIsRunning]) {
-		NSAppleEventDescriptor *aEventDesc;
-		NSDictionary *error;
-		aEventDesc = [script executeAndReturnError:&error];
-	}
+	[[EyeTunes sharedInstance] previousTrack];
 }
 
 - (void)playerNext
 {
-	// Load AppleScript that fetches Album Artwork
-	NSString *scriptContents = AAP_NEXT_TRACK;
-	NSAppleScript   *script = [[[NSAppleScript alloc] initWithSource:scriptContents] autorelease];
-
-	if (!script) {
-		NSLog(@"plugin.playerNext: error initialising applescript");
-		return;
-	}
-	
-	// run script
-	if ([self iTunesIsRunning]) {
-		NSAppleEventDescriptor *aEventDesc;
-		NSDictionary *error;
-		aEventDesc = [script executeAndReturnError:&error];
-	}
+	[[EyeTunes sharedInstance] nextTrack];
 }
 
 - (void)playerPlayPause
 {
-	// Load AppleScript that fetches Album Artwork
-	NSString *scriptContents = AAP_PLAYPAUSE;
-	NSAppleScript   *script = [[[NSAppleScript alloc] initWithSource:scriptContents] autorelease];
-	
-	if (!script) {
-		NSLog(@"plugin.playerPlayPause: error initialising applescript");
-		return;
-	}
-	
-	// run script
-	if ([self iTunesIsRunning]) {
-		NSAppleEventDescriptor *aEventDesc;
-		NSDictionary *error;
-		aEventDesc = [script executeAndReturnError:&error];
-	}
-}
-
-- (void)playSong:(int)songID
-{
-	// Load AppleScript that fetches Album Artwork
-	NSString *scriptContents = [NSString stringWithFormat:AAP_PLAY_SONG, songID];
-	NSAppleScript   *script = [[[NSAppleScript alloc] initWithSource:scriptContents] autorelease];
-	
-	if (!script) {
-		NSLog(@"plugin.playSong: error initialising applescript");
-		return;
-	}
-	
-	// run script
-	if ([self iTunesIsRunning]) {
-		NSAppleEventDescriptor *aEventDesc;
-		NSDictionary *error;
-		aEventDesc = [script executeAndReturnError:&error];
-#if  AAP_DEBUG		
-		NSLog(@"playSong: %d", songID);
-#endif
-	}
+	[[EyeTunes sharedInstance] playPause];
 }
 
 - (void)playSongFile:(NSString *)filename
 {
-	// Load AppleScript that fetches Album Artwork
-	NSString *scriptContents = [NSString stringWithFormat:AAP_PLAY_SONG_FILE, filename];
-	NSAppleScript   *script = [[[NSAppleScript alloc] initWithSource:scriptContents] autorelease];
-	
-	if (!script) {
-		NSLog(@"plugin.playSong: error initialising applescript");
-		return;
-	}
-	
-	// run script
-	if ([self iTunesIsRunning]) {
-		NSAppleEventDescriptor *aEventDesc;
-		NSDictionary *error;
-		aEventDesc = [script executeAndReturnError:&error];
-	}
+	[[EyeTunes sharedInstance] playTrackWithPath:filename];
 }
 
 - (BOOL)addAlbumArtToCurrentSong:(NSString *)songURL withContentsOfURL:(NSString *)url
@@ -431,9 +309,6 @@ int trackSort(id track1, id track2, void *context)
 #if AAP_DEBUG
 	NSLog(@"addAlbumArtToCurrentSong:withContentsOfURL:");
 #endif
-	
-	int songDuration = [self trackTime];
-	
 	if (!songURL || !url || ([songURL length] == 0) || ([url length] == 0))  {
 		return NO;
 	}
@@ -445,67 +320,16 @@ int trackSort(id track1, id track2, void *context)
 		return NO;
 	}
 	
-	
 	NSImage *image = [[[NSImage alloc] initWithContentsOfURL:[NSURL URLWithString:url]] autorelease];
 	if (!image) {
 		NSLog(@"plugin.addAlbumArt: unable to load image from URL");
 		return NO;
 	}
 	
-	
-	NSArray *reps = [image representations];
-	if (!reps || ([reps count] == 0)) {
-		NSLog(@"plugin.addAlbumArt: image has no representations");
-		return NO;
+	ETTrack *currentTrack = [[EyeTunes sharedInstance] currentTrack];
+	if ([[currentTrack location]  isEqualToString:songURL]) {
+		[currentTrack setArtwork:image atIndex:0];
 	}
-	
-	NSEnumerator *e = [reps objectEnumerator];
-	NSBitmapImageRep *r;
-	NSData *imageData;
-	while (r = [e nextObject]) {
-		imageData = [r representationUsingType:NSJPEGFileType properties:nil];
-		if (imageData)
-			break;
-	}
-	if (!imageData) {
-		NSLog(@"plugin.addAlbumArt: cannot convert to JPEG");
-		return NO;
-	}
-	
-	NSString *tempFilename = [AlbumArtTempFile randomTemporaryPathWithExtension:@"jpg"];
-	if (![imageData writeToFile:tempFilename atomically:YES]) {
-		NSLog(@"plugin.addAlbumArt: unable to write to temporary file");
-		return NO;
-	}
-	
-	// Load AppleScript that fetches Album Artwork
-	NSString *tempPictname = [[AlbumArtTempFile randomTemporaryPathWithExtension:@"pic"] fileSystemPathHFSStyle];
-	NSString *scriptContents = [NSString stringWithFormat:AAP_ADD_ALBUM_ART,tempFilename,
-										tempPictname, songDuration, tempPictname, tempPictname];
-	NSAppleScript   *script = [[[NSAppleScript alloc] initWithSource:scriptContents] autorelease];
-	if (!script) {
-		NSLog(@"plugin.addAlbumArt: error initialising applescript");
-		[[NSFileManager defaultManager] removeFileAtPath:tempFilename handler:nil];
-		return NO;			
-	}
-	
-	// run script
-	if ([self iTunesIsRunning]) {
-		NSAppleEventDescriptor *aEventDesc;
-		NSDictionary *myerror = nil;
-		aEventDesc = [script executeAndReturnError:&myerror];
-		if (myerror != nil) {
-			NSLog(@"plugin.addAlbumArt: error executing applescript: %@", myerror);
-			[[NSFileManager defaultManager] removeFileAtPath:tempPictname handler:nil];
-			[[NSFileManager defaultManager] removeFileAtPath:tempFilename handler:nil];			
-			return NO;			
-		}
-	}
-	
-	[[NSFileManager defaultManager] removeFileAtPath:tempFilename handler:nil];	
-#if AAP_DEBUG	
-	NSLog(@"plugin.addAlbumArt: added artwork to (%d) file \"%@\" with URL \"%@\"", songDuration, songPath, url);
-#endif
 	return YES;
 
 }

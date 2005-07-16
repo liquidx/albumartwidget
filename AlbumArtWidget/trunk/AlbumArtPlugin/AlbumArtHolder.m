@@ -188,40 +188,13 @@
 
 - (BOOL) fetchAlbumArt
 {
-	NSAppleEventDescriptor *aEventDesc;
-	NSImage *artwork = nil;
-	NSDictionary *error = nil;
-	
-	aEventDesc = [fetchScript executeAndReturnError:&error];
-	if ([[aEventDesc stringValue] isEqualToString:@"Script Failed"]) {
-#if AAP_DEBUG
-		NSLog(@"holder.fetchAlbumArt: script failed.");
-#endif
-		return NO;
+	NSArray *artworks = [[[EyeTunes sharedInstance] currentTrack] artwork];
+	if ((artworks != nil) && ([artworks count] > 0)) {
+		[self setArtwork:[artworks objectAtIndex:0]];
+		return YES;
 	}
 	
-	const OSType type = [aEventDesc typeCodeValue];
-	if (type != 'null') {
-		artwork = [[[NSImage alloc] initWithData:[aEventDesc data]] autorelease];
-		if (artwork) {
-			[self setArtwork:artwork];
-			return YES;
-		}
-		else {
-#if AAP_DEBUG
-			NSLog(@"holder.fetchAlbumArt: failed to get artwork");
-#endif
-			return NO;
-		}
-	}
-	else {
-		// no artwork available
-#if AAP_DEBUG
-		NSLog(@"holder.fetchAlbumArt: artwork not available");
-#endif
-		return NO;
-	}
-	
+	return NO;
 }
 
 - (BOOL) resizeImage:(NSImage *)anImage toSize:(NSSize)newSize outputToFile:(NSString *)filename

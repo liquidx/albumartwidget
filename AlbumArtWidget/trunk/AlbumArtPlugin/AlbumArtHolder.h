@@ -38,6 +38,7 @@
 /*	Holds and caches the Album Art to allow multiple fetches */
 
 #import <Cocoa/Cocoa.h>
+#import <EyeTunes/EyeTunes.h>
 #import "AlbumArtConstants.h"
 #import "AlbumArtTempFile.h"
 

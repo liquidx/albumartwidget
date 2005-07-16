@@ -32,14 +32,16 @@
  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
  
- */
+*/
 
 #import <Cocoa/Cocoa.h>
 #import <Webkit/Webkit.h>
-#import "EyeTunes/EyeTunes.h"
-#import "NDAlias.h"
-#import "NSURL+NDCarbonUtilities.h"
-#import "NSString+NDCarbonUtilities.h"
+#import <EyeTunes/EyeTunes.h>
+
+//#import "NDAlias.h"
+//#import "NSURL+NDCarbonUtilities.h"
+//#import "NSString+NDCarbonUtilities.h"
+
 #import "AlbumArtHolder.h"
 #import "AlbumArtTempFile.h"
 #import "AlbumArtConstants.h"
@@ -87,7 +89,6 @@
 - (void)playerPrev;
 - (void)playerNext;
 - (void)playerPlayPause;
-- (void)playSong:(int)songID;
 - (void)playSongFile:(NSString *)filename;
 
 - (void)updateRating:(id)newRating;
