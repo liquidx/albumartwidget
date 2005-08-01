@@ -84,7 +84,12 @@
         <div class="saveart" id="saveartrollie"></div>
         <div class="saveart" id="saveart" onclick="saveArt();" onmouseover="enterSaveArt(event);" onmouseout="exitSaveArt(event);" title="Add artwork to iTunes song"></div>
 <div class="refresh" id="refreshrollie"></div>
-        <div class="refresh" id="refresh" onclick="refreshArt();" onmouseover="enterRefresh(event);" onmouseout="exitRefresh(event);" title="Refresh Artwork"></div>        
+        <div class="refresh" id="refresh" onclick="refreshArt();" onmouseover="enterRefresh(event);" onmouseout="exitRefresh(event);" title="Refresh Artwork"></div>
+        
+        <div class="saveart-choice" id="saveart-single" onclick="saveArtSong();" title="Save artwork to this song only"></div>
+        <div class="saveart-choice" id="saveart-album" onclick="saveArtAlbum();" title="Save artwork to all songs in the same album"></div>
+        <div class="saveart-choice" id="saveart-cancel" onclick="saveArtCancel();" title="Cancel"></div>
+        
     </div>
 
     <div id="prefs">

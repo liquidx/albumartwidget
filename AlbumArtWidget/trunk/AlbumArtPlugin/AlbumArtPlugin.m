@@ -372,8 +372,10 @@ int trackSort(id track1, id track2, void *context)
 	
 	EyeTunes *itunes = [EyeTunes sharedInstance];
 	NSArray *tracks = [itunes search:[itunes libraryPlaylist] 
-						   forString:[self trackAlbum] 
+						   forString:albumName
 							 inField:kETSearchAttributeAlbums];
+	
+	NSLog(@"%s", tracks);
 	
 	if (tracks) {
 		NSEnumerator *e = nil;
@@ -383,11 +385,14 @@ int trackSort(id track1, id track2, void *context)
 			if ([track artwork] == nil) {
 				[track setArtwork:image atIndex:0];
 			}
+			else {
+				NSLog(@"plugin.addAlbumArt: track alread has artwork");				
+			}
 		}
 		
 		return YES;
 	}
-	
+	NSLog(@"plugin.addAlbumArt: no tracks found");
 	return NO;
 }
 

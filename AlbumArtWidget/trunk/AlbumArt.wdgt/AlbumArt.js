@@ -628,17 +628,39 @@ function set_rating(rating) {
 }
 
 function saveArt() {
+    document.getElementById("saveart-single").style.display = "block";
+    document.getElementById("saveart-album").style.display = "block";    
+    document.getElementById("saveart-cancel").style.display = "block";        
+}
+
+function saveArtCancel() {
+    document.getElementById("saveart-single").style.display = "none";
+    document.getElementById("saveart-album").style.display = "none";    
+    document.getElementById("saveart-cancel").style.display = "none"; 
+}
+
+function saveArtAlbum() {
     if (window.AlbumArt) {
         if ((fetch_save_url != "") && (current_song_id != "")) {
-            show_spinner();
-            AlbumArt.addAlbumArtToCurrentSong_withContentsOfURL_(current_song_id, fetch_save_url);
-            fetch_save_url = ""; // prevent updating twice
-            hide_spinner();
+            AlbumArt.addAlbumArtToCurrentAlbum_withContentsOfURL_(current_song_id, fetch_save_url);
         }
     }
-}        
+    saveArtCancel();
+}
+
+function saveArtSong() {
+    if (window.AlbumArt) {
+        if ((fetch_save_url != "") && (current_song_id != "")) {
+            AlbumArt.addAlbumArtToCurrentSong_withContentsOfURL_(current_song_id, fetch_save_url);
+        }
+    }
+    saveArtCancel();
+}
 
 function refreshArt() {
+    if (window.AlbumArt) {
+        fetch_cache[AlbumArt.trackAlbum()] = null;
+    }
     fetch_result = "";
     fetch_save_url = "";
     fetch_attempted = 0;

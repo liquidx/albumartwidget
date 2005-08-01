@@ -2,6 +2,8 @@
  - Fixed bug with changing stars/look.
  - Total rewrite of backend album art saving.
  - Allow autohiding of song information.
+ - Fixed bug where album art fetching failed after once for radio streams
+ - Fixed bug where refresh doesn't work if album art is found.
 
 * AlbumArtWidget 2.2.1
  - Fixed rare bug that occurs if you choose Yesasia Big5 Fetching and 

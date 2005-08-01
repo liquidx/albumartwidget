@@ -307,6 +307,31 @@ li {
 }
 
 
+.saveart-choice {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    z-index: 10;
+    display: none;
+    opacity: 0.75;
+    top: 110px;
+    background-color: black; 
+    border: 1px solid black;
+}
+
+#saveart-single {
+    left: 55px;
+}
+
+#saveart-album {
+    left: 95px;
+}
+
+#saveart-cancel {
+    left: 135px;
+}
+    
+
 /*
 
 #playerstate-layer {
