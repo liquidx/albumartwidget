@@ -43,41 +43,7 @@
 - (id) init
 {
 	self = [super init];
-	if (self) {
-
-		// Load AppleScript that fetches Album Artwork
-		NSDictionary	*error;
-		NSBundle *bundle = [NSBundle bundleWithIdentifier:AAF_BUNDLE_ID];
-		if (!bundle) {
-			NSLog(@"holder.init: Unable to find plugin's bundle");
-			[self release];
-			return nil;
-		}
-		
-		NSString *path = [bundle pathForResource:@"GetAlbumArt" ofType:@"scpt"];
-		if (!path) {
-			NSLog(@"holder.init: Unable to find AppleScript in bundle path");
-			NSLog(@"%@", path);
-			[self release];
-			return nil;
-		}
-		
-		NSURL	 *url = [NSURL fileURLWithPath:path];
-		if (!url) {
-			NSLog(@"holder.init: Unable to construct URL to path: %@", path);
-			[self release];
-			return nil;
-		}
-		
-		fetchScript = [[NSAppleScript alloc] initWithContentsOfURL:url
-															 error:&error];
-
-		if (!fetchScript) {
-			NSLog(@"holder.init: Unable to parse/load AlbumArt script: %@", &error);
-			[self release];
-			return nil;
-		}
-		
+	if (self) {		
 		// initialise current state
 		playingAlbumArt = nil;
 		temporaryFilename = nil;
@@ -103,7 +69,6 @@
 	}
 	
 	[playingAlbumArt release];
-	[fetchScript release];
 	[jpegProperties release];
 	[super dealloc];
 }	

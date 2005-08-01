@@ -89,6 +89,7 @@
 - (void)updateRating:(id)newRating;
 - (NSArray *)getCurrentAlbumTracks;
 - (BOOL)addAlbumArtToCurrentSong:(NSString *)songURL withContentsOfURL:(NSString *)url;
+- (BOOL)addAlbumArtToCurrentAlbum:(NSString *)songURL withContentsOfURL:(NSString *)url;
 
 - (NSString *)trackNameInEncoding:(NSString *)encoding;
 - (NSString *)trackArtistInEncoding:(NSString *)encoding;

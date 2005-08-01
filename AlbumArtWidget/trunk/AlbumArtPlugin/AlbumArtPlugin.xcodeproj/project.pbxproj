@@ -316,10 +316,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SRCROOT)/../../EyeTunes/build/Release",
-					"$(SRCROOT)/../../EyeTunes/build/Embedded",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../../EyeTunes/build/Release";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G4;

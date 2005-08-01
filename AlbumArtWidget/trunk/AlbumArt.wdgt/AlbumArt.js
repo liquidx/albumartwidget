@@ -95,64 +95,7 @@ function debug(s) {
 // preferences
 // ---------------------------------------------------------------------------
 
-var pref_color = "widget_color";
-var pref_color_default = "metal";
-var pref_color_choices = new Array("metal", "blue", "black");
 
-var pref_stars = "stars_color";
-var pref_stars_default = "rainbow";
-var pref_stars_choices = new Array("rainbow", "grey", "blue");
-var pref_stars_selected_border_style = "1px dashed #999";
-
-var pref_info_opacity = "overlay_opacity";
-var pref_info_opacity_default = 0.2;
-
-var pref_fetch = "fetch_method";
-var pref_fetch_default = "none";
-var pref_fetch_choices = new Array("amazon_us", "amazon_uk", "amazon_jp", "amazon_de", "amazon_fr", "amazon_ca", "google", "yesasia_b5", "yesasia_gb");
-
-var pref_choices = new Array();
-pref_choices[pref_color] = pref_color_choices;
-pref_choices[pref_stars] = pref_stars_choices;
-pref_choices[pref_fetch] = pref_fetch_choices;
-
-var pref_defaults = new Array();
-pref_defaults[pref_color] = pref_color_default;
-pref_defaults[pref_stars] = pref_stars_default;
-pref_defaults[pref_fetch] = pref_fetch_default;
-pref_defaults[pref_info_opacity] = pref_info_opacity_default;
-
-function verify_pref(pref_value, pref_name) {
-    var choices = pref_choices[pref_name];
-    var def = pref_defaults[pref_name];
-    if (pref_value == null) {
-        return def;
-    }
-    
-    if (choices != null) {
-        for (var i = 0; i < choices.length; i++) {
-            if (choices[i] == pref_value) {
-                return pref_value;
-            }
-        }
-    }
-    
-    return def;
-}
-
-function select_pref(pref_value, pref_object) {
-    if (pref_object == null) 
-        return;
-    options = pref_object.options;
-    for (i = 0; i < options.length; i++) {
-        if (options[i].value != pref_value) {
-            options[i].selected = false;
-        }
-        else {
-            options[i].selected = true;
-        }
-    }
-}
 
 
 function init() {
@@ -186,6 +129,11 @@ function init() {
         fetch = verify_pref(fetch, pref_fetch);
         widget.setPreferenceForKey(fetch, pref_fetch);
         select_pref(fetch, document.getElementById("select-fetch"));
+                
+        // init autohide prefs
+        var info_hide = widget.preferenceForKey(pref_info_hide);
+        document.getElementById("select-info-hide").checked = info_hide;
+
                 
         // init other global states
         if (window.AlbumArt) {
@@ -717,6 +665,14 @@ function reloadImage(status) {
         
         debug("songchanged: " + AlbumArt.trackLocation());
 
+        // show song info with auto-hide
+        if (window.widget) {
+            if (widget.preferenceForKey(pref_info_hide)) {
+                song_info_show(1);
+            }
+        }
+
+
         if (songChanged) {        
             fetch_attempted = 0;
             fetch_result = "";
@@ -1024,3 +980,11 @@ function changeFetchMethod(selection) {
     fetch_save_url = "";
     fetch_attempted = 0;
 }
+
+function changeInfoHide(selection) {
+    var info_hide = selection.checked;
+    if (window.widget) {
+        widget.setPreferenceForKey(info_hide, pref_info_hide);
+    }
+}
+

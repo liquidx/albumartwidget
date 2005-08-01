@@ -334,7 +334,61 @@ int trackSort(id track1, id track2, void *context)
 		[currentTrack setArtwork:image atIndex:0];
 	}
 	return YES;
+}
 
+- (BOOL)addAlbumArtToCurrentAlbum:(NSString *)songURL withContentsOfURL:(NSString *)url
+{
+	
+#if AAP_DEBUG
+	NSLog(@"addAlbumArtToCurrentAlbum:withContentsOfURL:");
+#endif
+	if (!songURL || !url || ([songURL length] == 0) || ([url length] == 0))  {
+#if AAP_DEBUG
+		NSLog(@"Not enough parameters: songURL: %@ url: %@", songURL, url);
+#endif
+		return NO;
+	}
+	
+	if (![[NSURL URLWithString:songURL] isFileURL]) {
+#if AAP_DEBUG		
+		NSLog(@"plugin.addAlbumArt: songURL is not local file: %@", songURL);
+#endif
+		return NO;
+	}
+	
+	NSString *albumName = [self trackAlbum];
+	if ([albumName length] < 1) {
+#if AAP_DEBUG		
+		NSLog(@"plugin.addAlbumArt: album name is empty");
+#endif
+		return NO;
+	}
+	
+	NSImage *image = [[[NSImage alloc] initWithContentsOfURL:[NSURL URLWithString:url]] autorelease];
+	if (!image) {
+		NSLog(@"plugin.addAlbumArt: unable to load image from URL");
+		return NO;
+	}
+	
+	EyeTunes *itunes = [EyeTunes sharedInstance];
+	NSArray *tracks = [itunes search:[itunes libraryPlaylist] 
+						   forString:[self trackAlbum] 
+							 inField:kETSearchAttributeAlbums];
+	
+	if (tracks) {
+		NSEnumerator *e = nil;
+		ETTrack *track;
+		
+		while (track = [e nextObject]) {
+			if ([track artwork] == nil) {
+				[track setArtwork:image atIndex:0];
+			}
+		}
+		
+		return YES;
+	}
+	
+	return NO;
 }
 
 - (NSString *)trackNameInEncoding:(NSString *)encoding

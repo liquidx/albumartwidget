@@ -46,7 +46,6 @@
 @interface AlbumArtHolder : NSObject {
 	NSImage			*playingAlbumArt;
 	NSString		*temporaryFilename;
-	NSAppleScript	*fetchScript;
 	
 	NSDictionary	*jpegProperties;
 }

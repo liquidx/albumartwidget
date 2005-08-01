@@ -42,16 +42,18 @@
 <style type="text/css" title="AppleStyle">
         @import "AlbumArt.css";
 </style>
+<script type="text/javascript" src="AlbumArtPrefs.js" charset="utf-8" />
 <script type="text/javascript" src="AlbumArtExtras.js" charset="utf-8" />
 <script type="text/javascript" src="AlbumArtYesAsia.js" charset="utf-8" />
 <script type="text/javascript" src="AlbumArtAmazon.js" charset="utf-8" />
 <script type="text/javascript" src="AlbumArtGoogle.js" charset="utf-8" />
 <script type="text/javascript" src="AlbumArt.js" charset="utf-8" />
+<script type="text/javascript" src="AlbumArtAnimation.js" charset="utf-8" />
 <script type="text/javascript" src="AlbumArtFlip.js" charset="utf-8" />
 </head>
 
 <body onload="init();">
-    <div id="front" onmousemove="mousemove(event);" onmouseout="mouseexit(event);">
+    <div id="front" onmouseover="mousemove(event); song_info_mouseover();" onmouseout="mouseexit(event); song_info_mouseout();">
         <img src="Default.png" class="background" id="front-background" />
         <div id="albumart-layer"><img src="Blank.png" id="albumart"></div>
         <div id="spinner-layer"><img id="spinner" src="spinner.gif" /></div>
@@ -118,9 +120,10 @@
                 <option value="0.6">60%</option>                                
                 <option value="0.8">80%</option>                
                 </select>
+                Autohide: <input type="checkbox" id="select-info-hide" value="0" onchange="changeInfoHide(this);"/>
                 </div>
             </div>
-
+            
             <div class="pref-group" id="pref-fetch">
                 <div class="label">Fetch Art Online:</div>
                 <div class="field">

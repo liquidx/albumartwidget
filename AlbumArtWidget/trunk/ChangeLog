@@ -1,3 +1,8 @@
+* AlbumArtWidget 2.3
+ - Fixed bug with changing stars/look.
+ - Total rewrite of backend album art saving.
+ - Allow autohiding of song information.
+
 * AlbumArtWidget 2.2.1
  - Fixed rare bug that occurs if you choose Yesasia Big5 Fetching and 
    play a song encoded in something other than Big5.
