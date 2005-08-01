@@ -654,6 +654,10 @@ function reloadImage(status) {
 
         if ((AlbumArt.trackType() == "Radio") && (status == "Playing")) {
             songChanged = true;
+            // for radio, the album name is always the station name,
+            // so we clear the cache for that entry to force ourselves
+            // to refetch the new song
+            fetch_cache[AlbumArt.trackAlbum()] = null;
         }
 
         if (AlbumArt.trackLocation() != current_song_id) {
