@@ -300,14 +300,17 @@ int trackSort(id track1, id track2, void *context)
 
 - (void)playSongFile:(NSString *)filename
 {
-	[[EyeTunes sharedInstance] playTrackWithPath:filename];
+	NSURL *fileURL = [NSURL URLWithString:filename];
+	if ([fileURL isFileURL]) {
+		[[EyeTunes sharedInstance] playTrackWithPath:[fileURL path]];
+	}
 }
 
 - (BOOL)addAlbumArtToCurrentSong:(NSString *)songURL withContentsOfURL:(NSString *)url
 {
 	
 #if AAP_DEBUG
-	NSLog(@"addAlbumArtToCurrentSong:withContentsOfURL:");
+	NSLog(@"addAlbumArtToCurrentSong:withContentsOfURL: %@", url);
 #endif
 	if (!songURL || !url || ([songURL length] == 0) || ([url length] == 0))  {
 #if AAP_DEBUG
@@ -340,7 +343,7 @@ int trackSort(id track1, id track2, void *context)
 {
 	
 #if AAP_DEBUG
-	NSLog(@"addAlbumArtToCurrentAlbum:withContentsOfURL:");
+	NSLog(@"addAlbumArtToCurrentAlbum:withContentsOfURL: %@", url);
 #endif
 	if (!songURL || !url || ([songURL length] == 0) || ([url length] == 0))  {
 #if AAP_DEBUG
@@ -357,6 +360,7 @@ int trackSort(id track1, id track2, void *context)
 	}
 	
 	NSString *albumName = [self trackAlbum];
+	
 	if ([albumName length] < 1) {
 #if AAP_DEBUG		
 		NSLog(@"plugin.addAlbumArt: album name is empty");
@@ -369,17 +373,16 @@ int trackSort(id track1, id track2, void *context)
 		NSLog(@"plugin.addAlbumArt: unable to load image from URL");
 		return NO;
 	}
-	
+
 	EyeTunes *itunes = [EyeTunes sharedInstance];
+	
 	NSArray *tracks = [itunes search:[itunes libraryPlaylist] 
 						   forString:albumName
 							 inField:kETSearchAttributeAlbums];
 	
-	NSLog(@"%s", tracks);
-	
 	if (tracks) {
-		NSEnumerator *e = nil;
-		ETTrack *track;
+		NSEnumerator *e = [tracks objectEnumerator];
+		ETTrack *track = nil;
 		
 		while (track = [e nextObject]) {
 			if ([track artwork] == nil) {

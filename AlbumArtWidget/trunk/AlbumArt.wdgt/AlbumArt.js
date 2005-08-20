@@ -44,26 +44,6 @@ quick disclaimer about coding scheme:
 
 */
 
-// ---------------------------------------------------------------------------
-// constants
-// ---------------------------------------------------------------------------
-
-var shade_x = 34;
-var shade_y = 140;
-var shade_w = 158;
-var shade_h = 40;
-
-var key_next = 190; // ">"
-var key_prev = 188; // "<"
-var key_playpause = 32; //"space"
-var key_debug = 68; // 'd'
-var key_save = 83; // 's'
-
-var str_default_artist = "Unknown Artist";
-var str_default_album  = "No Album";
-var str_default_title  = "Untitled";
-
-var lx = "http://www.liquidx.net/";
 function shameless_self_promotion() { if (window.widget) widget.openURL(lx); }
 
 // ---------------------------------------------------------------------------
@@ -94,8 +74,6 @@ function debug(s) {
 // ---------------------------------------------------------------------------
 // preferences
 // ---------------------------------------------------------------------------
-
-
 
 
 function init() {
@@ -139,6 +117,9 @@ function init() {
         if (window.AlbumArt) {
             current_song_id = AlbumArt.trackLocation();
         }
+        
+        // autoupdate mechnism (TODO)
+        auto_update();
     }
 }
 
@@ -628,9 +609,14 @@ function set_rating(rating) {
 }
 
 function saveArt() {
-    document.getElementById("saveart-single").style.display = "block";
-    document.getElementById("saveart-album").style.display = "block";    
-    document.getElementById("saveart-cancel").style.display = "block";        
+    if (document.getElementById("saveart-single").style.display == "block") {
+        saveArtCancel();
+    }
+    else {
+        document.getElementById("saveart-single").style.display = "block";
+        document.getElementById("saveart-album").style.display = "block";    
+        document.getElementById("saveart-cancel").style.display = "block";        
+    }
 }
 
 function saveArtCancel() {
@@ -906,6 +892,7 @@ document.onkeydown = hotkeys;
 
 function playTrack(tid) {
     if (window.AlbumArt) {
+        debug(tid);
         AlbumArt.playSongFile_(tid);
     }
 }
@@ -924,7 +911,6 @@ function updateTrackList() {
             playlist.appendChild(document.createTextNode("No tracks found"));
         }
         else {
- 
             ol = document.createElement("ol");
             for (var i = 0; i < tracks.length; i++) {
                 var trackNum = tracks[i][0];
@@ -948,8 +934,7 @@ function updateTrackList() {
 // ---------------------------------------------------------------------------
 
 function changeInfoOpacity(selection) {
-    newOpacity = verify_pref(selection.value, pref_info_opacity);
-    
+    newOpacity = verify_pref(parseFloat(selection.value), pref_info_opacity);
     shader = document.getElementById("shade-layer");
     if (shader) shader.style.opacity = newOpacity;
     

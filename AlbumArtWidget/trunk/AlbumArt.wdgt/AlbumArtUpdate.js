@@ -1,21 +1,21 @@
 /*
- 
+
  Album Art Widget for Dashboard.
  http://www.liquidx.net/albumartwidget/
- 
+
  Copyright (c) 2005, Alastair Tse <alastair@liquidx.net>
  All rights reserved.
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
- 
+
  Redistributions in binary form must reproduce the above copyright notice, this
  list of conditions and the following disclaimer in the documentation and/or
  other materials provided with the distribution.
- 
+
  Neither the Alastair Tse nor the names of its contributors may
  be used to endorse or promote products derived from this software without 
  specific prior written permission.
@@ -32,10 +32,26 @@
  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
  
- */
+*/
 
+var update_url = "http://www.liquidx.net/static/albumartwidget/versions.xml";
+var update_req = null;
 
-#define AAP_DEBUG		0
-#define AAF_PREFIX		@"net.liquidx.AlbumArtWidget"
-#define AAF_BUNDLE_ID	@"net.liquidx.AlbumArtWidget.AlbumArtPlugin"
+function auto_update() {
+    if (update_req != null) {
+        update_req = null;
+    }
+    
+    if (window.XMLHttpRequest) {
+        update_req = new XMLHttpRequest();
+        update_req.onreadystatechange = auto_update_request;
+        update_req.open("GET", update_url, true);
+        update_req.send();
+    }
+}
 
+function auto_update_request() {
+    if (update_req.readystate == 4) { 
+        // TODO: actually do something with the data
+    }
+}

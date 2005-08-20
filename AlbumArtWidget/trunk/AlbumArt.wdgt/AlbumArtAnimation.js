@@ -38,17 +38,15 @@
 // Handle Animation of Song Info Layer
 //
 
-var song_info_top = 150;
-var song_info_bottom = 190;
+var song_info_top = shade_y;
+var song_info_bottom = shade_y + shade_h;
 var song_info_duration = 5000;
 
-var song_info_height = song_info_bottom - song_info_top;
+var song_info_height = shade_h;
 var song_info_anim = {duration: 0, starttime:0, to:song_info_bottom, now:song_info_top, from:0.0, elements: null, timer:null};
 
 var song_info_hide_timer = null;
 var song_info_mouse_in = 0;
-
-// TODO: add option to activate hiding behaviour
 
 function song_info_mouseover() {
     song_info_show(0);
@@ -139,7 +137,7 @@ function song_info_animate() {
     else
     {
         ease = 0.5 - (0.5 * Math.cos(Math.PI * T / song_info_anim.duration));
-        song_info_anim.now = computeNextFloat (song_info_anim.from, song_info_anim.to, ease);
+        song_info_anim.now = Math.round(computeNextFloat (song_info_anim.from, song_info_anim.to, ease));
     }
 
     for (var i = 0; i < song_info_anim.elements.length; i++) {

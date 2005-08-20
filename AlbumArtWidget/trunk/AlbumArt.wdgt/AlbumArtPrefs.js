@@ -49,6 +49,7 @@ var pref_stars_selected_border_style = "1px dashed #999";
 
 var pref_info_opacity = "overlay_opacity";
 var pref_info_opacity_default = 0.2;
+var pref_info_opacity_choices = new Array(0.0, 0.2, 0.4, 0.6, 0.8);
 
 var pref_info_hide = "info_hide";
 var pref_info_hide_default = 0;
@@ -61,6 +62,7 @@ var pref_choices = new Array();
 pref_choices[pref_color] = pref_color_choices;
 pref_choices[pref_stars] = pref_stars_choices;
 pref_choices[pref_fetch] = pref_fetch_choices;
+pref_choices[pref_info_opacity] = pref_info_opacity_choices;
 
 var pref_defaults = new Array();
 pref_defaults[pref_color] = pref_color_default;

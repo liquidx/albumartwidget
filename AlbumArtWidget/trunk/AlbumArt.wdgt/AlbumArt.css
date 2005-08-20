@@ -46,8 +46,8 @@ body {
 
 #albumart-layer {
     position: absolute;
-    top: 33px;
-    left: 33px;
+    top: 32px;
+    left: 32px;
     width: 160px;
     height: 160px;
     z-index: 1;
@@ -61,34 +61,35 @@ body {
 
 #spinner-layer {
     position: absolute;
-    top: 32px;
-    left: 169px;
-    width: 16px;
-    height: 16px;
-    padding: 4px 4px 2px 2px;
+    top: 100px;
+    left: 100px;
+    width: 24px;
+    height: 24px;
+    padding: 4px 5px 4px 4px;
     z-index: 3;
-    background-color: white;
-    border: 1px solid #ccc;
+    background: url(spinnerbg.png) no-repeat;
     display: none;
     opacity: 0.5;
 }
 
 #overlay-layer {
     position: absolute;
-    top: 31px;
-    left: 31px;
-    width: 164px;
-    height: 164px;
+    padding: 0;
+    margin: 0;
+    top: 32px;
+    left: 32px;
+    width: 160px;
+    height: 160px;
     z-index: 4;
 }
 
 #text-layer, #shade-layer {
-    /* if you change these, remember to change AlbumArt.js shade_* */
+    /* if you change these, remember to change AlbumArtConstants.js shade_* */
     position:absolute;
-    top: 150px;
-    left: 34px;
-    width: 158px;
-    height: 40px;
+    top: 149px;
+    left: 32px;
+    width: 160px;
+    height: 38px;
     z-index: 2;
 
     text-align: center;
@@ -97,15 +98,16 @@ body {
     color: #fff;
     text-shadow: #666 1px 1px 3px;
     
+    margin: 0;
     padding-top: 5px;
     overflow: hidden;
 }
 
 #shade-layer {
-    background-color: #000;
+    background-color: black;
     opacity: 0.2;
-    top: 150px;
-    height: 40px;
+    top: 149px;
+    height: 38px;
 }    
 
 #track-name, #track-artist, #track-album {
@@ -309,18 +311,18 @@ li {
 
 .saveart-choice {
     position: absolute;
-    width: 32px;
-    height: 32px;
+    padding: 4px;
+    width: 40px;
+    height: 40px;
     z-index: 10;
     display: none;
     opacity: 0.75;
-    top: 110px;
-    background-color: black; 
-    border: 1px solid black;
+    top: 100px;
+    background: url(button.png) no-repeat; 
 }
 
 #saveart-single {
-    left: 55px;
+    left: 45px;
 }
 
 #saveart-album {
@@ -328,7 +330,7 @@ li {
 }
 
 #saveart-cancel {
-    left: 135px;
+    left: 145px;
 }
     
 

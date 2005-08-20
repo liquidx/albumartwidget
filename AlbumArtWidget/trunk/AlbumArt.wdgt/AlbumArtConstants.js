@@ -1,21 +1,21 @@
 /*
- 
+
  Album Art Widget for Dashboard.
  http://www.liquidx.net/albumartwidget/
- 
+
  Copyright (c) 2005, Alastair Tse <alastair@liquidx.net>
  All rights reserved.
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
- 
+
  Redistributions in binary form must reproduce the above copyright notice, this
  list of conditions and the following disclaimer in the documentation and/or
  other materials provided with the distribution.
- 
+
  Neither the Alastair Tse nor the names of its contributors may
  be used to endorse or promote products derived from this software without 
  specific prior written permission.
@@ -32,10 +32,25 @@
  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
  
- */
+*/
 
+// ---------------------------------------------------------------------------
+// constants
+// ---------------------------------------------------------------------------
 
-#define AAP_DEBUG		0
-#define AAF_PREFIX		@"net.liquidx.AlbumArtWidget"
-#define AAF_BUNDLE_ID	@"net.liquidx.AlbumArtWidget.AlbumArtPlugin"
+var shade_x = 32;
+var shade_y = 149;
+var shade_w = 160;
+var shade_h = 38;
 
+var key_next = 190; // ">"
+var key_prev = 188; // "<"
+var key_playpause = 32; //"space"
+var key_debug = 68; // 'd'
+var key_save = 83; // 's'
+
+var str_default_artist = "Unknown Artist";
+var str_default_album  = "No Album";
+var str_default_title  = "Untitled";
+
+var lx = "http://www.liquidx.net/albumartwidget/";

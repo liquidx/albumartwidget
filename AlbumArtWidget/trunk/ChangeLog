@@ -1,9 +1,12 @@
 * AlbumArtWidget 2.3
  - Fixed bug with changing stars/look.
+ - Able to save artwork for all songs of the same album.
  - Total rewrite of backend album art saving.
  - Allow autohiding of song information.
- - Fixed bug where album art fetching failed after once for radio streams
+ - Fixed bug where album art fetching failed after once for radio streams.
  - Fixed bug where refresh doesn't work if album art is found.
+ - Spinner now is centered and less ugly.
+ - Redrawn artwork to fix colour issues.
 
 * AlbumArtWidget 2.2.1
  - Fixed rare bug that occurs if you choose Yesasia Big5 Fetching and 
