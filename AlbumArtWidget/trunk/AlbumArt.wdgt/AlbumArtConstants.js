@@ -47,10 +47,62 @@ var key_next = 190; // ">"
 var key_prev = 188; // "<"
 var key_playpause = 32; //"space"
 var key_debug = 68; // 'd'
-var key_save = 83; // 's'
+var key_itms = 73; // 'i'
 
 var str_default_artist = "Unknown Artist";
 var str_default_album  = "No Album";
 var str_default_title  = "Untitled";
 
 var lx = "http://www.liquidx.net/albumartwidget/";
+
+// --------------------------------------------------------------------------
+// itunes music store affiliate links
+// 
+// this deserves an explanation about why this is here. after the amount of
+// effort developing this widget, i decided that the least evil way for users
+// to support this project is to take advantage of the itunes music store
+// affiliate scheme implemented by linkshare.
+//
+// the way this works is pretty unobtrustive, there'll be a preference to
+// turn on itms links (just like itunes), and what will happen is a small
+// (>) arrow will appear on the top corner of the widget where the album
+// art is displayed. it will only appear on a mouse over. this link will
+// jump to the linkshare redirect page and then to apple's servers that
+// does the search to find the most appropriate itms page to show a use
+// and redirect the user's itunes to the itms page.
+//
+// if you hate this, then don't use the itms link at all, that way i don't
+// get anything from apple if you decide to buy anything from itunes.
+//
+// if you object about anything that is said here, please feel free to email
+// me at alastair@liquidx.net and maybe i can work out a better scheme for
+// my work to be supported and remain totally free and open source.
+// --------------------------------------------------------------------------
+
+var itms_ref = "http://click.linksynergy.com/fs-bin/stat?id=UyUintSDYWY&offerid=78941&type=3&subid=0&tmpid=1826&RD_PARM1=";
+var itms_base = "http://phobos.apple.com/WebObjects/MZSearch.woa/wa/libraryLink?";
+
+function make_itms_link(track, artist, album) {
+    var params = "";
+    if (track) {
+        params = params + "n=" + encodeURIComponent(track) + "&";
+    }
+    if (artist) {
+        params = params + "an=" + encodeURIComponent(artist) + "&";
+    }
+    /* disabled because album names are usually wrong (esp for radio streams)
+    if (album) {
+        params = params + "pn=" + encodeURIComponent(album) + "&";
+    }
+    */
+    params = params + "originStoreFront=143441&partnerId=30";
+    
+    // do bad trick of replacing all single and double quotes
+    s = new String(params);
+    s = s.replace(/\'/g, "%27");
+    s = s.replace(/\"/g, "%22");
+    params = s;
+    
+    var parm1 = encodeURIComponent(itms_base + params);
+    return itms_ref + parm1;
+}

@@ -1,12 +1,14 @@
 * AlbumArtWidget 2.3
- - Fixed bug with changing stars/look.
- - Able to save artwork for all songs of the same album.
- - Total rewrite of backend album art saving.
- - Allow autohiding of song information.
+ - Added Ability to save artwork to whole album.
+ - Added autohiding of song information.
+ - Added optional Find Song in iTunes Music Store button.
+ - Fixed bug where new users may not change look'n'feel of widget.
  - Fixed bug where album art fetching failed after once for radio streams.
  - Fixed bug where refresh doesn't work if album art is found.
- - Spinner now is centered and less ugly.
- - Redrawn artwork to fix colour issues.
+ - Fixed spinner so it is now centered and less ugly.
+ - Fixed artwork colour issues.
+ - Total rewrite of backend album art saving to make artwork saving more reliable (using the EyeTunes Framework.)
+ - Plugin compiled as Universal Binary.
 
 * AlbumArtWidget 2.2.1
  - Fixed rare bug that occurs if you choose Yesasia Big5 Fetching and 

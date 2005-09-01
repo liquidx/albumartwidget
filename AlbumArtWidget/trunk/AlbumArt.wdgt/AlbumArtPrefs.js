@@ -54,6 +54,9 @@ var pref_info_opacity_choices = new Array(0.0, 0.2, 0.4, 0.6, 0.8);
 var pref_info_hide = "info_hide";
 var pref_info_hide_default = 0;
 
+var pref_itms_link = "itms_link";
+var pref_itms_link_default = 1;
+
 var pref_fetch = "fetch_method";
 var pref_fetch_default = "none";
 var pref_fetch_choices = new Array("amazon_us", "amazon_uk", "amazon_jp", "amazon_de", "amazon_fr", "amazon_ca", "google", "yesasia_b5", "yesasia_gb");

@@ -59,6 +59,7 @@
         <img src="Default.png" class="background" id="front-background" />
         <div id="albumart-layer"><img src="Blank.png" id="albumart"></div>
         <div id="spinner-layer"><img id="spinner" src="spinner.gif" /></div>
+        <div id="itms-link"><a href="javascript:goitms();" title="Find in iTunes Music Store"><img src="itms.png" alt="Goto iTunes Music Store" /></a></div>
         <div id="shade-layer"></div>
         <div id="overlay-layer" onclick="rotatefield();"><img src="Overlay.png" id="overlay"></div>
         
@@ -142,10 +143,11 @@
                 <option value="amazon_de">amazon.de</option>
                 <option value="amazon_fr">amazon.fr</option>
                 <option value="amazon_ca">amazon.ca</option>
-                <option value="google">images.google.com</option>
-                <option value="yesasia_b5">yesasia.com (big5)</option>
-                <option value="yesasia_gb">yesasia.com (gb)</option>
+                <option value="google">google images</option>
+                <option value="yesasia_b5">yesasia (big5)</option>
+                <option value="yesasia_gb">yesasia (gb)</option>
                 </select>
+                <img src="itms.png" valign="middle" /><input type="checkbox" id="select-itms-link" value="0" onchange="changeITMSLink(this);" />
                 </div>
             </div>
             <div class="liquidx-logo">

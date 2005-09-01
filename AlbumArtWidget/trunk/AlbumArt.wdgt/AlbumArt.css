@@ -322,15 +322,25 @@ li {
 }
 
 #saveart-single {
-    left: 45px;
+    left: 40px;
 }
 
 #saveart-album {
-    left: 95px;
+    left: 90px;
 }
 
 #saveart-cancel {
-    left: 145px;
+    left: 140px;
+}
+
+#itms-link {
+    position: absolute;
+    right: 38px;
+    top: 38px;
+    width: 16px;
+    height: 16px;
+    z-index: 50;
+    opacity: 0;
 }
     
 

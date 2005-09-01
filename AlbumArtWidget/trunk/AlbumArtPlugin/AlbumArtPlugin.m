@@ -301,9 +301,12 @@ int trackSort(id track1, id track2, void *context)
 - (void)playSongFile:(NSString *)filename
 {
 	NSURL *fileURL = [NSURL URLWithString:filename];
+	NSLog([fileURL path]);
+	[[EyeTunes sharedInstance] playTrackWithPath:[fileURL path]];
+	/*	
 	if ([fileURL isFileURL]) {
-		[[EyeTunes sharedInstance] playTrackWithPath:[fileURL path]];
 	}
+	 */
 }
 
 - (BOOL)addAlbumArtToCurrentSong:(NSString *)songURL withContentsOfURL:(NSString *)url

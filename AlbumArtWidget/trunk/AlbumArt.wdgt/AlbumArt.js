@@ -112,6 +112,13 @@ function init() {
         var info_hide = widget.preferenceForKey(pref_info_hide);
         document.getElementById("select-info-hide").checked = info_hide;
 
+        // init itms prefs
+        var itms_link = widget.preferenceForKey(pref_itms_link);
+        document.getElementById("select-itms-link").checked = itms_link;
+        if (itms_link == 1) {
+            document.getElementById('itms-link').style.display = 'block';
+        }
+        
                 
         // init other global states
         if (window.AlbumArt) {
@@ -120,6 +127,9 @@ function init() {
         
         // autoupdate mechnism (TODO)
         auto_update();
+    }
+    if (window.AlbumArt == null) {
+        alert("ERROR: album art plugin not available");
     }
 }
 
@@ -150,11 +160,7 @@ function ondragstop() { }
 function onblur() { }
 function onhide() { }
 
-function onfocus()
-{
-    // show info button
-    document.getElementById("flip")
-}
+function onfocus() {}
 
 function onshow() {
     if (window.AlbumArt)  {
@@ -883,12 +889,23 @@ function hotkeys(e) {
         }
     }
     
-    if (e.keyCode == key_save) {
-        saveArt();
+    if (e.keyCode == key_itms) {
+        goitms();
     }
     
 }
 document.onkeydown = hotkeys;
+
+function goitms() {
+    if (window.AlbumArt) {
+        if (window.widget) {
+            var url = make_itms_link(AlbumArt.trackName(), AlbumArt.trackArtist(), AlbumArt.trackAlbum());
+            debug(url);
+            widget.openURL(url);
+        }
+    }
+
+}
 
 function playTrack(tid) {
     if (window.AlbumArt) {
@@ -996,6 +1013,13 @@ function changeInfoHide(selection) {
     var info_hide = selection.checked;
     if (window.widget) {
         widget.setPreferenceForKey(info_hide, pref_info_hide);
+    }
+}
+
+function changeITMSLink(selection) {
+    var itms_link = selection.checked;
+    if (window.widget) {
+        widget.setPreferenceForKey(itms_link, pref_itms_link);
     }
 }
 
