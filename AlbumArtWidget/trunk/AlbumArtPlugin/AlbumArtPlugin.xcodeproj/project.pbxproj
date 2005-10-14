@@ -8,13 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		034940A50825A866003CA55D /* AlbumArtHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 034940A40825A866003CA55D /* AlbumArtHolder.m */; };
+		035BE04C08E85E240000C2D2 /* EyeTunes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 035BE04B08E85E240000C2D2 /* EyeTunes.framework */; };
+		035BE05C08E8607C0000C2D2 /* EyeTunes.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 035BE04B08E85E240000C2D2 /* EyeTunes.framework */; };
 		0387307F08255A5200A3134D /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0387307E08255A5200A3134D /* WebKit.framework */; };
 		03A28F780825280900938C64 /* AlbumArtPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A28F770825280900938C64 /* AlbumArtPlugin.m */; };
 		03B044AA088051AB00D12928 /* AlbumArtTempFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B044A9088051AB00D12928 /* AlbumArtTempFile.m */; };
-		03EF8A4A088847C40010AC2E /* EyeTunes.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF8A41088847C40010AC2E /* EyeTunes.m */; };
-		03EF8A4C088847C40010AC2E /* ETTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF8A43088847C40010AC2E /* ETTrack.m */; };
-		03EF8A4E088847C40010AC2E /* ETAppleEventObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF8A45088847C40010AC2E /* ETAppleEventObject.m */; };
-		03EF8A50088847C40010AC2E /* ETPlaylist.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF8A47088847C40010AC2E /* ETPlaylist.m */; };
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -43,10 +41,24 @@
 		};
 /* End PBXBuildStyle section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		035BE05A08E860730000C2D2 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				035BE05C08E8607C0000C2D2 /* EyeTunes.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		0310A91008506A8B00AE5DB7 /* AlbumArtApplescript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlbumArtApplescript.h; path = deprecated/AlbumArtApplescript.h; sourceTree = "<group>"; };
 		034940A30825A866003CA55D /* AlbumArtHolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumArtHolder.h; sourceTree = "<group>"; };
 		034940A40825A866003CA55D /* AlbumArtHolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumArtHolder.m; sourceTree = "<group>"; };
+		035BE04B08E85E240000C2D2 /* EyeTunes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EyeTunes.framework; path = ../../EyeTunes/build/Release/EyeTunes.framework; sourceTree = SOURCE_ROOT; };
 		0387307E08255A5200A3134D /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 		03A28F760825280900938C64 /* AlbumArtPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumArtPlugin.h; sourceTree = "<group>"; };
 		03A28F770825280900938C64 /* AlbumArtPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumArtPlugin.m; sourceTree = "<group>"; };
@@ -79,6 +91,7 @@
 			files = (
 				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
 				0387307F08255A5200A3134D /* WebKit.framework in Frameworks */,
+				035BE04C08E85E240000C2D2 /* EyeTunes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,6 +171,7 @@
 		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				035BE04B08E85E240000C2D2 /* EyeTunes.framework */,
 				0387307E08255A5200A3134D /* WebKit.framework */,
 				1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */,
 			);
@@ -200,6 +214,7 @@
 				8D5B49AF048680CD000E48DA /* Resources */,
 				8D5B49B1048680CD000E48DA /* Sources */,
 				8D5B49B3048680CD000E48DA /* Frameworks */,
+				035BE05A08E860730000C2D2 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -264,10 +279,6 @@
 				03A28F780825280900938C64 /* AlbumArtPlugin.m in Sources */,
 				034940A50825A866003CA55D /* AlbumArtHolder.m in Sources */,
 				03B044AA088051AB00D12928 /* AlbumArtTempFile.m in Sources */,
-				03EF8A4A088847C40010AC2E /* EyeTunes.m in Sources */,
-				03EF8A4C088847C40010AC2E /* ETTrack.m in Sources */,
-				03EF8A4E088847C40010AC2E /* ETAppleEventObject.m in Sources */,
-				03EF8A50088847C40010AC2E /* ETPlaylist.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,6 +326,8 @@
 		03B04494088042C900D12928 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = ppc;
+				BUILD_VARIANTS = normal;
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../../EyeTunes/build/Release";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;

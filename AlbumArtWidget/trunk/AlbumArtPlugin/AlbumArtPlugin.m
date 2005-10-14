@@ -388,7 +388,7 @@ int trackSort(id track1, id track2, void *context)
 		ETTrack *track = nil;
 		
 		while (track = [e nextObject]) {
-			if ([track artwork] == nil) {
+			if (([track artwork] == nil) && ([[track album] isEqualToString:albumName])) {
 				[track setArtwork:image atIndex:0];
 			}
 			else {
