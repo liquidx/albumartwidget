@@ -80,10 +80,10 @@ function showFlipButtons()
         animation.elements[1] = document.getElementById('flipalbum');
         animation.elements[2] = document.getElementById('saveart');
         animation.elements[3] = document.getElementById('refresh');
+        animation.elements[4] = document.getElementById('fetched-link');
         if (window.widget && (widget.preferenceForKey(pref_itms_link) == 1)) {
-            animation.elements[4] = document.getElementById('itms-link');
-            document.getElementById('itms-link').style.display = 'block';
-        }
+            animation.elements[5] = document.getElementById('itms-link');
+        }        
     }
     else {
         animation.elements = new Array();
@@ -114,13 +114,10 @@ function hideFlipButtons()
         animation.elements[1] = document.getElementById('flipalbum');
         animation.elements[2] = document.getElementById('saveart');
         animation.elements[3] = document.getElementById('refresh');
+        animation.elements[4] = document.getElementById('fetched-link');            
         if (window.widget && (widget.preferenceForKey(pref_itms_link) == 1)) {
-            animation.elements[4] = document.getElementById('itms-link');
+            animation.elements[5] = document.getElementById('itms-link');
         }
-        else {
-            document.getElementById('itms-link').style.display = 'none';
-        }
-     
     }
     else {
         animation.elements = new Array();

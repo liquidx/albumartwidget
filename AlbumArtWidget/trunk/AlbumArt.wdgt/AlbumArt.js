@@ -56,6 +56,7 @@ var fetch_google_max_attempts = 3;
 var fetch_yesasia_max_attempts = 5;
 
 var fetch_result = "";         // URL of album art to display (can be file:// or http://)
+var fetch_from_url = "";       // URL of where a user can find more choices.
 var fetch_save_url = "";       // URL to save if prompted. (null for local file)
 var fetch_cache = new Array(); // key = album name, value = album cover url
 
@@ -199,13 +200,14 @@ function fetch_album_art(trackArtist, trackAlbum, trackName) {
         return album_art;
     }
     
-    
     // if we haven't attempted to fetch for this track, do it now
     if (window.widget) {
         user_fetch_method = widget.preferenceForKey(pref_fetch);
         if (user_fetch_method) {
             fetch_method = user_fetch_method;
         }
+
+        document.getElementById("fetched-link").style.display = "block";
     }
     
     // return the result if found in cache
@@ -213,6 +215,7 @@ function fetch_album_art(trackArtist, trackAlbum, trackName) {
         fetch_attempted++;
         fetch_result = fetch_cache[trackAlbum][0];
         fetch_save_url = fetch_cache[trackAlbum][1];
+        fetch_from_url = fetch_cache[trackAlbum][2];
         return fetch_cache[trackAlbum][0];
     }
     
@@ -297,6 +300,8 @@ function on_yesasia_finish(req) {
     
     var urls = yesasia_get_urls(req);
     
+    fetch_from_url = req.url;
+    
     if (debug_level > 0) {
         for (var i = 0; i < urls.length; i++) {
             debug(i + ": " + urls[i][0]);
@@ -316,9 +321,10 @@ function on_yesasia_finish(req) {
         if (window.AlbumArt) {
             trackAlbum = AlbumArt.trackAlbum();
             if (trackAlbum) {
-                fetch_cache[trackAlbum] = new Array(2);
+                fetch_cache[trackAlbum] = new Array();
                 fetch_cache[trackAlbum][0] = url_large; // use large! url_small;
                 fetch_cache[trackAlbum][1] = url_large;
+                fetch_cache[trackAlbum][2] = fetch_from_url;
             }
         }
         
@@ -375,10 +381,13 @@ function on_album_art_unreachable(params) {
         if (params.alt_url != "") {
             fetch_cache[params.album][0] = params.alt_url;
             fetch_cache[params.album][1] = params.alt_url;
+            fetch_cache[params.album][2] = "";
         }
         else {
             fetch_cache[params.album] = null;
         }
+        
+        document.getElementById("fetched-link").style.display = "none";        
     }
 }
 
@@ -428,6 +437,9 @@ function on_google_finish(req) {
     debug("on_google_finish: request successful");
     
     var urls = google_get_urls(req);
+
+    debug("google url: " + req.url);
+    fetch_from_url = req.url;
     
     if ((urls != null)  && (urls.length > 0)) {
         // get large url
@@ -445,6 +457,7 @@ function on_google_finish(req) {
                 fetch_cache[trackAlbum] = new Array(2);
                 fetch_cache[trackAlbum][0] = url_large; // use large! url_small;
                 fetch_cache[trackAlbum][1] = url_large;
+                fetch_cache[trackAlbum][2] = fetch_from_url;
             }
         }
         
@@ -526,6 +539,7 @@ function on_amazon_finish(req) {
     debug("on_amazon_finish: request successful");
     
     var url = amazon_get_url_medium(req);
+    fetch_from_url = req.url;
     
     if (url != "") {
         // get large url
@@ -541,6 +555,7 @@ function on_amazon_finish(req) {
                 fetch_cache[trackAlbum] = new Array(2);
                 fetch_cache[trackAlbum][0] = url;
                 fetch_cache[trackAlbum][1] = url_large;
+                fetch_cache[trackAlbum][2] = fetch_from_url;
             }
         }
         
@@ -695,6 +710,7 @@ function reloadImage(status) {
             fetch_attempted = 0;
             fetch_result = "";
             fetch_save_url = "";
+            document.getElementById("fetched-link").style.display = "none";    
         }
         
         current_song_id = AlbumArt.trackLocation();
@@ -907,6 +923,15 @@ function goitms() {
 
 }
 
+function goto_fetched_from() {
+    debug("goto_fetched_from:" + fetch_from_url);
+    if (window.widget) {
+        if ((fetch_from_url != null) && (fetch_from_url != "")) {
+            widget.openURL(fetch_from_url);
+        }
+    }
+}
+
 function playTrack(tid) {
     if (window.AlbumArt) {
         debug(tid);
@@ -1020,6 +1045,12 @@ function changeITMSLink(selection) {
     var itms_link = selection.checked;
     if (window.widget) {
         widget.setPreferenceForKey(itms_link, pref_itms_link);
+        if (itms_link == 1) {
+            document.getElementById('itms-link').style.display = 'block';
+        }
+        else {
+            document.getElementById('itms-link').style.display = 'none';
+        }        
     }
 }
 

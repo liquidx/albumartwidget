@@ -58,8 +58,10 @@
     <div id="front" onmouseover="mousemove(event); song_info_mouseover();" onmouseout="mouseexit(event); song_info_mouseout();">
         <img src="Default.png" class="background" id="front-background" />
         <div id="albumart-layer"><img src="Blank.png" id="albumart"></div>
+        <div id="update-layer"><a href="javascript:fetch_update();"><img src="update.png" width="46" height="26" alt="new version available!" title="new version available!" /></a></div>
         <div id="spinner-layer"><img id="spinner" src="spinner.gif" /></div>
         <div id="itms-link"><a href="javascript:goitms();" title="Find in iTunes Music Store"><img src="itms.png" alt="Goto iTunes Music Store" /></a></div>
+        <div id="fetched-link"><a href="javascript:goto_fetched_from();" title="Fetched source"><img src="fetched.png" alt="This album art is fetched."></a></div>
         <div id="shade-layer"></div>
         <div id="overlay-layer" onclick="rotatefield();"><img src="Overlay.png" id="overlay"></div>
         

@@ -364,7 +364,7 @@ int trackSort(id track1, id track2, void *context)
 	
 	NSString *albumName = [self trackAlbum];
 	
-	if ([albumName length] < 1) {
+	if ((albumName == nil) || ([albumName length] < 1)) {
 #if AAP_DEBUG		
 		NSLog(@"plugin.addAlbumArt: album name is empty");
 #endif

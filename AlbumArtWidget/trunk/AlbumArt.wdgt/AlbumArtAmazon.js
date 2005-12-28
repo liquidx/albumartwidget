@@ -47,6 +47,24 @@ amazon_base["jp"] = "http://webservices.amazon.co.jp/onca/xml";
 amazon_base["fr"] = "http://webservices.amazon.fr/onca/xml";
 amazon_base["ca"] = "http://webservices.amazon.ca/onca/xml";
 
+function _amazon_make_search(base, store) {
+    var amazon_music_prefix = "/exec/obidos/search-handle-url/index=";
+    var amazon_music_suffix = "&field-keywords=";    
+    return base + amazon_music_prefix + store + amazon_music_suffix;
+}
+
+/* Example:
+"http://www.amazon.ca/exec/obidos/search-handle-url/index=music-ca&field-keywords=killers%20hot%20fuss/ref=xs_ap_l_xgl15/701-3458204-9668362"
+*/
+
+var amazon_search = new Array();
+amazon_search["us"] = _amazon_make_search("http://www.amazon.com", "music");
+amazon_search["uk"] = _amazon_make_search("http://www.amazon.co.uk", "music");
+amazon_search["de"] = _amazon_make_search("http://www.amazon.de", "pop-music-de");
+amazon_search["jp"] = _amazon_make_search("http://www.amazon.co.jp", "music-jp");
+amazon_search["fr"] = _amazon_make_search("http://www.amazon.fr", "music-fr");
+amazon_search["ca"] = _amazon_make_search("http://www.amazon.ca", "music-ca");
+
 var amazon_params = new Array();
 amazon_params["Service"] = "AWSECommerceService";
 amazon_params["Operation"] = "ItemSearch";
@@ -80,6 +98,19 @@ function amazon_make_url(artist, albumname, trackname, locale) {
         url = url + i + "=" + encodeURIComponent(amazon_params[i]) + "&";
     }
     return url;
+}
+
+function amazon_make_html_url(artist, albumname, trackname, locale) {
+    var url = amazon_search[locale];
+    var params = new Array();
+    if (artist)
+        params.push(encodeURIComponent(artist));
+    if (albumname)
+        params.push(encodeURIComponent(albumname));        
+    if (trackname)
+        params.push(encodeURIComponent(trackname));                
+        
+    return url + params.join("%20");
 }
 
 /* handler for when the XmlHttpRequest comes back */
@@ -117,6 +148,7 @@ function amazon_make_request(artist, albumname, trackname, locale, on_finish, on
         amazon_req.req = new XMLHttpRequest();
         amazon_req.on_finish = on_finish;
         amazon_req.on_error = on_error;
+        amazon_req.req.url = amazon_make_html_url(artist, albumname, trackname, locale);
         amazon_req.req.onreadystatechange = amazon_process_request;
         amazon_req.req.open("GET", url, true);
         amazon_req.req.send();
@@ -154,6 +186,7 @@ function amazon_get_url_large(req) {
     }
     return large_url;
 }    
+
 
 /* ability to return all the urls returned, and displays them in a DOM
     element called 'images' and a textarea element called 'debug'  */

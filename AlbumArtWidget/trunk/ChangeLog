@@ -1,5 +1,11 @@
+* AlbumArtWidget 2.4
+ - Fixed bug with adding album art to more albums than the specified one.
+ - Fixed Google Images fetching.
+ - Fixed update feature to really alert user to new version.
+ - Added link to URL of location of album art.
+
 * AlbumArtWidget 2.3
- - Added Ability to save artwork to whole album.
+ - Added ability to save artwork to whole album.
  - Added autohiding of song information.
  - Added optional Find Song in iTunes Music Store button.
  - Fixed bug where new users may not change look'n'feel of widget.

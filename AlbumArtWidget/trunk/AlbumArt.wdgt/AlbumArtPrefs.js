@@ -55,7 +55,7 @@ var pref_info_hide = "info_hide";
 var pref_info_hide_default = 0;
 
 var pref_itms_link = "itms_link";
-var pref_itms_link_default = 1;
+var pref_itms_link_default = 0;
 
 var pref_fetch = "fetch_method";
 var pref_fetch_default = "none";

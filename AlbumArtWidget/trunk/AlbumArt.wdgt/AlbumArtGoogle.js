@@ -46,7 +46,7 @@ google_params["sa"] = "N";
 google_params["safe"] = "on";
 google_params["filter"] = "0";
 
-var google_image_table = '<table align=center border=0 cellpadding=5 cellspacing=0 width=100%>';
+var google_image_table = '<table align=center border=0 cellpadding=2 cellspacing=0 width=100%>';
 
 
 /* some global state - inevitable with javascript */
@@ -107,6 +107,7 @@ function google_make_request(query, on_finish, on_error) {
         google_req.req = new XMLHttpRequest();
         google_req.on_finish = on_finish;
         google_req.on_error = on_error;
+        google_req.req.url = url;
         google_req.req.onreadystatechange = google_process_request;
         google_req.req.open("GET", url, true);
         google_req.req.send();
@@ -119,7 +120,7 @@ function google_make_request(query, on_finish, on_error) {
 function google_get_urls(req) {
     var small_large_urls = new Array();
     
-    // NOTE: reponseXML doesn't exist because output is on parsable    
+    // NOTE: reponseXML doesn't exist because output is unparsable    
     if (req.responseText.indexOf(google_image_table) != -1) {
         // find image matches
         var index = req.responseText.indexOf("<img ");

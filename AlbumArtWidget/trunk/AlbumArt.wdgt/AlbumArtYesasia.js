@@ -119,6 +119,7 @@ function yesasia_make_request(encoded_artist, encoded_album, encoded_title, enco
         yesasia_req.req = new XMLHttpRequest();
         yesasia_req.on_finish = on_finish;
         yesasia_req.on_error = on_error;
+        yesasia_req.req.url = url + "?" + content;
         yesasia_req.req.onreadystatechange = yesasia_process_request;
         yesasia_req.req.open("POST", url, true);
         yesasia_req.req.send(content);

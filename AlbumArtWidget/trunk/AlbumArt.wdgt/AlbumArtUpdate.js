@@ -34,8 +34,10 @@
  
 */
 
-var update_url = "http://www.liquidx.net/static/albumartwidget/versions.xml";
+// question mark prevents caching
+var update_versions_xml = "http://media.liquidx.net/static/albumartwidget/versions.xml?";
 var update_req = null;
+var update_file_url = null;
 
 function auto_update() {
     if (update_req != null) {
@@ -45,13 +47,68 @@ function auto_update() {
     if (window.XMLHttpRequest) {
         update_req = new XMLHttpRequest();
         update_req.onreadystatechange = auto_update_request;
-        update_req.open("GET", update_url, true);
+        update_req.open("GET", update_versions_xml, true);
         update_req.send();
     }
 }
 
 function auto_update_request() {
-    if (update_req.readystate == 4) { 
+
+    if (update_req.readyState == 4) { 
         // TODO: actually do something with the data
+        var latest = update_req.responseXML;
+        var latest_version = 0;
+        var latest_url = "";
+        var versions = latest.getElementsByTagName("version");
+
+        if (versions) {
+            for (var i = 0; i < versions.length; i++) {
+                var verstring = "";
+                var verurl = "";
+                var num = versions[i].getElementsByTagName("number");
+                if (num && (num.length > 0)) {
+                    for (var j = 0; j < num[0].childNodes.length; j++) {
+                        if (num[0].childNodes[j].nodeName == "#text") {
+                            verstring += num[0].childNodes[j].nodeValue;
+                        }
+                    }
+                }
+                
+                var url = versions[i].getElementsByTagName("url");
+                if (url && (url.length > 0)) {
+                    for (var j = 0; j < url[0].childNodes.length; j++) {
+                         if (url[0].childNodes[j].nodeName == "#text") {
+                            verurl += url[0].childNodes[j].nodeValue;
+                        }
+                    }
+                }
+                
+                var ver = parseFloat(verstring);
+                if (ver > latest_version) {
+                    latest_version = ver;
+                    latest_url = verurl;
+                }
+            }
+        }
+        
+        if (latest_version > current_version) {
+            document.getElementById("update-layer").style.display = "block";
+            update_file_url = latest_url;
+        }
+        else {
+            document.getElementById("update-layer").style.display = "none";
+        }
     }
 }
+
+function fetch_update() {
+    if (update_file_url == null) {
+        return;
+    }
+    
+    if (window.widget) {
+        document.getElementById("update-layer").style.display = "none";
+        widget.openURL(update_file_url);
+    }
+}
+
