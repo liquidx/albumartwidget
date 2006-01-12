@@ -1,3 +1,8 @@
+* AlbumArtWidget 2.4.2
+ - Fixed Yesasia Album Art Fetching
+ - Improved Chinese Album Art Support (thanks to PP)
+ - Plugin recompiled as Universal Binary.
+
 * AlbumArtWidget 2.4
  - Fixed bug with adding album art to more albums than the specified one.
  - Fixed Google Images fetching.
@@ -58,8 +63,5 @@
  - Get Tracklist from Amazon and then link to iTMS
  - Feedback with saving artwork
  - Improve hueristics with yesasia URLs (s_ and p URLs)
- - Add saving artwork to all songs with the same album name.
  - Case insensitive tag parsing
- - Add link to the URL of the fetched artwork, or the query that generated it
- - Use album art from another song with the same album name before fetching.
 

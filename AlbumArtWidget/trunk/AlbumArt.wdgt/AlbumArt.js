@@ -52,7 +52,7 @@ function shameless_self_promotion() { if (window.widget) widget.openURL(lx); }
 
 var fetch_attempted = 0; // make sure we don't fetch many times per track
 var fetch_amazon_max_attempts = 5;
-var fetch_google_max_attempts = 3;
+var fetch_google_max_attempts = 4;
 var fetch_yesasia_max_attempts = 5;
 
 var fetch_result = "";         // URL of album art to display (can be file:// or http://)
@@ -265,13 +265,38 @@ function fetch_from_yesasia(variation) {
     var artist = AlbumArt.trackArtistInEncoding_(locale);
     var album = AlbumArt.trackAlbumInEncoding_(locale);
     
-    // small hack to make searching chinese albums easier
-    var artistChars = artist.split('%');
-    // parse the first hex code, and if it is greater than %7f (128), then
-    // it is non-ascii.
-    if ((artistChars.length > 1) && (artistChars[1].charCodeAt(0) > 37)) {
-        artist = artist.split('%20')[0];
+    // for asian albums, we strip away non chinese characters.
+    // we do this by assuming we have double byte characters for big5 or gb
+    // NOTE: this will not work if we work with utf-8
+    
+    var c = 0;
+    var artistInChinese = '';
+    while (true) {
+        if (c >= artist.length) {
+            break;
+        }
+        
+        if (artist.charAt(c) == '%') {
+            var hexCode = eval('0x' + artist.substring(c + 1, c + 3));
+            if (hexCode > 0x7f) {
+                artistInChinese += artist.substring(c, c + 6); // double byte
+                c += 6
+            }
+            else {
+                c += 3;            
+            }
+            continue;
+        }
+        c++;
     }
+
+    debug("yesasia artist:" + artist);
+    debug("yesasia artistInChinese:" + artistInChinese);
+    
+    if (artistInChinese.length > 6) {  // at least 2 chars
+        artist = artistInChinese;
+    }
+    
     
     switch (variation) {
         case 0:
@@ -424,6 +449,10 @@ function fetch_from_google(variation) {
             google_make_request(query, on_google_finish, on_fetch_error);
             break;
         case 2:
+            var query = album;
+            google_make_request(query, on_google_finish, on_fetch_error);
+            break;
+        case 3:
             var query = artist;        
             google_make_request(query, on_google_finish, on_fetch_error);
             break;

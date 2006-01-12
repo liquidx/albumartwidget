@@ -41,7 +41,7 @@
 
 + (NSString *)randomTemporaryPathWithExtension:(NSString *)ext
 {	
-	return [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%x%x.%@", AAF_PREFIX, Random(), Random(), ext]];
+	return [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%x%x.%@", AAF_PREFIX, random(), random(), ext]];
 }
 
 @end

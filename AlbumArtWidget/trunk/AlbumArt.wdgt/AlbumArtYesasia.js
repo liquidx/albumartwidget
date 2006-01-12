@@ -38,8 +38,8 @@
 
 var yesasia_base = new Array();
 yesasia_base["en"] = "http://global.yesasia.com/en/Search/SearchResult.aspx";
-yesasia_base["b5"] = "http://global.yesasia.com/b5/Search/SearchResult.aspx";
-yesasia_base["gb"] = "http://global.yesasia.com/gb/Search/SearchResult.aspx";
+yesasia_base["b5"] = "http://10.global.yesasia.com/b5/Search/SearchResult.aspx";
+yesasia_base["gb"] = "http://10.global.yesasia.com/gb/Search/SearchResult.aspx";
 
 var yesasia_params = new Array();
 yesasia_params["asSectionId"] = "music";
@@ -47,7 +47,7 @@ yesasia_params["asLanguage"] = "";
 yesasia_params["asFormat"] = 0;
 yesasia_params["asArtist"] = "";
 yesasia_params["asTitle"] = "";
-
+yesasia_params["asTrack"] = "";
 yesasia_params["asSubtitle"] = 0;
 yesasia_params["asGentre"] = 0;
 yesasia_params["asPictureFormat"] = 0;
@@ -78,14 +78,14 @@ function yesasia_make_post_content(encoded_artist, encoded_album, encoded_title)
     var content = "";
     
     for (var i in yesasia_params) {
-        if ((i != "asArtist") && (i != "asTitle") && (i != "asDescription")) {
+        if ((i != "asArtist") && (i != "asTitle") && (i != "asTrack")) {
             content = content + i + "=" + encodeURIComponent(yesasia_params[i]) + "&";
         }
     }
     
     content = content + "asArtist=" + encoded_artist + "&";
     content = content + "asTitle=" + encoded_album + "&";
-    content = content + "asDescription=" + encoded_title;
+    content = content + "asTrack=" + encoded_title;
     return content;
 }
 
@@ -137,7 +137,7 @@ function yesasia_get_urls(req) {
     while (index != -1) {
         var end_index = req.responseText.indexOf(">", index + 1);
         var img_tag = req.responseText.substring(index, end_index + 1);
-        var is_image = img_tag.indexOf("SRC='http://i3.yesasia.com/assets/imgs/");
+        var is_image = img_tag.indexOf("SRC='http://i3.yesasia.com/assets/");
         if (is_image != -1) {
             var before_img = req.responseText.substring(0, index);
             var a_index = before_img.lastIndexOf("<a ");

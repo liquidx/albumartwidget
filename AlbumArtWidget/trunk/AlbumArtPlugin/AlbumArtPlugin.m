@@ -388,12 +388,15 @@ int trackSort(id track1, id track2, void *context)
 		ETTrack *track = nil;
 		
 		while (track = [e nextObject]) {
-			if (([track artwork] == nil) && ([[track album] isEqualToString:albumName])) {
+			NSArray *art = [track artwork];
+			if (![[track album] isEqualToString:albumName])
+				NSLog(@"plugin.addAlbumArt: track has different album name: %@", [track album]);
+			else if (art == nil)
 				[track setArtwork:image atIndex:0];
-			}
-			else {
-				NSLog(@"plugin.addAlbumArt: track alread has artwork");				
-			}
+			else if ([art count] < 1)
+				[track setArtwork:image atIndex:0];
+			else 
+				NSLog(@"plugin.addAlbumArt: track already has artwork");				
 		}
 		
 		return YES;
