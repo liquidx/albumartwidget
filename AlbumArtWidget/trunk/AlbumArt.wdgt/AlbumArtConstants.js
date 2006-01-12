@@ -55,7 +55,7 @@ var str_default_title  = "Untitled";
 
 var lx = "http://www.liquidx.net/albumartwidget/";
 
-var current_version = 2.4.2;
+var current_version = 2.5;
 
 // --------------------------------------------------------------------------
 // itunes music store affiliate links

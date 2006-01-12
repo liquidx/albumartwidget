@@ -301,7 +301,7 @@ int trackSort(id track1, id track2, void *context)
 - (void)playSongFile:(NSString *)filename
 {
 	NSURL *fileURL = [NSURL URLWithString:filename];
-	NSLog([fileURL path]);
+	NSLog(@"albumartplugin.playSongFile: %@", [fileURL path]);
 	[[EyeTunes sharedInstance] playTrackWithPath:[fileURL path]];
 	/*	
 	if ([fileURL isFileURL]) {
@@ -331,7 +331,9 @@ int trackSort(id track1, id track2, void *context)
 	
 	NSImage *image = [[[NSImage alloc] initWithContentsOfURL:[NSURL URLWithString:url]] autorelease];
 	if (!image) {
+#if AAP_DEBUG		
 		NSLog(@"plugin.addAlbumArt: unable to load image from URL");
+#endif		
 		return NO;
 	}
 	
@@ -346,7 +348,7 @@ int trackSort(id track1, id track2, void *context)
 {
 	
 #if AAP_DEBUG
-	NSLog(@"addAlbumArtToCurrentAlbum:withContentsOfURL: %@", url);
+	 (@"addAlbumArtToCurrentAlbum:withContentsOfURL: %@", url);
 #endif
 	if (!songURL || !url || ([songURL length] == 0) || ([url length] == 0))  {
 #if AAP_DEBUG
@@ -395,8 +397,10 @@ int trackSort(id track1, id track2, void *context)
 				[track setArtwork:image atIndex:0];
 			else if ([art count] < 1)
 				[track setArtwork:image atIndex:0];
-			else 
+#if AAP_DEBUG			
+			else
 				NSLog(@"plugin.addAlbumArt: track already has artwork");				
+#endif			
 		}
 		
 		return YES;

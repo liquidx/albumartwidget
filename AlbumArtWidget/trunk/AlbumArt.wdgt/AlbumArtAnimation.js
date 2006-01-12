@@ -67,6 +67,9 @@ function song_info_mouseout() {
 }
 
 function song_info_show(autohide) {
+    if (!song_info_anim) 
+        return;
+    
     if (song_info_anim.timer != null) {
         clearInterval(song_info_anim.timer);
         song_info_anim.timer = null;
@@ -94,6 +97,9 @@ function song_info_show(autohide) {
 }
 
 function song_info_hide() {
+    if (!song_info_anim)
+        return;
+        
     if (song_info_anim.timer != null) {
         clearInterval(song_info_anim.timer);
         song_info_anim.timer = null;
@@ -118,7 +124,7 @@ function song_info_hide() {
 }
 
 function song_info_animate() {
-   var T;
+    var T;
     var ease;
     var time = (new Date).getTime();
     var info_opacity = pref_info_opacity_default;
