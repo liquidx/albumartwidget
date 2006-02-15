@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		034940A50825A866003CA55D /* AlbumArtHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 034940A40825A866003CA55D /* AlbumArtHolder.m */; };
+		0364EE4409A36FE800E990F3 /* ETPlaylistEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0364EE4009A36FE700E990F3 /* ETPlaylistEnumerator.m */; };
+		0364EE4609A36FE800E990F3 /* ETTrackEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0364EE4209A36FE700E990F3 /* ETTrackEnumerator.m */; };
+		0364EE4A09A36FF200E990F3 /* ETDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 0364EE4809A36FF200E990F3 /* ETDebug.m */; };
 		0387307F08255A5200A3134D /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0387307E08255A5200A3134D /* WebKit.framework */; };
 		03A28F780825280900938C64 /* AlbumArtPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A28F770825280900938C64 /* AlbumArtPlugin.m */; };
 		03B044AA088051AB00D12928 /* AlbumArtTempFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B044A9088051AB00D12928 /* AlbumArtTempFile.m */; };
@@ -59,6 +62,12 @@
 		0310A91008506A8B00AE5DB7 /* AlbumArtApplescript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlbumArtApplescript.h; path = deprecated/AlbumArtApplescript.h; sourceTree = "<group>"; };
 		034940A30825A866003CA55D /* AlbumArtHolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumArtHolder.h; sourceTree = "<group>"; };
 		034940A40825A866003CA55D /* AlbumArtHolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumArtHolder.m; sourceTree = "<group>"; };
+		0364EE3F09A36FE700E990F3 /* ETPlaylistEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ETPlaylistEnumerator.h; path = ../../EyeTunes/ETPlaylistEnumerator.h; sourceTree = SOURCE_ROOT; };
+		0364EE4009A36FE700E990F3 /* ETPlaylistEnumerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ETPlaylistEnumerator.m; path = ../../EyeTunes/ETPlaylistEnumerator.m; sourceTree = SOURCE_ROOT; };
+		0364EE4109A36FE700E990F3 /* ETTrackEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ETTrackEnumerator.h; path = ../../EyeTunes/ETTrackEnumerator.h; sourceTree = SOURCE_ROOT; };
+		0364EE4209A36FE700E990F3 /* ETTrackEnumerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ETTrackEnumerator.m; path = ../../EyeTunes/ETTrackEnumerator.m; sourceTree = SOURCE_ROOT; };
+		0364EE4709A36FF200E990F3 /* ETDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ETDebug.h; path = ../../EyeTunes/ETDebug.h; sourceTree = SOURCE_ROOT; };
+		0364EE4809A36FF200E990F3 /* ETDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ETDebug.m; path = ../../EyeTunes/ETDebug.m; sourceTree = SOURCE_ROOT; };
 		0387307E08255A5200A3134D /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 		03A28F760825280900938C64 /* AlbumArtPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumArtPlugin.h; sourceTree = "<group>"; };
 		03A28F770825280900938C64 /* AlbumArtPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumArtPlugin.m; sourceTree = "<group>"; };
@@ -108,6 +117,12 @@
 		03EF8A3E088847A50010AC2E /* EyeTunes */ = {
 			isa = PBXGroup;
 			children = (
+				0364EE4709A36FF200E990F3 /* ETDebug.h */,
+				0364EE4809A36FF200E990F3 /* ETDebug.m */,
+				0364EE3F09A36FE700E990F3 /* ETPlaylistEnumerator.h */,
+				0364EE4009A36FE700E990F3 /* ETPlaylistEnumerator.m */,
+				0364EE4109A36FE700E990F3 /* ETTrackEnumerator.h */,
+				0364EE4209A36FE700E990F3 /* ETTrackEnumerator.m */,
 				03EF8A3F088847C40010AC2E /* EyeTunesEventCodes.h */,
 				03EF8A40088847C40010AC2E /* EyeTunes.h */,
 				03EF8A41088847C40010AC2E /* EyeTunes.m */,
@@ -281,6 +296,9 @@
 				03B4762F0975586C0090ED74 /* ETPlaylist.m in Sources */,
 				03B476300975586D0090ED74 /* ETTrack.m in Sources */,
 				03B47632097558740090ED74 /* EyeTunes.m in Sources */,
+				0364EE4409A36FE800E990F3 /* ETPlaylistEnumerator.m in Sources */,
+				0364EE4609A36FE800E990F3 /* ETTrackEnumerator.m in Sources */,
+				0364EE4A09A36FF200E990F3 /* ETDebug.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
