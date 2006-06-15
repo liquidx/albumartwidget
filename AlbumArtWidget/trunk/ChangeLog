@@ -1,3 +1,10 @@
+* AlbumArtWidget 2.7
+ - Add warning when over 20 tracks may be updated.
+
+* AlbumArtWidget 2.6
+ - New Icon
+ - Fixed on Intel Mac
+
 * AlbumArtWidget 2.5
  - Fixed Yesasia Album Art Fetching
  - Improved Chinese Album Art Support (thanks to PP)

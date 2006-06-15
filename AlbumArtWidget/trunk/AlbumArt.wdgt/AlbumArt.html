@@ -94,7 +94,13 @@
         <div class="saveart-choice" id="saveart-single" onclick="saveArtSong();" title="Save artwork to this song only"><img src="track.png" width="32" height="32" /></div>
         <div class="saveart-choice" id="saveart-album" onclick="saveArtAlbum();" title="Save artwork to all songs in the same album"><img src="pplaylist.png" width="32" height="32" /></div>
         <div class="saveart-choice" id="saveart-cancel" onclick="saveArtCancel();" title="Cancel"><img src="cancel.png" width="32" height="32" /></div>
-        
+        <div id="saveart-confirm">
+            <div>More than 20 songs may be updated. Do you want to continue?</div>
+            <div id="saveart-confirm-reply">
+                <span id="saveart-confirm-ok" onclick="saveArtConfirmed();">yes</span>
+                <span id="saveart-confirm-cancel" onclick="saveArtCancel();">no</span>
+            </div>
+        </div>
     </div>
 
     <div id="prefs">

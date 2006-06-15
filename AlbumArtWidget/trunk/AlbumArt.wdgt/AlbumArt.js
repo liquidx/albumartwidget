@@ -52,7 +52,7 @@ function shameless_self_promotion() { if (window.widget) widget.openURL(lx); }
 
 var fetch_attempted = 0; // make sure we don't fetch many times per track
 var fetch_amazon_max_attempts = 5;
-var fetch_google_max_attempts = 4;
+var fetch_google_max_attempts = 5;
 var fetch_yesasia_max_attempts = 5;
 
 var fetch_result = "";         // URL of album art to display (can be file:// or http://)
@@ -441,21 +441,25 @@ function fetch_from_google(variation) {
 
     switch (variation) {
         case 0:
-            var query = album + " " + artist;
+            var query = title + " " + album + " " + artist;
             google_make_request(query, on_google_finish, on_fetch_error);
             break;
         case 1:
-            var query = title + " " + artist;        
+            var query = album + " " + artist;        
             google_make_request(query, on_google_finish, on_fetch_error);
             break;
         case 2:
-            var query = album;
+            var query = title + " " + artist;
             google_make_request(query, on_google_finish, on_fetch_error);
             break;
         case 3:
-            var query = artist;        
+            var query = album;
             google_make_request(query, on_google_finish, on_fetch_error);
             break;
+        case 4:
+            var query = artist;        
+            google_make_request(query, on_google_finish, on_fetch_error);
+        break;
         default:
             break;
     }
@@ -663,19 +667,40 @@ function saveArt() {
         saveArtCancel();
     }
     else {
-        document.getElementById("saveart-single").style.display = "block";
-        document.getElementById("saveart-album").style.display = "block";    
-        document.getElementById("saveart-cancel").style.display = "block";        
+        if ((fetch_save_url != "") && (current_song_id != "")) {
+            document.getElementById("saveart-single").style.display = "block";
+            document.getElementById("saveart-album").style.display = "block";    
+            document.getElementById("saveart-cancel").style.display = "block";        
+        }
     }
 }
 
 function saveArtCancel() {
+    document.getElementById("saveart-confirm").style.display = "none";
     document.getElementById("saveart-single").style.display = "none";
     document.getElementById("saveart-album").style.display = "none";    
     document.getElementById("saveart-cancel").style.display = "none"; 
 }
 
 function saveArtAlbum() {
+    // check if there are more than 20 songs that may be updated
+
+    if (window.AlbumArt) {
+        tracks = AlbumArt.getCurrentAlbumTracks();
+        debug("saveArtAlbum: tracks:" + tracks.length);
+        if (tracks.length >= 20) {
+            saveArtCancel();
+            document.getElementById("saveart-confirm").style.display = "block";
+            return;
+        }
+        else {
+            saveArtConfirmed();
+        }
+    }
+    saveArtCancel();
+}
+
+function saveArtConfirmed() {
     if (window.AlbumArt) {
         if ((fetch_save_url != "") && (current_song_id != "")) {
             AlbumArt.addAlbumArtToCurrentAlbum_withContentsOfURL_(current_song_id, fetch_save_url);
