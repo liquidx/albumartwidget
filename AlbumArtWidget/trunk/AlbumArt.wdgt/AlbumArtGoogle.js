@@ -47,6 +47,7 @@ google_params["safe"] = "on";
 google_params["filter"] = "0";
 
 var google_image_table = '<table align=center border=0 cellpadding=2 cellspacing=0 width=100%>';
+var google_image_content = '<div id=ImgContent>';
 
 
 /* some global state - inevitable with javascript */
@@ -119,35 +120,28 @@ function google_make_request(query, on_finish, on_error) {
 
 function google_get_urls(req) {
     var small_large_urls = new Array();
+    var is_dyn_img = /dyn\.Img\(\"(.*?)\"\)\;/g;
     
     // NOTE: reponseXML doesn't exist because output is unparsable    
-    if (req.responseText.indexOf(google_image_table) != -1) {
+    if (req.responseText.indexOf(google_image_content) != -1) {
         // find image matches
-        var index = req.responseText.indexOf("<img ");
-        while (index != -1) {
-            var end_index = req.responseText.indexOf(">", index + 1);
-            var img_tag = req.responseText.substring(index, end_index + 1);
-            var is_image = img_tag.indexOf("src=/images");
-            if (is_image != -1) {
-                var before_img = req.responseText.substring(0, index);
-                var a_index = before_img.lastIndexOf("<a ");
-                var a_url = "";
-                var img_params = tag_parse(img_tag, "img");
-                var img_url = "http://images.google.com" + img_params["src"];
-                
-                if (a_index != -1) {
-                    var a_tag = req.responseText.substring(a_index, index);
-                    var a_attribs = tag_parse(a_tag, "a");
-                    var a_query = query_string_parse(a_attribs["href"]);
-                    a_url = a_query["imgurl"];
-                }
-                
-                var urls = new Array(2);
-                urls[0] = img_url;
-                urls[1] = a_url;
-                small_large_urls.push(urls);
+        dyn_img = is_dyn_img.exec(req.responseText);
+        while (dyn_img != null) {
+            // strip out commas and quotes
+            var params = dyn_img[1].split('",');
+            var i = 0;
+            for (i = 0; i < params.length; i++) {
+                params[i] = params[i].slice(1);
             }
-            index = req.responseText.indexOf("<img ", end_index + 1);
+
+            // construct urls
+            if (params.length > 6) {
+                var img_url = google_base + '?q=tbn:' + params[2] + params[3];
+                var a_url = 'http://' + params[3];
+                small_large_urls.push([img_url, a_url]);
+            }
+            
+            dyn_img = is_dyn_img.exec(req.responseText);
         }
     }
     return small_large_urls;
@@ -203,6 +197,7 @@ function test_handler(req) {
         img = document.createElement("img");
         img.src = img_urls[i][1];
         d.appendChild(img);
+        document.getElementById("debug").value += img_urls[i][0];
     }
 }
 

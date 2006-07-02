@@ -459,7 +459,7 @@ function fetch_from_google(variation) {
         case 4:
             var query = artist;        
             google_make_request(query, on_google_finish, on_fetch_error);
-        break;
+            break;
         default:
             break;
     }
