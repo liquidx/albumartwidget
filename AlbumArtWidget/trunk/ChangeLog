@@ -1,3 +1,6 @@
+* AlbumArtWidget 2.8
+ - Update Google Images Album Art Fetching
+
 * AlbumArtWidget 2.7
  - Add warning when over 20 tracks may be updated.
 
