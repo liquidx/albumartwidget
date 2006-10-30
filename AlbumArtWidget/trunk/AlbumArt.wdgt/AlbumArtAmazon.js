@@ -159,7 +159,7 @@ function amazon_make_request(artist, albumname, trackname, locale, on_finish, on
 
 function amazon_get_url_medium(req) {
     var urls = req.responseXML.getElementsByTagName("URL");
-    var medium_suffix = "._SCMZZZZZZZ_.jpg";
+    var medium_suffix = "_SCMZZZZZZZ_";
     var medium_url = "";
     for (var i = 0; i < urls.length; i++) {
         url = urls[i].firstChild.nodeValue;
@@ -175,7 +175,7 @@ function amazon_get_url_medium(req) {
 
 function amazon_get_url_large(req) {
     var urls = req.responseXML.getElementsByTagName("URL");
-    var large_suffix = "._SCLZZZZZZZ_.jpg";
+    var large_suffix = "_SCLZZZZZZZ_";
     var large_url = "";
     for (var i = 0; i < urls.length; i++) {
         url = urls[i].firstChild.nodeValue;

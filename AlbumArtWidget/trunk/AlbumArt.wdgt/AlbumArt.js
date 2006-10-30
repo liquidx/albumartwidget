@@ -683,13 +683,14 @@ function saveArtCancel() {
 }
 
 function saveArtAlbum() {
-    // check if there are more than 20 songs that may be updated
+    // check if there are more than 15 songs that may be updated
 
     if (window.AlbumArt) {
         tracks = AlbumArt.getCurrentAlbumTracks();
         debug("saveArtAlbum: tracks:" + tracks.length);
-        if (tracks.length >= 20) {
+        if (tracks.length >= 15) {
             saveArtCancel();
+            document.getElementById("saveart-confirm-num").innerHTML = tracks.length;
             document.getElementById("saveart-confirm").style.display = "block";
             return;
         }

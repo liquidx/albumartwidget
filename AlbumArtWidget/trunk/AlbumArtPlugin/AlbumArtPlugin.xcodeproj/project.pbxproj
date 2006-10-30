@@ -22,30 +22,6 @@
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXBuildStyle section */
-		014CEA420018CDE011CA2923 /* Development */ = {
-			isa = PBXBuildStyle;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				ZERO_LINK = YES;
-			};
-			name = Development;
-		};
-		014CEA430018CDE011CA2923 /* Deployment */ = {
-			isa = PBXBuildStyle;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				ZERO_LINK = NO;
-			};
-			name = Deployment;
-		};
-/* End PBXBuildStyle section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		035BE05A08E860730000C2D2 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -114,6 +90,13 @@
 			name = Deprecated;
 			sourceTree = "<group>";
 		};
+		03B2D9890AE981810022861A /* Fetcher */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Fetcher;
+			sourceTree = "<group>";
+		};
 		03EF8A3E088847A50010AC2E /* EyeTunes */ = {
 			isa = PBXGroup;
 			children = (
@@ -169,6 +152,7 @@
 		08FB77AFFE84173DC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				03B2D9890AE981810022861A /* Fetcher */,
 				03EF8A3E088847A50010AC2E /* EyeTunes */,
 				032CED3408871B8600F33185 /* Deprecated */,
 				03A7743C0827BC6B00F29C31 /* AlbumArtConstants.h */,
@@ -231,19 +215,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G4;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = AlbumArtPlugin_Prefix.pch;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				PREBINDING = NO;
-				PRODUCT_NAME = AlbumArtPlugin;
-				WRAPPER_EXTENSION = widgetplugin;
-			};
 			dependencies = (
 			);
 			name = AlbumArtPlugin;
@@ -258,12 +229,6 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 03B04496088042C900D12928 /* Build configuration list for PBXProject "AlbumArtPlugin" */;
-			buildSettings = {
-			};
-			buildStyles = (
-				014CEA420018CDE011CA2923 /* Development */,
-				014CEA430018CDE011CA2923 /* Deployment */,
-			);
 			hasScannedForEncodings = 1;
 			mainGroup = 089C166AFE841209C02AAC07 /* AlbumArtPlugin */;
 			projectDirPath = "";

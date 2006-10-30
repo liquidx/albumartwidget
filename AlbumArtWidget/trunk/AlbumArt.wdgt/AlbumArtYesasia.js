@@ -38,8 +38,8 @@
 
 var yesasia_base = new Array();
 yesasia_base["en"] = "http://global.yesasia.com/en/Search/SearchResult.aspx";
-yesasia_base["b5"] = "http://10.global.yesasia.com/b5/Search/SearchResult.aspx";
-yesasia_base["gb"] = "http://10.global.yesasia.com/gb/Search/SearchResult.aspx";
+yesasia_base["b5"] = "http://global.yesasia.com/b5/Search/SearchResult.aspx";
+yesasia_base["gb"] = "http://global.yesasia.com/gb/Search/SearchResult.aspx";
 
 var yesasia_params = new Array();
 yesasia_params["asSectionId"] = "music";
@@ -60,6 +60,7 @@ yesasia_params["asDescription"] = "";
 yesasia_params["asManufacturer"] = "";
 yesasia_params["asCode"] = "";
 yesasia_params["asIncludeOutOfStock"] = 1;
+yesasia_params["asShowAdult"] = 0;
 yesasia_params["mode"] = "adsearch";
 yesasia_params["JavascriptEnabled"] = "true";
 
@@ -132,7 +133,7 @@ function yesasia_make_request(encoded_artist, encoded_album, encoded_title, enco
 function yesasia_get_urls(req) {
     var small_large_urls = new Array();
     
-    // NOTE: reponseXML doesn't exist because output is on parsable    
+    // NOTE: reponseXML doesn't exist because output is not parsable    
     var index = req.responseText.indexOf("<IMG ");
     while (index != -1) {
         var end_index = req.responseText.indexOf(">", index + 1);
@@ -205,6 +206,7 @@ function _yesasia_to_small_pic_url(url) {
 
 
 function test_handler(req) {
+    var debug = document.getElementById("debug").value = req.responseText;
     var img_urls = yesasia_get_urls(req);
 
     if ((img_urls == null) || (img_urls.length < 1)) {
@@ -227,7 +229,7 @@ function test_handler(req) {
 
 function test_request() {
     var query = document.getElementById("query").value;
-    yesasia_make_request("%bc%42%bc%77%b5%d8%20%4c%61%75%2c%20%41%6e%64%79", "", "", "b5", test_handler, alert);
+    yesasia_make_request(query, "", "", "b5", test_handler, alert);
 }    
 
 
