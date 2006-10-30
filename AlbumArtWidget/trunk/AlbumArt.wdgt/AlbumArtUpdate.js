@@ -41,7 +41,7 @@ var update_versions_xml = update_versions_base + "versions.xml?v=" +
 var update_req = null;
 var update_file_url = null;
 var update_version = null;
-var update_verison_string = null;
+var update_version_string = "";
 
 function auto_update() {
     if (update_req != null) {
