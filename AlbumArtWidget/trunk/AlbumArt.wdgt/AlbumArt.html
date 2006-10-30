@@ -58,7 +58,12 @@
     <div id="front" onmouseover="mousemove(event); song_info_mouseover();" onmouseout="mouseexit(event); song_info_mouseout();">
         <img src="Default.png" class="background" id="front-background" />
         <div id="albumart-layer"><img src="Blank.png" id="albumart"></div>
-        <div id="update-layer"><a href="javascript:fetch_update();"><img src="update.png" width="46" height="26" alt="new version available!" title="new version available!" /></a></div>
+        <div id="update-layer">
+            <img src="update.png" width="176" height="31" alt="new version available!" title="new version available!" usemap="#updatemap" />
+        </div>
+        <a href="javascript:fetch_update();" id="update-get"></a>
+        <a href="javascript:ignore_update();" id="update-ignore"></a>
+        
         <div id="spinner-layer"><img id="spinner" src="spinner.gif" /></div>
         <div id="itms-link"><a href="javascript:goitms();" title="Find in iTunes Music Store"><img src="itms.png" alt="Goto iTunes Music Store" /></a></div>
         <div id="fetched-link"><a href="javascript:goto_fetched_from();" title="Fetched source"><img src="fetched.png" alt="This album art is fetched."></a></div>
@@ -84,7 +89,7 @@
         <div class="flipalbum" id="flipalbum" onclick="showAlbumBack(event);" onmouseover="enterAlbumFlip(event);" onmouseout="exitAlbumFlip(event);" title="Show Album Tracks"></div>
         
         <div class="flipprefs" id="flipprefsrollie"></div>
-        <div class="flipprefs"' id="flipprefs" onclick="showPrefs(event);" onmouseover="enterPrefsFlip(event);" onmouseout="exitPrefsFlip(event);" title="Preferences"></div>
+        <div class="flipprefs" id="flipprefs" onclick="showPrefs(event);" onmouseover="enterPrefsFlip(event);" onmouseout="exitPrefsFlip(event);" title="Preferences"></div>
         
         <div class="saveart" id="saveartrollie"></div>
         <div class="saveart" id="saveart" onclick="saveArt();" onmouseover="enterSaveArt(event);" onmouseout="exitSaveArt(event);" title="Add artwork to iTunes song"></div>
@@ -107,14 +112,12 @@
         <img src="BackApple.png" class="background" id="pref-background"  />
         <div id="config-layer">
             <div class="pref-group" id="pref-widget-color">
-                <div class="label">Widget Color:</div>
-                <div class="field">
+                Widget Color:
                 <select id="select-widget-color" onchange="changeWidgetColor(this);">
                 <option value="metal">Metal</option>
                 <option value="blue">Blue</option>
                 <option value="black" selected>Black</option>
                 </select>
-                </div>
             </div>
 
             <div class="pref-group" id="pref-stars-color">
@@ -158,6 +161,11 @@
                 <img src="itms.png" valign="middle" /><input type="checkbox" id="select-itms-link" value="0" onchange="changeITMSLink(this);" />
                 </div>
             </div>
+            <div class="pref-group" id="pref-updates">
+                Check for Updates:
+                <input type="checkbox" id="select-check-update" value="1" onchange="changeCheckUpdate(this);"/>
+                (v<span id="current-version">unknown</span>)
+            </div>
             <div class="liquidx-logo">
             <a href="javascript:shameless_self_promotion();"><img src="liquidx.net.png" /></a>
             </div>
@@ -165,6 +173,8 @@
             <input type="button" value="Done" name="Done" />
             </div>
         </div>
+        
+        
     </div>
     
     <div id="back" onmousemove="mousemove(event);" onmouseout="mouseexit(event);">

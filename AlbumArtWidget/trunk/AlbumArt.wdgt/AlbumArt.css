@@ -44,6 +44,7 @@ body {
     position: absolute;
     top: 0px;
     left: 0px;
+	z-index:  2;
 }
 
 #albumart-layer {
@@ -52,7 +53,7 @@ body {
     left: 32px;
     width: 160px;
     height: 160px;
-    z-index: 1;
+    z-index: 5;
 }
 
 #albumart-layer img {
@@ -68,10 +69,10 @@ body {
     width: 24px;
     height: 24px;
     padding: 4px 5px 4px 4px;
-    z-index: 3;
     background: url(spinnerbg.png) no-repeat;
     display: none;
     opacity: 0.5;
+    z-index: 10;
 }
 
 #overlay-layer {
@@ -82,7 +83,7 @@ body {
     left: 32px;
     width: 160px;
     height: 160px;
-    z-index: 4;
+    z-index: 10;
 }
 
 #text-layer, #shade-layer {
@@ -92,7 +93,7 @@ body {
     left: 32px;
     width: 160px;
     height: 38px;
-    z-index: 2;
+    z-index: 9;
 
     text-align: center;
     color: #fff;
@@ -105,10 +106,30 @@ body {
 
 #update-layer {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 10;
+    top: 8px;
+    right: 24px;
+	height:  16px;
+	width:  176px;
+    z-index: 1;
     display: none;
+}
+
+#update-get {
+	z-index:  10;
+	position:  absolute;
+	top:  8px;
+	left:  124px;
+	width:  32px;
+	height:  16px;;
+}
+
+#update-ignore {
+	z-index:  10;
+	position:  absolute;
+	top:  8px;
+	left:  156px;
+	width:  48px;
+	height:  16px;;
 }
 
 #shade-layer {
@@ -131,6 +152,7 @@ body {
     height: 16px;
     width: 120px;
     text-align: center;
+	z-index:  10;
 }
 
 #unrateimg {
@@ -144,7 +166,7 @@ body {
     left: 35px;
     width: 13px;
     height: 13px;
-    z-index: 2;
+    z-index: 10;
    
 }
 
@@ -167,7 +189,7 @@ body {
     left: 180px;
     width: 13px;
     height: 13px;
-    z-index: 2;
+    z-index: 10;
 }
 
 #flipprefs {
@@ -187,7 +209,7 @@ body {
     left: 180px;
     width: 13px;
     height: 13px;
-    z-index: 2;
+    z-index: 10;
 }
 
 #saveart {
@@ -208,7 +230,7 @@ body {
     left: 35px;
     width: 13px;
     height: 13px;
-    z-index: 2;
+    z-index: 10;
 }
 
 #refresh {
@@ -231,6 +253,7 @@ body {
     top: 0px;
     left: 0px;
     display: none;
+	z-index: 10;
 }    
 
 
@@ -241,10 +264,11 @@ body {
     width: 160px;
     height: 128px;
 
-    font: 11px "Lucida Grande";
+    font: 9px "Lucida Grande";
     font-weight: normal;    
     color: #fff;
     text-shadow: #666 -1px -1px 0px; 
+	z-index: 5;
 }
 
 #album-playlist {
@@ -291,6 +315,10 @@ li {
     margin-top: 5px;
 }
 
+#pref-info-opacity {
+	margin-top:  7px;
+}
+
 #pref-stars-color {
     height: 32px;
 }
@@ -322,11 +350,11 @@ li {
     padding: 4px;
     width: 40px;
     height: 40px;
-    z-index: 10;
     display: none;
     opacity: 0.75;
     top: 100px;
     background: url(button.png) no-repeat; 
+    z-index: 15;
 }
 
 #saveart-single {
@@ -348,7 +376,7 @@ li {
     left: 35px;
     width: 142px;
     height: 60px;
-    z-index: 11;
+    z-index: 20;
     
     padding: 6px;
     text-align: center;
@@ -400,20 +428,3 @@ li {
     display: none;
 }
     
-
-/*
-
-#playerstate-layer {
-    position: absolute;
-    top: 24px;
-    left: 24px;
-    width: 128px;
-    height: 128px;
-    z-index: 3;
-    visibility: hidden;
-}
-
-#playerstate {
-    opacity: 0.5;
-}
-*/

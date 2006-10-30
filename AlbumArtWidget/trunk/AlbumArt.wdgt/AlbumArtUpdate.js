@@ -35,9 +35,13 @@
 */
 
 // question mark prevents caching
-var update_versions_xml = "http://media.liquidx.net/static/albumartwidget/versions.xml?";
+var update_versions_base = "http://media.liquidx.net/static/albumartwidget/";
+var update_versions_xml = update_versions_base + "versions.xml?v=" + 
+                          current_version;
 var update_req = null;
 var update_file_url = null;
+var update_version = null;
+var update_verison_string = null;
 
 function auto_update() {
     if (update_req != null) {
@@ -55,21 +59,23 @@ function auto_update() {
 function auto_update_request() {
 
     if (update_req.readyState == 4) { 
-        // TODO: actually do something with the data
+
         var latest = update_req.responseXML;
+        var latest_version_string = "";
         var latest_version = 0;
         var latest_url = "";
         var versions = latest.getElementsByTagName("version");
 
         if (versions) {
             for (var i = 0; i < versions.length; i++) {
-                var verstring = "";
+                var verstr = "";
+                var vernum = "";
                 var verurl = "";
                 var num = versions[i].getElementsByTagName("number");
                 if (num && (num.length > 0)) {
                     for (var j = 0; j < num[0].childNodes.length; j++) {
                         if (num[0].childNodes[j].nodeName == "#text") {
-                            verstring += num[0].childNodes[j].nodeValue;
+                            vernum += num[0].childNodes[j].nodeValue;
                         }
                     }
                 }
@@ -83,8 +89,18 @@ function auto_update_request() {
                     }
                 }
                 
-                var ver = parseFloat(verstring);
+                 var str = versions[i].getElementsByTagName("versionstring");
+                    if (str && (str.length > 0)) {
+                        for (var j = 0; j < str[0].childNodes.length; j++) {
+                             if (str[0].childNodes[j].nodeName == "#text") {
+                                verstr += str[0].childNodes[j].nodeValue;
+                            }
+                        }
+                    }
+                
+                var ver = parseFloat(vernum);
                 if (ver > latest_version) {
+                    latest_version_string = verstr;
                     latest_version = ver;
                     latest_url = verurl;
                 }
@@ -92,23 +108,48 @@ function auto_update_request() {
         }
         
         if (latest_version > current_version) {
-            document.getElementById("update-layer").style.display = "block";
+            show_update_drawer();
+            update_version_string = latest_version_string;
+            update_version = latest_version;
             update_file_url = latest_url;
         }
         else {
-            document.getElementById("update-layer").style.display = "none";
+            hide_update_drawer();
         }
     }
 }
 
+function hide_update_drawer() {
+    document.getElementById("update-layer").style.display = "none";
+    document.getElementById("update-get").style.display = "none";
+    document.getElementById("update-ignore").style.display = "none";
+}
+
+function show_update_drawer() {
+    document.getElementById("update-layer").style.display = "block";
+    document.getElementById("update-get").style.display = "block";
+    document.getElementById("update-ignore").style.display = "block";
+    document.getElementById("update-get").title = "New Version: " + 
+                                                  update_version_string;
+}
+
 function fetch_update() {
+    hide_update_drawer();
+    
     if (update_file_url == null) {
         return;
     }
     
     if (window.widget) {
-        document.getElementById("update-layer").style.display = "none";
         widget.openURL(update_file_url);
+    }
+}
+
+function ignore_update() {
+    hide_update_drawer();
+    if (window.widget) {
+        widget.setPreferenceForKey(0, pref_check_update);
+        document.getElementById("select-check-update").checked = 0;
     }
 }
 

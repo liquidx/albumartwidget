@@ -120,14 +120,22 @@ function init() {
             document.getElementById('itms-link').style.display = 'block';
         }
         
+        // init check update prefs
+        var check_update = widget.preferenceForKey(pref_check_update);
+        if (check_update == null) 
+            check_update = 1;
+        document.getElementById("select-check-update").checked = check_update;
+        document.getElementById("current-version").innerHTML = current_version_string;
                 
         // init other global states
         if (window.AlbumArt) {
             current_song_id = AlbumArt.trackLocation();
         }
         
-        // autoupdate mechnism (TODO)
-        auto_update();
+        // autoupdate mechnism 
+        if (check_update == 1) {
+            auto_update();
+        }
     }
     if (window.AlbumArt == null) {
         alert("ERROR: album art plugin not available");
@@ -1095,6 +1103,14 @@ function changeInfoHide(selection) {
         widget.setPreferenceForKey(info_hide, pref_info_hide);
     }
 }
+
+function changeCheckUpdate(selection) {
+    var check_update = selection.checked;
+    if (window.widget) {
+        widget.setPreferenceForKey(check_update, pref_check_update);
+    }
+}
+
 
 function changeITMSLink(selection) {
     var itms_link = selection.checked;

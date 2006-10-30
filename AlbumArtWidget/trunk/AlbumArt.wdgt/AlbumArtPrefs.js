@@ -57,6 +57,9 @@ var pref_info_hide_default = 0;
 var pref_itms_link = "itms_link";
 var pref_itms_link_default = 0;
 
+var pref_check_update = "check_update";
+var pref_check_update_default = 1;
+
 var pref_fetch = "fetch_method";
 var pref_fetch_default = "none";
 var pref_fetch_choices = new Array("amazon_us", "amazon_uk", "amazon_jp", "amazon_de", "amazon_fr", "amazon_ca", "google", "yesasia_b5", "yesasia_gb");
@@ -72,6 +75,8 @@ pref_defaults[pref_color] = pref_color_default;
 pref_defaults[pref_stars] = pref_stars_default;
 pref_defaults[pref_fetch] = pref_fetch_default;
 pref_defaults[pref_info_opacity] = pref_info_opacity_default;
+pref_defaults[pref_check_update] = pref_check_update_default;
+pref_defaults[pref_itms_link] = pref_itms_link_default;
 
 function verify_pref(pref_value, pref_name) {
     var choices = pref_choices[pref_name];
