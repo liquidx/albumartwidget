@@ -158,33 +158,27 @@ function amazon_make_request(artist, albumname, trackname, locale, on_finish, on
 /* return the first album cover that is medium size (eg. 160x160) */
 
 function amazon_get_url_medium(req) {
-    var urls = req.responseXML.getElementsByTagName("URL");
-    var medium_suffix = "_SCMZZZZZZZ_";
-    var medium_url = "";
-    for (var i = 0; i < urls.length; i++) {
-        url = urls[i].firstChild.nodeValue;
-        if (url.indexOf(medium_suffix) != -1) {
-            medium_url = url;
-            break;
+    var images = req.responseXML.getElementsByTagName("MediumImage");
+    for (var i = 0; i < images.length; i++) {
+        var urls = images[i].getElementsByTagName("URL");
+        if (urls && urls.length > 0 && urls[i].firstChild.nodeValue) {
+            return urls[i].firstChild.nodeValue;
         }
     }
-    return medium_url;
+    return "";
 }    
 
 /* return the first album cover that is large size (eg. 300x300) */
 
 function amazon_get_url_large(req) {
-    var urls = req.responseXML.getElementsByTagName("URL");
-    var large_suffix = "_SCLZZZZZZZ_";
-    var large_url = "";
-    for (var i = 0; i < urls.length; i++) {
-        url = urls[i].firstChild.nodeValue;
-        if (url.indexOf(large_suffix) != -1) {
-            large_url = url;
-            break;
+    var images = req.responseXML.getElementsByTagName("LargeImage");
+    for (var i = 0; i < images.length; i++) {
+        var urls = images[i].getElementsByTagName("URL");
+        if (urls && urls.length > 0 && urls[i].firstChild.nodeValue) {
+            return urls[i].firstChild.nodeValue;
         }
     }
-    return large_url;
+    return "";
 }    
 
 

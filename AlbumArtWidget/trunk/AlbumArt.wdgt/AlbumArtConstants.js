@@ -55,8 +55,8 @@ var str_default_title  = "Untitled";
 
 var lx = "http://www.liquidx.net/albumartwidget/";
 
-var current_version = 2.91; // needs to be a valid floating point number
-var current_version_string = "2.9.1";
+var current_version = 2.92; // needs to be a valid floating point number
+var current_version_string = "2.9.2";
 
 // --------------------------------------------------------------------------
 // itunes music store affiliate links

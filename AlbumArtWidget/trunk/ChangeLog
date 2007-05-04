@@ -1,3 +1,6 @@
+* AlbumArtWidget 2.9.2
+ - Fix fetching for Amazon.
+
 * AlbumArtWidget 2.9.1
  - Proper updates checking preference.
 
