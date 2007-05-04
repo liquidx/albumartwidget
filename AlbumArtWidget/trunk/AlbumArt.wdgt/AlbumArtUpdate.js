@@ -51,6 +51,7 @@ function auto_update() {
     if (window.XMLHttpRequest) {
         update_req = new XMLHttpRequest();
         update_req.onreadystatechange = auto_update_request;
+        update_req.setRequestHeader("Cache-Control", "no-cache");        
         update_req.open("GET", update_versions_xml, true);
         update_req.send();
     }
